@@ -16,3 +16,13 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('home');
 });
+
+Route::group(['prefix' => 'admin', 'namespace' => 'Admin'], function () {
+    Route::get('/', 'MainController@index')->name('admin.index');
+    Route::get('/currency', 'CurrencyController@index')->name('currency.index');
+    Route::get('/get-currency', 'CurrencyController@get')->name('get_currency');
+
+    Route::resource('attributes', AttributesController::class);
+    Route::resource('categories', CategoryController::class);
+
+});
