@@ -34,7 +34,34 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $categories = Category::all();
+        $messages = [
+            'name.required' => 'Поле "Наименование категории" обязательно для заполнения',
+            'img.image' => 'Фото - должно быть файлом c изображением',
+            'img.mimes' => 'Фал с изображением должен иметь расширение: jpeg,jpg,bmp,png',
+            'img.size' => 'Размер изображения не должен превышать 2 мб.',
+            'prev_img.image' => 'Фото - должно быть файлом c изображением',
+            'prev_img.mimes' => 'Фал с изображением должен иметь расширение: jpeg,jpg,bmp,png',
+            'prev_img.size' => 'Размер изображения не должен превышать 2 мб.',
+            'sort.integer' => 'Номер сортровки должен быть целым числом',
+        ];
+        $this->validate($request, [
+            'name' => 'required',
+            'img' => 'image|mimes:jpeg,jpg,bmp,png|nullable',
+            'img.size' => '2000|nullable',
+            'prev_img' => 'image|mimes:jpeg,jpg,bmp,png|nullable',
+            'prev_img.size' => '2000|nullable',
+            'sort' => 'integer|nullable',
+        ],$messages);
+        //link::create($request->all());
+
+        dd(time());
+
+        //return redirect()->route('admin.categories_index')->with('success', 'Ссылка на товар добавлена!');
+
+
+
+
     }
 
     /**
