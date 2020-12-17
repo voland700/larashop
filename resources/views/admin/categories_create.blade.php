@@ -25,9 +25,10 @@
                 </div>
             @endif
 
-            <form role="form" method="post" action="{{ route('categories.store') }}">
+            <form role="form" action="{{ route('categories.store') }}" method="post"  enctype="multipart/form-data">
+                @csrf
                 <div class="row">
-                    @csrf
+
 
                     <div class="col-md-6">
                     <div class="card">
@@ -72,7 +73,7 @@
                                     <label for="exampleInputFile">Основное изображение</label>
                                     <div class="input-group">
                                         <div class="custom-file">
-                                            <input type="file" class="custom-file-input" id="exampleInputFile">
+                                            <input type="file" name="img" class="custom-file-input" id="exampleInputFile">
                                             <label class="custom-file-label" for="exampleInputFile">Choose file</label>
                                         </div>
                                     </div>
@@ -82,7 +83,7 @@
                                     <label for="exampleInputFile">Prev изображение</label>
                                     <div class="input-group">
                                         <div class="custom-file">
-                                            <input type="file" class="custom-file-input" id="exampleInputFile">
+                                            <input type="file" name="prev_img" class="custom-file-input" id="exampleInputFile">
                                             <label class="custom-file-label" for="exampleInputFile">Choose file</label>
                                         </div>
                                     </div>
@@ -147,7 +148,7 @@
                             </div>
                         </div>
                     </div>
-                    <button type="submit" class="btn btn-primary mt-3 mb-5 ml-3">Добавить</button>
+                    <button type="submit" class="btn btn-primary mt-3 mb-5 ml-3">Создать</button>
                 </div>
             </form>
 

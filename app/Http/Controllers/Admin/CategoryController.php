@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Category;
+use Intervention\Image\ImageManagerStatic as Image;
+use Illuminate\Support\Str;
 
 class CategoryController extends Controller
 {
@@ -35,6 +37,8 @@ class CategoryController extends Controller
     public function store(Request $request)
     {
         $categories = Category::all();
+        $category = new Category();
+
         $messages = [
             'name.required' => 'Поле "Наименование категории" обязательно для заполнения',
             'img.image' => 'Фото - должно быть файлом c изображением',
@@ -48,17 +52,42 @@ class CategoryController extends Controller
         $this->validate($request, [
             'name' => 'required',
             'img' => 'image|mimes:jpeg,jpg,bmp,png|nullable',
-            'img.size' => '2000|nullable',
+            'img.size' => '2048|nullable',
             'prev_img' => 'image|mimes:jpeg,jpg,bmp,png|nullable',
-            'prev_img.size' => '2000|nullable',
+            'prev_img.size' => '2048|nullable',
             'sort' => 'integer|nullable',
         ],$messages);
-        //link::create($request->all());
 
-        dd(time());
+        if ($request->hasFile('img')) {
+            $image = $request->file('img');
+            $fileName =  time().'_'.Str::lower(Str::random(5)).'.'.$image->getClientOriginalExtension();
+            $path_to = '/upload/images/'.Str::lower(Str::random(2));
+            $category->img = $image->storeAs($path_to, $fileName);
+        }
 
-        //return redirect()->route('admin.categories_index')->with('success', 'Ссылка на товар добавлена!');
+        if ($request->hasFile('prev_img')) {
+            $fileName =  time().'_prev_'.Str::lower(Str::random(2)).'.'.$request->file('prev_img')->getClientOriginalExtension();
+            $path_to = '/upload/images/'.Str::lower(Str::random(2));
+            $path = $request->file('prev_img')->storeAs($path_to, $fileName);
+            Image::make(storage_path('app/'.$path))->resize(400, 400, function ($constraint) {
+                $constraint->aspectRatio();
+                $constraint->upsize();
+            })->save();
+            $category->prev_img = $path;
+        }
 
+        if($request->img || !$request->prev_img){
+            $fileName =  time().'_prev_'.Str::lower(Str::random(2)).'.'.$request->img->getClientOriginalExtension();
+            $path_to = '/upload/images/'.Str::lower(Str::random(2));
+            $path = $request->file('img')->storeAs($path_to, $fileName);
+            Image::make(storage_path('app/'.$path))->resize(400, 400, function ($constraint) {
+                $constraint->aspectRatio();
+                $constraint->upsize();
+            })->save();
+            $category->prev_img = $path;
+        }
+
+        dd($category);
 
 
 
