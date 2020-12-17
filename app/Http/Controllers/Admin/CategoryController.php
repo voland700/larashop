@@ -36,9 +36,7 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        $categories = Category::all();
         $category = new Category();
-
         $messages = [
             'name.required' => 'Поле "Наименование категории" обязательно для заполнения',
             'img.image' => 'Фото - должно быть файлом c изображением',
@@ -76,7 +74,7 @@ class CategoryController extends Controller
             $category->prev_img = $path;
         }
 
-        if($request->img || !$request->prev_img){
+        if($request->img && !$request->prev_img){
             $fileName =  time().'_prev_'.Str::lower(Str::random(2)).'.'.$request->img->getClientOriginalExtension();
             $path_to = '/upload/images/'.Str::lower(Str::random(2));
             $path = $request->file('img')->storeAs($path_to, $fileName);
@@ -86,11 +84,17 @@ class CategoryController extends Controller
             })->save();
             $category->prev_img = $path;
         }
-
-        dd($category);
-
-
-
+        $category->name = $request->name;
+        if($category->category_id){
+            $category->category_id = $request->category_id;
+        }
+        $category->active = $request->active;
+        $category->sort = $request->sort ?? 500;
+        $category->h1 = $request->h1;
+        $category->meta_description = $request->meta_description;
+        $category->description = $request->description;
+        $category->save();
+        return redirect()->route('categories.index')->with('success', 'Новая категория создана');
     }
 
     /**

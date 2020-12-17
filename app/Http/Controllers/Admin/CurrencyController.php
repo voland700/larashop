@@ -5,11 +5,9 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Currency;
 use Carbon\Carbon;
-use Illuminate\Http\Request;
 
 
-
-class CurrencyController extends Controller
+class  CurrencyController extends Controller
 {
     public function index()
     {
