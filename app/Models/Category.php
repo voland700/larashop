@@ -4,16 +4,19 @@ namespace App\Models;
 
 ;
 use Illuminate\Database\Eloquent\Model;
-use Cviebrock\EloquentSluggable\Sluggable;
+//use Cviebrock\EloquentSluggable\Sluggable;
+use Kalnoy\Nestedset\NodeTrait;
+use Illuminate\Support\Str;
 
 class Category extends Model
 {
-    use Sluggable;
+    use NodeTrait;
+    //use Sluggable;
+
     protected $table = 'categories';
     protected $fillable = [
         'created_at',
         'updated_at',
-        'category_id',
         'name',
         'slug',
         'active',
@@ -46,6 +49,7 @@ class Category extends Model
      *
      * @return array
      */
+    /*
     public function sluggable()
     {
         return [
@@ -54,5 +58,6 @@ class Category extends Model
             ]
         ];
     }
+    */
 
 }

@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Kalnoy\Nestedset\NestedSet;
 
 class CreateCategoriesTable extends Migration
 {
@@ -16,7 +17,7 @@ class CreateCategoriesTable extends Migration
         Schema::create('categories', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('category_id')->nullable();
-            $table->foreign('category_id')->references('id')->on('categories');
+            NestedSet::columns($table);
             $table->string('name');
             $table->string('slug');
             $table->integer('active')->unsigned()->default(1);

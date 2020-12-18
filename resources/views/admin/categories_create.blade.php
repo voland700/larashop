@@ -54,15 +54,41 @@
                                 <label for="name">Наименование категории</label>
                                 <input type="text" class="form-control" id="name" name="name" placeholder="Наименование категории">
                             </div>
+
+                            <div class="form-group">
+                                <label for="name">ЧПУ категории</label>
+                                <input type="text" class="form-control" id="slug" name="name" placeholder="category">
+                            </div>
+
+
+
                             <div class="form-group">
                                 <label for="category_id">Родительская категория</label>
                                 <select name="category_id" class="form-control">
                                     <option  value="NULL">Нет родительской</option>
+
                                     @foreach ($categories as $category)
-                                        <option value="{{ $category->id }}">{{ $category->name }}</option>
-                                            @foreach ($category->childrenCategories as $childCategory)
-                                                @include('child_category_create', ['child_category' => $childCategory])
-                                            @endforeach
+                                        <option  value="{{$category->id}}">- {{$category->name}}</option>
+                                            @if(count($category->children)>0)
+                                                @foreach ($category as $category_1)
+                                                    <option  value="{{$category_1->id}}">-- {{$category_1->name}}</option>
+                                                    @if(count($category_1->children)>0)
+                                                        @foreach ($category_1 as $category_2)
+                                                            <option  value="{{$category_2->id}}">-- {{$category_2->name}}</option>
+                                                            @if(count($category_2->children)>0)
+                                                                @foreach ($category_2 as $category_3)
+                                                                <option  value="{{$category_3->id}}">-- {{$category_3->name}}</option>
+                                                                @if(count($category_3->children)>0)
+                                                                    @foreach ($category_3 as $category_4)
+                                                                        <option  value="{{$category_4->id}}">-- {{$category_4->name}}</option>
+                                                                    @endforeach
+                                                                @endif
+                                                                @endforeach
+                                                            @endif
+                                                        @endforeach
+                                                    @endif
+                                                @endforeach
+                                            @endif
                                     @endforeach
                                 </select>
                             </div>

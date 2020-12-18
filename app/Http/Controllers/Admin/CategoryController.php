@@ -12,18 +12,14 @@ class CategoryController extends Controller
 {
     public function index()
     {
-        $categories = Category::whereNull('category_id')
-            ->with('childrenCategories')
-            ->get();
+        $categories = Category::get()->toTree();
         $h1 = 'Редактирование категорй каталога';
         return view('admin.categories_index', compact('categories', 'h1'));
     }
 
     public function create()
     {
-        $categories = Category::whereNull('category_id')
-            ->with('childrenCategories')
-            ->get();
+        $categories = Category::get()->toTree();
         $h1 = 'Создать новую категорию';
         return view('admin.categories_create', compact('categories','h1' ));
     }
@@ -85,9 +81,6 @@ class CategoryController extends Controller
             $category->prev_img = $path;
         }
         $category->name = $request->name;
-        if($category->category_id){
-            $category->category_id = $request->category_id;
-        }
         $category->active = $request->active;
         $category->sort = $request->sort ?? 500;
         $category->h1 = $request->h1;

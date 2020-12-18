@@ -43,16 +43,36 @@
                     <!-- /.card-header -->
                     <div class="card-body">
                         <a href="{{route('categories.create')}}" type="button" class="btn btn-primary mb-3">Добавить</a>
+
+
+
                         <ul>
-                            @foreach ($categories as $category)
-                                <li><a href="#">{{ $category->name }}</a> <a href="#"><i class="fas fa-trash-alt"></i></a></li>
+                        @foreach ($categories as $category)
+                            <li><a href="{{route("categories/{$category->id}/edit")}}">{{ $category->name }}</a> <a href="{{route("categories/{$category->id}")}}"><i class="fas fa-trash-alt"></i></a></li>
+                                @if(count($category->children))
                                 <ul>
-                                    @foreach ($category->childrenCategories as $childCategory)
-                                        @include('Admin.layouts.child_category', ['child_category' => $childCategory])
+                                    @foreach($category->children as $category_2)
+                                        <li><a href="{{route("categories/{$category_2->id}/edit")}}">{{ $category_2->name }}</a> <a href="{{route("categories/{$category_2->id}")}}"><i class="fas fa-trash-alt"></i></a></li>
+                                        @if(count($category_2->children))
+                                            <ul>
+                                                @foreach($category_2->children as $category_3)
+                                                    <li><a href="{{route("categories/{$category_3->id}/edit")}}">{{ $category_3->name }}</a> <a href="{{route("categories/{$category_3->id}")}}"><i class="fas fa-trash-alt"></i></a></li>
+                                                    @if(count($category_3->children))
+                                                        <ul>
+                                                            @foreach($category_3->children as $category_4)
+                                                                <li><a href="{{route("categories/{$category_4->id}/edit")}}">{{ $category_4->name }}</a> <a href="{{route("categories/{$category_4->id}")}}"><i class="fas fa-trash-alt"></i></a></li>
+                                                            @endforeach
+                                                        </ul>
+                                                    @endif
+                                                @endforeach
+                                            </ul>
+                                        @endif
                                     @endforeach
                                 </ul>
-                            @endforeach
+                                @endif
+                        @endforeach
                         </ul>
+
                     </div>
                     <div class="card-footer clearfix">
                         <p></p>

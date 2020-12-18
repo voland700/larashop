@@ -24,7 +24,7 @@ class  CurrencyController extends Controller
 
     public  function get()
     {
-        $data = json_decode(file_get_contents('https://www.cbr-xml-daily.ru/daily_json.js'));
+        $data = json_decode(file_get_content_curl('https://www.cbr-xml-daily.ru/daily_json.js'));
         $value = (array)$data->Valute;
         $currency = Currency::all();
         foreach ($currency as $Valute){
