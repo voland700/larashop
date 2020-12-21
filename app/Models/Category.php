@@ -1,22 +1,20 @@
 <?php
-
 namespace App\Models;
 
-;
 use Illuminate\Database\Eloquent\Model;
-//use Cviebrock\EloquentSluggable\Sluggable;
 use Kalnoy\Nestedset\NodeTrait;
 use Illuminate\Support\Str;
 
 class Category extends Model
 {
     use NodeTrait;
-    //use Sluggable;
+
 
     protected $table = 'categories';
     protected $fillable = [
         'created_at',
         'updated_at',
+        'parent_id',
         'name',
         'slug',
         'active',
@@ -28,6 +26,7 @@ class Category extends Model
         'img',
         'prev_img'
     ];
+
     // get - рекурсия вложенных категроий
     public function categories()
     {
@@ -44,20 +43,5 @@ class Category extends Model
         return $this->hasMany(Product::class);
     }
 
-    /**
-     * Return the sluggable configuration array for this model.
-     *
-     * @return array
-     */
-    /*
-    public function sluggable()
-    {
-        return [
-            'slug' => [
-                'source' => 'name'
-            ]
-        ];
-    }
-    */
 
 }

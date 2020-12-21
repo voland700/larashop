@@ -284,6 +284,57 @@
             console.error( error );
         } );
 
+
+
+    //Translit
+    function translit(word){
+        var converter = {
+            'а': 'a',    'б': 'b',    'в': 'v',    'г': 'g',    'д': 'd',
+            'е': 'e',    'ё': 'e',    'ж': 'zh',   'з': 'z',    'и': 'i',
+            'й': 'y',    'к': 'k',    'л': 'l',    'м': 'm',    'н': 'n',
+            'о': 'o',    'п': 'p',    'р': 'r',    'с': 's',    'т': 't',
+            'у': 'u',    'ф': 'f',    'х': 'h',    'ц': 'c',    'ч': 'ch',
+            'ш': 'sh',   'щ': 'sch',  'ь': '',     'ы': 'y',    'ъ': '',
+            'э': 'e',    'ю': 'yu',   'я': 'ya'
+        };
+        word = word.toLowerCase();
+        var answer = '';
+        for (var i = 0; i < word.length; ++i ) {
+            if (converter[word[i]] == undefined){
+                answer += word[i];
+            } else {
+                answer += converter[word[i]];
+            }
+        }
+        answer = answer.replace(/[^-0-9a-z]/g, '-');
+        answer = answer.replace(/[-]+/g, '-');
+        answer = answer.replace(/^\-|-$/g, '');
+        return answer;
+    }
+
+    document.getElementById('CreateName').oninput = function () {
+        const CreateSlug = document.getElementById('CreateSlug');
+        CreateSlug.value = translit(CreateName.value);
+    }
+
+    function checkboxToggle(event) {
+        let elem = document.getElementById('active');
+        if(elem.checked){
+            elem.value = 1;
+        } else {
+            elem.value = 0;
+        }
+    }
+    //Input -show file name
+    document.querySelectorAll('.custom-file-input').forEach(function (item) {
+            item.addEventListener('change',function(e){
+            let fileName = e.target.files[0].name;
+            let nextSibling = e.target.nextElementSibling
+            nextSibling.innerText = fileName
+        })
+    })
+
+
 </script>
 
 

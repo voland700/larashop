@@ -35,6 +35,8 @@ class CategoryController extends Controller
         $category = new Category();
         $messages = [
             'name.required' => 'Поле "Наименование категории" обязательно для заполнения',
+            'slug.required' => 'Поле "ЧПУ категории" обязательно для заполнения',
+            'slug.unique' => 'Данные в поле "ЧПУ категории" должны быть уникальными',
             'img.image' => 'Фото - должно быть файлом c изображением',
             'img.mimes' => 'Фал с изображением должен иметь расширение: jpeg,jpg,bmp,png',
             'img.size' => 'Размер изображения не должен превышать 2 мб.',
@@ -45,6 +47,7 @@ class CategoryController extends Controller
         ];
         $this->validate($request, [
             'name' => 'required',
+            'slug'=>'required|unique:categories',
             'img' => 'image|mimes:jpeg,jpg,bmp,png|nullable',
             'img.size' => '2048|nullable',
             'prev_img' => 'image|mimes:jpeg,jpg,bmp,png|nullable',
@@ -81,35 +84,32 @@ class CategoryController extends Controller
             $category->prev_img = $path;
         }
         $category->name = $request->name;
+        $category->parent_id = $request->parent_id;
+        $category->slug = $request->slug;
         $category->active = $request->active;
         $category->sort = $request->sort ?? 500;
         $category->h1 = $request->h1;
         $category->meta_description = $request->meta_description;
         $category->description = $request->description;
         $category->save();
+
         return redirect()->route('categories.index')->with('success', 'Новая категория создана');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function show($id)
     {
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function edit($id)
     {
-        //
+        $categories = Category::get();
+        $category = $categories->find($id);
+        $categories=$categories->toTree();
+        $h1 = 'Редактирование данных категрии каталога';
+        //return view('admin.categories_update', compact('categories', 'category', 'h1'));
+
+        dd($category);
     }
 
     /**
@@ -121,7 +121,7 @@ class CategoryController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+
     }
 
     /**

@@ -43,36 +43,35 @@
                     <!-- /.card-header -->
                     <div class="card-body">
                         <a href="{{route('categories.create')}}" type="button" class="btn btn-primary mb-3">Добавить</a>
+                        <table class="table table-bordered">
+                            <thead>
+                                 <tr>
+                                    <th>Название категории</th>
+                                    <th  style="width: 10px">Активность</th>
+                                    <th  style="width: 10px">ID</th>
+                                    <th  style="width: 20px">Удалить</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @php
+                                    function active($type){
+                                    if($type) {
+                                        return '<i class="text-success far fa-check-circle"></i>';
+                                    } else {
+                                        return '<i class="text-danger fas fa-ban"></i>';
+                                    }}
 
 
-
-                        <ul>
-                        @foreach ($categories as $category)
-                            <li><a href="{{route("categories/{$category->id}/edit")}}">{{ $category->name }}</a> <a href="{{route("categories/{$category->id}")}}"><i class="fas fa-trash-alt"></i></a></li>
-                                @if(count($category->children))
-                                <ul>
-                                    @foreach($category->children as $category_2)
-                                        <li><a href="{{route("categories/{$category_2->id}/edit")}}">{{ $category_2->name }}</a> <a href="{{route("categories/{$category_2->id}")}}"><i class="fas fa-trash-alt"></i></a></li>
-                                        @if(count($category_2->children))
-                                            <ul>
-                                                @foreach($category_2->children as $category_3)
-                                                    <li><a href="{{route("categories/{$category_3->id}/edit")}}">{{ $category_3->name }}</a> <a href="{{route("categories/{$category_3->id}")}}"><i class="fas fa-trash-alt"></i></a></li>
-                                                    @if(count($category_3->children))
-                                                        <ul>
-                                                            @foreach($category_3->children as $category_4)
-                                                                <li><a href="{{route("categories/{$category_4->id}/edit")}}">{{ $category_4->name }}</a> <a href="{{route("categories/{$category_4->id}")}}"><i class="fas fa-trash-alt"></i></a></li>
-                                                            @endforeach
-                                                        </ul>
-                                                    @endif
-                                                @endforeach
-                                            </ul>
-                                        @endif
-                                    @endforeach
-                                </ul>
-                                @endif
-                        @endforeach
-                        </ul>
-
+                                    $traverse = function ($categories, $prefix = '&#8212;&#8194;') use (&$traverse) {
+                                    foreach ($categories as $category) {
+                                    echo ' <tr><td>'.PHP_EOL.$prefix.'<a href="'.route("categories.edit", $category->id).'" class="mr-3">'.$category->name.'</a></td><td class="text-center">'.active($category->active).'</td><td>'.$category->id.'</td><td class="text-center"><a href="'.route("categories.destroy", $category->id).'"><i class="text-danger fas fa-trash-alt"></i></a></td></tr>';
+                                    $traverse($category->children, $prefix.'&#8212;&#8194;');
+                                    }
+                                    };
+                                    $traverse($categories);
+                                @endphp
+                            </tbody>
+                        </table>
                     </div>
                     <div class="card-footer clearfix">
                         <p></p>
