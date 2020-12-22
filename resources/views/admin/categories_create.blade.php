@@ -52,12 +52,12 @@
 
                             <div class="form-group">
                                 <label for="name">Наименование категории</label>
-                                <input type="text" class="form-control" id="CreateName" name="name" value="" placeholder="Наименование категории">
+                                <input type="text" class="form-control @error('name') is-invalid @enderror" id="CreateName" name="name" value="" placeholder="Наименование категории">
                             </div>
 
                             <div class="form-group">
                                 <label for="name">ЧПУ категории</label>
-                                <input type="text" class="form-control" id="CreateSlug" name="slug" value="" placeholder="category">
+                                <input type="text" class="form-control @error('slug') is-invalid @enderror" id="CreateSlug" name="slug" value="" placeholder="category">
                             </div>
 
 
@@ -84,7 +84,7 @@
                                     <label for="exampleInputFile">Основное изображение</label>
                                     <div class="input-group">
                                         <div class="custom-file">
-                                            <input type="file" name="img" class="custom-file-input" id="img">
+                                            <input type="file" name="img" class="custom-file-input @error('img') is-invalid @enderror" id="img">
                                             <label class="custom-file-label" for="img">Choose file</label>
                                         </div>
                                     </div>
@@ -94,7 +94,7 @@
                                     <label for="exampleInputFile">Prev изображение</label>
                                     <div class="input-group">
                                         <div class="custom-file">
-                                            <input type="file" name="prev_img" class="custom-file-input" id="prev_img">
+                                            <input type="file" name="prev_img" class="custom-file-input @error('prev_img') is-invalid @enderror" id="prev_img">
                                             <label class="custom-file-label" for="prev_img">Choose file</label>
                                         </div>
                                     </div>
@@ -162,42 +162,5 @@
                     <button type="submit" class="btn btn-primary mt-3 mb-5 ml-3">Создать</button>
                 </div>
             </form>
-
-
     </div>
-
-
-
-
-
-
-    <div class="modal fade" id="modal_del">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-
-                    <h4 class="modal-title">Внимание!</h4>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <p id="form_content"></p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
-                    <form action="" method="POST" id="sendBtn">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" class="btn btn-danger">Удалить</button>
-                    </form>
-                </div>
-            </div><!-- /.модальное окно-Содержание -->
-        </div><!-- /.модальное окно-диалог -->
-    </div><!-- /.модальное окно -->
-
-
-
-
-
 @endsection

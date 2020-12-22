@@ -40,24 +40,24 @@
 
                                 <div class="form-group">
                                     <div class="form-check">
-                                        <input class="form-check-input" name="active" id="active"value="1" type="checkbox" checked="" onchange="checkboxToggle()">
+                                        <input class="form-check-input" name="active" id="active"value="{{$category->id}}" type="checkbox" {{($category->id=1) ? 'checked=""' : ''}} onchange="checkboxToggle()">
                                         <label class="form-check-label" for="active">Категория активна</label>
                                     </div>
                                 </div>
 
                                 <div class="form-group col-3">
                                     <label for="sort">Сортировка</label>
-                                    <input type="text" class="form-control" id="sort" name="sort" value="500" placeholder="500">
+                                    <input type="text" class="form-control" id="sort" name="sort" value="{{$category->sort}}">
                                 </div>
 
                             <div class="form-group">
                                 <label for="name">Наименование категории</label>
-                                <input type="text" class="form-control" id="CreateName" name="name" value="" placeholder="Наименование категории">
+                                <input type="text" class="form-control" id="CreateName" name="name" value="{{$category->name}}">
                             </div>
 
                             <div class="form-group">
                                 <label for="name">ЧПУ категории</label>
-                                <input type="text" class="form-control" id="CreateSlug" name="slug" value="" placeholder="category">
+                                <input type="text" class="form-control" id="CreateSlug" name="slug" value="{{$category->slug}}">
                             </div>
 
 
@@ -65,14 +65,13 @@
                             <div class="form-group">
                                 <label for="category_id">Родительская категория</label>
                                 <select name="parent_id" class="form-control">
-                                    <option  value="NULL">Нет родительской</option>
                                     @php
                                         $traverse = function ($categories, $prefix = '-&ensp;') use (&$traverse) {
                                             foreach ($categories as $category) {
-                                                echo '<option  value="'.$category->id.'">'.PHP_EOL.$prefix.' '.$category->name.'</option>';
+                                                echo  '<option value="'.$category->id.'">'.$prefix.' '.$category->name.'</option>';;
                                                 $traverse($category->children, $prefix.'-&ensp;');
                                             }
-                                         };
+                                        };
                                         $traverse($categories);
                                     @endphp
                                 </select>
@@ -119,17 +118,17 @@
 
                                 <div class="form-group">
                                     <label for="h1">Заголовок H1</label>
-                                    <input type="text" class="form-control" id="h1" name="h1" placeholder="Заголовок категории">
+                                    <input type="text" class="form-control" id="h1" name="h1" value="{{$category->h1}}">
                                 </div>
 
                                 <div class="form-group">
                                     <label for="meta_title">Meta TITLE</label>
-                                    <textarea class="form-control" rows="3" name="meta_title" placeholder="Enter ..."></textarea>
+                                    <textarea class="form-control" rows="3" name="meta_title">{{$category->meta_title}}</textarea>
                                 </div>
 
                                 <div class="form-group">
                                     <label for="meta_description">Meta DESCRIPTION</label>
-                                    <textarea class="form-control" rows="3" name="meta_description" placeholder="Enter ..."></textarea>
+                                    <textarea class="form-control" rows="3" name="meta_description">{{$category->meta_description}}</textarea>
                                 </div>
 
                             </div>
@@ -150,7 +149,7 @@
                                 <!-- textarea -->
                                 <div class="form-group">
                                     <label for="description">Описание для категории</label>
-                                    <textarea class="form-control ckEditor" rows="7" name="description" id="description" placeholder="Описание категории"></textarea>
+                                    <textarea class="form-control ckEditor" rows="7" name="description" id="description">{{$category->description}}</textarea>
                                 </div>
 
                             </div>

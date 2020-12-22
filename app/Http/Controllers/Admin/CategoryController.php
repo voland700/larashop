@@ -103,13 +103,13 @@ class CategoryController extends Controller
 
     public function edit($id)
     {
-        $categories = Category::get();
+        $categories = Category::all();
         $category = $categories->find($id);
         $categories=$categories->toTree();
         $h1 = 'Редактирование данных категрии каталога';
-        //return view('admin.categories_update', compact('categories', 'category', 'h1'));
+        return view('admin.categories_update', compact('categories', 'category', 'h1'));
 
-        dd($category);
+        //dd($category->children);
     }
 
     /**
