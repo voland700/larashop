@@ -15,6 +15,8 @@ class Category extends Model
         'created_at',
         'updated_at',
         'parent_id',
+        '_lft ',
+        '_rgt ',
         'name',
         'slug',
         'active',

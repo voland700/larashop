@@ -27,7 +27,7 @@ class CategoryController extends Controller
 
     public function store(Request $request)
     {
-        $category = new Category();
+        $category=new Category($request->all());
         $messages = [
             'name.required' => 'Поле "Наименование категории" обязательно для заполнения',
             'slug.required' => 'Поле "ЧПУ категории" обязательно для заполнения',
@@ -54,20 +54,24 @@ class CategoryController extends Controller
             $image = $request->file('img');
             $fileName =  time().'_'.Str::lower(Str::random(5)).'.'.$image->getClientOriginalExtension();
             $path_to = '/upload/images/'.Str::lower(Str::random(2));
-            $category->img = $image->storeAs($path_to, $fileName);
+            $image->storeAs('public'.$path_to, $fileName);
+            $category->img = 'storage'.$path_to.$fileName;
         }
 
         if ($request->hasFile('prev_img')) {
             $fileName =  time().'_prev_'.Str::lower(Str::random(2)).'.'.$request->file('prev_img')->getClientOriginalExtension();
             $path_to = '/upload/images/'.Str::lower(Str::random(2));
-            $path = $request->file('prev_img')->storeAs($path_to, $fileName);
-            Image::make(storage_path('app/'.$path))->resize(400, 400, function ($constraint) {
+            $thumbnail = $request->file('prev_img');
+            $thumbnail->storeAs('public'.$path_to, $fileName);
+            /*
+            Image::make(storage_path('app/public'.$path_to.$fileName))->resize(400, 400, function ($constraint) {
                 $constraint->aspectRatio();
                 $constraint->upsize();
             })->save();
-            $category->prev_img = $path;
+            */
+            $category->prev_img = 'storage'.$path_to.$fileName;
         }
-
+/*
         if($request->img && !$request->prev_img){
             $fileName =  time().'_prev_'.Str::lower(Str::random(2)).'.'.$request->img->getClientOriginalExtension();
             $path_to = '/upload/images/'.Str::lower(Str::random(2));
@@ -78,17 +82,10 @@ class CategoryController extends Controller
             })->save();
             $category->prev_img = $path;
         }
-        $category->name = $request->name;
-        $category->parent_id = $request->parent_id;
-        $category->slug = $request->slug;
-        $category->active = $request->active;
-        $category->sort = $request->sort ?? 500;
-        $category->h1 = $request->h1;
-        $category->meta_description = $request->meta_description;
-        $category->description = $request->description;
+*/
         $category->save();
-
         return redirect()->route('categories.index')->with('success', 'Новая категория создана');
+        //dd($category);
     }
 
 
