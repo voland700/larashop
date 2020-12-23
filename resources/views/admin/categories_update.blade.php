@@ -25,8 +25,9 @@
                 </div>
             @endif
 
-            <form role="form" action="{{ route('categories.store') }}" method="post"  enctype="multipart/form-data">
+            <form role="form" action="{{ route('categories.update', $category->id) }}" method="post"  enctype="multipart/form-data">
                 @csrf
+                @method('PUT')
                 <div class="row">
 
 
@@ -66,13 +67,14 @@
                                 <label for="category_id">Родительская категория</label>
                                 <select name="parent_id" class="form-control">
                                     @php
-                                        $traverse = function ($categories, $prefix = '-&ensp;') use (&$traverse) {
+                                        $traverse = function ($categories, $prefix = '-&ensp;', $selectedId=NULL) use (&$traverse) {
                                             foreach ($categories as $category) {
-                                                echo  '<option value="'.$category->id.'">'.$prefix.' '.$category->name.'</option>';;
-                                                $traverse($category->children, $prefix.'-&ensp;');
+                                                $checked = ($category->id == $selectedId) ? 'selected' : '';
+                                                echo  '<option value="'.$category->id.'" '.$checked.'>'.$prefix.' '.$category->name.'</option>';;
+                                                $traverse($category->children, $prefix.'-&ensp;', $selectedId);
                                             }
                                         };
-                                        $traverse($categories);
+                                        $traverse($categories, '-&ensp;', $id);
                                     @endphp
                                 </select>
                             </div>
@@ -80,17 +82,44 @@
 
                             <div class="row">
                                 <div class="form-group col-md-6">
+
+
                                     <label for="exampleInputFile">Основное изображение</label>
+                                    <div class="admin_category_img_wrap">
+                                        <div class="admin_category_img_block">
+                                            <img src="{{asset($category->image)}}" alt="" class="admin_category_img">
+                                        </div>
+                                        @if($category->img)
+                                        <span>
+                                            <a href="#" class="admin_category_btn_del"><i class="fas fa-times"></i></a>
+                                        </span>
+                                        @endif
+
+                                    </div>
+
                                     <div class="input-group">
                                         <div class="custom-file">
                                             <input type="file" name="img" class="custom-file-input" id="img">
                                             <label class="custom-file-label" for="img">Choose file</label>
                                         </div>
                                     </div>
+
+
                                 </div>
 
                                 <div class="form-group col-md-6">
                                     <label for="exampleInputFile">Prev изображение</label>
+                                    <div class="admin_category_img_wrap">
+                                        <div class="admin_category_img_block">
+                                            <img src="{{asset($category->thumbnail)}}" alt="" class="admin_category_img">
+                                        </div>
+                                        @if($category->img)
+                                        <span>
+                                            <a href="#" class="admin_category_btn_del"><i class="fas fa-times"></i></a>
+                                        </span>
+                                        @endif
+                                    </div>
+
                                     <div class="input-group">
                                         <div class="custom-file">
                                             <input type="file" name="prev_img" class="custom-file-input" id="prev_img">

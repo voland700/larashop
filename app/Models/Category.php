@@ -43,5 +43,15 @@ class Category extends Model
         return $this->hasMany(Product::class);
     }
 
+    //Accessors
+    public function getImageAttribute()
+    {
+        return (!$this->img==NULL) ? $this->img : 'storage/upload/images/general/no-photo.jpg';
+    }
+
+    public function getThumbnailAttribute()
+    {
+        return (!$this->prev_img==NULL) ? $this->prev_img : 'storage/upload/images/general/no-photo_thumbnail.jpg';
+    }
 
 }

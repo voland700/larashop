@@ -1,0 +1,22 @@
+.admin_category_img_wrap{
+    display: flex;
+    max-height: 100px;
+    margin-bottom: 10px;
+}
+.admin_category_img_block{
+    height: 100px;
+    margin-right: 15px;
+
+
+}
+.admin_category_img{
+    height: 100%;
+}
+
+.admin_category_btn_del{
+    color: red;
+    transition: color .15s ease-in-out;
+}
+.admin_category_btn_del:hover {
+    color: #9f041b;
+}

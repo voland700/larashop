@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('assets/admin/css/admin.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/admin/css/app.css') }}">
     <style>
         .ck-editor__editable_inline{
             min-height: 300px;
