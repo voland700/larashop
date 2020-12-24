@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Category;
 use Intervention\Image\ImageManagerStatic as Image;
 use Illuminate\Support\Str;
-use Illuminate\Validation\Rule;
+//use Illuminate\Validation\Rule;
 
 class CategoryController extends Controller
 {
@@ -55,7 +55,7 @@ class CategoryController extends Controller
             $fileName =  time().'_'.Str::lower(Str::random(5)).'.'.$image->getClientOriginalExtension();
             $path_to = '/upload/images/'.Str::lower(Str::random(2));
             $image->storeAs('public'.$path_to, $fileName);
-            $category->img = 'storage'.$path_to.$fileName;
+            $category->img = 'storage'.$path_to.'/'.$fileName;
         }
 
         if ($request->hasFile('prev_img')) {
@@ -63,26 +63,25 @@ class CategoryController extends Controller
             $path_to = '/upload/images/'.Str::lower(Str::random(2));
             $thumbnail = $request->file('prev_img');
             $thumbnail->storeAs('public'.$path_to, $fileName);
-            /*
-            Image::make(storage_path('app/public'.$path_to.$fileName))->resize(400, 400, function ($constraint) {
+            Image::make(storage_path('app/public'.$path_to.'/'.$fileName))->resize(400, 400, function ($constraint) {
                 $constraint->aspectRatio();
                 $constraint->upsize();
             })->save();
-            */
-            $category->prev_img = 'storage'.$path_to.$fileName;
+            $category->prev_img = 'storage'.$path_to.'/'.$fileName;
         }
-/*
+
         if($request->img && !$request->prev_img){
-            $fileName =  time().'_prev_'.Str::lower(Str::random(2)).'.'.$request->img->getClientOriginalExtension();
+            $fileName =  time().'_prev_'.Str::lower(Str::random(2)).'.'.$request->file('img')->getClientOriginalExtension();
             $path_to = '/upload/images/'.Str::lower(Str::random(2));
-            $path = $request->file('img')->storeAs($path_to, $fileName);
-            Image::make(storage_path('app/'.$path))->resize(400, 400, function ($constraint) {
+            $thumbnail = $request->file('img');
+            $thumbnail->storeAs('public'.$path_to, $fileName);
+            Image::make(storage_path('app/public'.$path_to.'/'.$fileName))->resize(400, 400, function ($constraint) {
                 $constraint->aspectRatio();
                 $constraint->upsize();
             })->save();
-            $category->prev_img = $path;
+            $category->prev_img = 'storage'.$path_to.'/'.$fileName;
         }
-*/
+
         $category->save();
         return redirect()->route('categories.index')->with('success', 'Новая категория создана');
         //dd($category);
@@ -107,6 +106,7 @@ class CategoryController extends Controller
     public function update(Request $request, $id)
     {
         $category = Category::find($id);
+        $data = $request->all();
         $messages = [
             'name.required' => 'Поле "Наименование категории" обязательно для заполнения',
             'slug.required' => 'Поле "ЧПУ категории" обязательно для заполнения',
@@ -119,12 +119,10 @@ class CategoryController extends Controller
             'prev_img.size' => 'Размер изображения не должен превышать 2 мб.',
             'sort.integer' => 'Номер сортровки должен быть целым числом',
         ];
+
         $this->validate($request, [
             'name' => 'required',
-            'slug' => [
-                'required',
-                Rule::unique('categories')->ignore($category->id),
-            ],
+            'slug' => 'required|unique:categories,slug,'.$id,
             'img' => 'image|mimes:jpeg,jpg,bmp,png|nullable',
             'img.size' => '2048|nullable',
             'prev_img' => 'image|mimes:jpeg,jpg,bmp,png|nullable',
@@ -137,15 +135,34 @@ class CategoryController extends Controller
             $fileName =  time().'_'.Str::lower(Str::random(5)).'.'.$image->getClientOriginalExtension();
             $path_to = '/upload/images/'.Str::lower(Str::random(2));
             $image->storeAs('public'.$path_to, $fileName);
-            $category->img = 'storage/'.$path_to.$fileName;
-            }
+            $data['img'] = 'storage'.$path_to.'/'.$fileName;
+        }
 
         if ($request->hasFile('prev_img')) {
             $fileName =  time().'_prev_'.Str::lower(Str::random(2)).'.'.$request->file('prev_img')->getClientOriginalExtension();
             $path_to = '/upload/images/'.Str::lower(Str::random(2));
-            $image->storeAs('public'.$path_to, $fileName);
-            $data->prev_img = 'storage/'.$path_to.$fileName;
+            $thumbnail = $request->file('prev_img');
+            $thumbnail->storeAs('public'.$path_to, $fileName);
+            Image::make(storage_path('app/public'.$path_to.'/'.$fileName))->resize(400, 400, function ($constraint) {
+                $constraint->aspectRatio();
+                $constraint->upsize();
+            })->save();
+            $data['prev_img'] = 'storage'.$path_to.'/'.$fileName;
         }
+
+        if($request->img && !$request->prev_img){
+            $fileName =  time().'_prev_'.Str::lower(Str::random(2)).'.'.$request->file('img')->getClientOriginalExtension();
+            $path_to = '/upload/images/'.Str::lower(Str::random(2));
+            $thumbnail = $request->file('img');
+            $thumbnail->storeAs('public'.$path_to, $fileName);
+            Image::make(storage_path('app/public'.$path_to.'/'.$fileName))->resize(400, 400, function ($constraint) {
+                $constraint->aspectRatio();
+                $constraint->upsize();
+            })->save();
+            $data['prev_img'] = 'storage'.$path_to.'/'.$fileName;
+        }
+
+
         $category->name = $request->name;
         $category->parent_id = $request->parent_id;
         $category->slug = $request->slug;
@@ -154,18 +171,11 @@ class CategoryController extends Controller
         $category->h1 = $request->h1;
         $category->meta_description = $request->meta_description;
         $category->description = $request->description;
-        //$category->_lft = $request->_lft;
-        //$category->_rgt = $request->_rgt;
-
+        $category::fixTree();
         $category->update();
-        return redirect()->route('categories.index')->with('success', 'Категория сохранена');
+        return redirect()->route('categories.index')->with('success', 'Категория изменена');
 
-        //dd($category);
-
-
-
-
-
+        //dd($category->slug);
     }
 
     /**
