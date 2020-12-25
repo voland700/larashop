@@ -16,7 +16,6 @@ class CreateCategoriesTable extends Migration
     {
         Schema::create('categories', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('category_id')->nullable();
             NestedSet::columns($table);
             $table->string('name');
             $table->string('slug')->unique();

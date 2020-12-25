@@ -13,10 +13,11 @@
     height: 100%;
 }
 
-.admin_category_btn_del{
+.admin_category_btn_del i {
     color: red;
     transition: color .15s ease-in-out;
+    cursor: pointer;
 }
-.admin_category_btn_del:hover {
+.admin_category_btn_del i:hover {
     color: #9f041b;
 }

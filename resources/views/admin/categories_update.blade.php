@@ -69,8 +69,14 @@
                                     @php
                                         $traverse = function ($categories, $prefix = '-&ensp;', $selectedId=NULL) use (&$traverse) {
                                             foreach ($categories as $category) {
-                                                $checked = ($category->id == $selectedId) ? 'selected' : '';
-                                                echo  '<option value="'.$category->id.'" '.$checked.'>'.$prefix.' '.$category->name.'</option>';;
+                                                if($category->id == $selectedId){
+                                                    $checked = 'selected';
+                                                    $parentId = $category->parent_id;
+                                                } else {
+                                                    $checked = '';
+                                                    $parentId = $category->id;
+                                                }
+                                                echo  '<option value="'.$parentId.'" '.$checked.'>'.$prefix.' '.$category->name.'</option>';;
                                                 $traverse($category->children, $prefix.'-&ensp;', $selectedId);
                                             }
                                         };
@@ -87,11 +93,15 @@
                                     <label for="exampleInputFile">Основное изображение</label>
                                     <div class="admin_category_img_wrap">
                                         <div class="admin_category_img_block">
-                                            <img src="{{asset($category->image)}}" alt="" class="admin_category_img">
+                                            <img src="{{asset($category->image)}}" alt="Фото категории" class="admin_category_img">
                                         </div>
                                         @if($category->img)
-                                        <span>
-                                            <a href="#" class="admin_category_btn_del"><i class="fas fa-times"></i></a>
+                                            <span class="admin_category_btn_del">
+                                                <i class="fas fa-times"
+                                                    data-id="{{$id}}"
+                                                    data-field="img"
+                                                    class="admin_category_btn_del" onclick="imgDelete(event)"></i>
+                                            </span>
                                         </span>
                                         @endif
 
@@ -111,11 +121,14 @@
                                     <label for="exampleInputFile">Prev изображение</label>
                                     <div class="admin_category_img_wrap">
                                         <div class="admin_category_img_block">
-                                            <img src="{{asset($category->thumbnail)}}" alt="" class="admin_category_img">
+                                            <img src="{{asset($category->thumbnail)}}" alt="Миниатюра категрории" class="admin_category_img">
                                         </div>
-                                        @if($category->img)
-                                        <span>
-                                            <a href="#" class="admin_category_btn_del"><i class="fas fa-times"></i></a>
+                                        @if($category->prev_img)
+                                        <span class="admin_category_btn_del">
+                                            <i class="fas fa-times"
+                                               data-id="{{$id}}"
+                                               data-field="prev_img"
+                                               class="admin_category_btn_del" onclick="imgDelete(event)"></i>
                                         </span>
                                         @endif
                                     </div>
@@ -187,7 +200,7 @@
                             </div>
                         </div>
                     </div>
-                    <button type="submit" class="btn btn-primary mt-3 mb-5 ml-3">Создать</button>
+                    <button type="submit" class="btn btn-primary mt-3 mb-5 ml-3">Coхранить</button>
                 </div>
             </form>
 

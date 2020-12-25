@@ -7,7 +7,8 @@ use Illuminate\Http\Request;
 use App\Models\Category;
 use Intervention\Image\ImageManagerStatic as Image;
 use Illuminate\Support\Str;
-//use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Storage;
+
 
 class CategoryController extends Controller
 {
@@ -81,7 +82,7 @@ class CategoryController extends Controller
             })->save();
             $category->prev_img = 'storage'.$path_to.'/'.$fileName;
         }
-
+        $category::fixTree();
         $category->save();
         return redirect()->route('categories.index')->with('success', 'Новая категория создана');
         //dd($category);
@@ -131,6 +132,9 @@ class CategoryController extends Controller
         ],$messages);
 
         if ($request->hasFile('img')) {
+            if (Storage::disk('public')->exists(str_replace('storage', '', $category->img))){
+                Storage::disk('public')->delete(str_replace('storage', '', $category->img));
+            }
             $image = $request->file('img');
             $fileName =  time().'_'.Str::lower(Str::random(5)).'.'.$image->getClientOriginalExtension();
             $path_to = '/upload/images/'.Str::lower(Str::random(2));
@@ -139,6 +143,9 @@ class CategoryController extends Controller
         }
 
         if ($request->hasFile('prev_img')) {
+            if (Storage::disk('public')->exists(str_replace('storage', '', $category->prev_img))){
+                Storage::disk('public')->delete(str_replace('storage', '', $category->prev_img));
+            }
             $fileName =  time().'_prev_'.Str::lower(Str::random(2)).'.'.$request->file('prev_img')->getClientOriginalExtension();
             $path_to = '/upload/images/'.Str::lower(Str::random(2));
             $thumbnail = $request->file('prev_img');
@@ -151,6 +158,9 @@ class CategoryController extends Controller
         }
 
         if($request->img && !$request->prev_img){
+            if (Storage::disk('public')->exists(str_replace('storage', '', $category->prev_img))){
+                Storage::disk('public')->delete(str_replace('storage', '', $category->prev_img));
+            }
             $fileName =  time().'_prev_'.Str::lower(Str::random(2)).'.'.$request->file('img')->getClientOriginalExtension();
             $path_to = '/upload/images/'.Str::lower(Str::random(2));
             $thumbnail = $request->file('img');
@@ -161,21 +171,10 @@ class CategoryController extends Controller
             })->save();
             $data['prev_img'] = 'storage'.$path_to.'/'.$fileName;
         }
-
-
-        $category->name = $request->name;
-        $category->parent_id = $request->parent_id;
-        $category->slug = $request->slug;
-        $category->active = $request->active;
-        $category->sort = $request->sort ?? 500;
-        $category->h1 = $request->h1;
-        $category->meta_description = $request->meta_description;
-        $category->description = $request->description;
+        $category->update($data);
         $category::fixTree();
-        $category->update();
         return redirect()->route('categories.index')->with('success', 'Категория изменена');
-
-        //dd($category->slug);
+        //dd($test);
     }
 
     /**

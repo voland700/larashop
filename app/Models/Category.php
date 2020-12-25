@@ -48,12 +48,12 @@ class Category extends Model
     //Accessors
     public function getImageAttribute()
     {
-        return (!$this->img==NULL) ? $this->img : 'storage/upload/images/general/no-photo.jpg';
+        return (!$this->img==NULL) ? $this->img : 'img/general/no-photo.jpg';
     }
 
     public function getThumbnailAttribute()
     {
-        return (!$this->prev_img==NULL) ? $this->prev_img : 'storage/upload/images/general/no-photo_thumbnail.jpg';
+        return (!$this->prev_img==NULL) ? $this->prev_img : 'img/general/no-photo_thumbnail.jpg';
     }
 
 }

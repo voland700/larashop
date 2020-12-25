@@ -335,6 +335,24 @@
         })
     })
 
+    function imgDelete(elem){
+        let item = elem.target;
+        $.ajax(
+            {
+                url: '{{ route('category_img')}}',
+                type: 'POST',
+                data: {
+                    _token: '{{ csrf_token() }}',
+                    'id': item.getAttribute('data-id'),
+                    'field': item.getAttribute('data-field')
+                },
+                success: function () {
+                    location.reload();
+                }
+            });
+        return false;
+    }
+
 
 </script>
 
