@@ -17,6 +17,7 @@ class CreateImagesTable extends Migration
             $table->id();
             $table->integer('sort')->unsigned()->default(500);
             $table->string('img')->nullable();
+            $table->string('thumbnail')->nullable();
             $table->timestamps();
         });
     }

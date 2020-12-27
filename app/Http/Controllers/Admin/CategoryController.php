@@ -10,20 +10,22 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
 
 
+
 class CategoryController extends Controller
 {
     public function index()
     {
-        $categories = Category::get()->toTree();
+        //$categories = Category::get()->toTree();
         $h1 = 'Редактирование категорй каталога';
-        return view('admin.categories_index', compact('categories', 'h1'));
+        return view('admin.categories_index', compact('h1'));
+
     }
 
     public function create()
     {
-        $categories = Category::get()->toTree();
+        //$categories = Category::get()->toTree();
         $h1 = 'Создать новую категорию';
-        return view('admin.categories_create', compact('categories','h1' ));
+        return view('admin.categories_create', compact('h1' ));
     }
 
     public function store(Request $request)
@@ -85,7 +87,6 @@ class CategoryController extends Controller
         $category::fixTree();
         $category->save();
         return redirect()->route('categories.index')->with('success', 'Новая категория создана');
-        //dd($category);
     }
 
 
@@ -97,11 +98,9 @@ class CategoryController extends Controller
     public function edit($id)
     {
         $category = Category::find($id);
-        $categories = Category::get()->toTree();
+        //$categories = Category::get()->toTree();
         $h1 = 'Редактирование данных категрии каталога';
-        return view('admin.categories_update', compact('categories', 'category', 'h1', 'id'));
-
-        //dd($category);
+        return view('admin.categories_update', compact('category', 'h1', 'id'));
     }
 
     public function update(Request $request, $id)
@@ -174,7 +173,6 @@ class CategoryController extends Controller
         $category->update($data);
         $category::fixTree();
         return redirect()->route('categories.index')->with('success', 'Категория изменена');
-        //dd($test);
     }
 
     /**

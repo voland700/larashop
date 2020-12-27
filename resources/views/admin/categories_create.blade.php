@@ -63,7 +63,7 @@
 
 
                             <div class="form-group">
-                                <label for="category_id">Родительская категория</label>
+                                <label for="parent_id">Родительская категория</label>
                                 <select name="parent_id" class="form-control">
                                     <option  value="NULL">Нет родительской</option>
                                     @php

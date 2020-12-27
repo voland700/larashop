@@ -25,7 +25,12 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        view()->composer('admin.layouts.admin_menu', function($view){
+        view()->composer(
+        ['admin.layouts.admin_menu',
+          'admin.categories_index' ,
+          'admin.categories_create',
+          'admin.categories_update'
+        ], function($view){
             $view->with('categories', Category::get()->toTree());
         });
     }
