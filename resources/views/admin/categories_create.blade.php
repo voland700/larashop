@@ -65,7 +65,7 @@
                             <div class="form-group">
                                 <label for="parent_id">Родительская категория</label>
                                 <select name="parent_id" class="form-control">
-                                    <option  value="NULL">Нет родительской</option>
+                                    <option  value="">Нет родительской</option>
                                     @php
                                         $traverse = function ($categories, $prefix = '-&ensp;') use (&$traverse) {
                                             foreach ($categories as $category) {

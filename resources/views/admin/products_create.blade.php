@@ -163,6 +163,43 @@
                 <div class="col-md-6">
                     <div class="card">
                         <div class="card-header">
+                            <h3 class="card-title">Стоимость товара товара</h3>
+                        </div>
+                        <!-- /.card-header -->
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-6">
+                                    <div class="form-group row">
+                                        <label for="price" class="col-sm-2 col-form-label">Цена</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" name="price" id="price" placeholder="Цена">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-6">
+                                    <div class="form-group row">
+                                        <label for="price" class="col-sm-3 col-form-label">Валюта</label>
+                                        <div class="col-sm-9">
+                                            <select name="currency"  class="form-control">
+                                                <option value="RUB" selected>RUB - Российский рубль</option>
+                                                @foreach($currency as $curItem)
+                                                    <option value="{{$curItem->currency}}">{{$curItem->currency}} - {{$curItem->Name}}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer clearfix">
+                            <p></p>
+                        </div>
+                    </div><!-- END цена и валюта -->
+
+
+                    <div class="card">
+                        <div class="card-header">
                             <h3 class="card-title">Характеристики товара</h3>
                         </div>
                         <!-- /.card-header -->
@@ -176,6 +213,10 @@
                             <p></p>
                         </div>
                     </div>
+
+
+
+
                 </div>
 
 

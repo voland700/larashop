@@ -31,6 +31,7 @@ class CategoryController extends Controller
     public function store(Request $request)
     {
         $category=new Category($request->all());
+
         $messages = [
             'name.required' => 'Поле "Наименование категории" обязательно для заполнения',
             'slug.required' => 'Поле "ЧПУ категории" обязательно для заполнения',

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Category;
+use App\Models\Currency;
 use Illuminate\Http\Request;
 
 class ProductsController extends Controller
@@ -43,11 +44,13 @@ class ProductsController extends Controller
     public function show($id)
     {
         $h1 = 'Редактирование товаров каталога';
-        //$categories = Category::all($id);
-        $categories = Category::descendantsAndSelf($id)->toTree();
-        return view('admin.products_show', compact('h1', 'categories', 'id'));
 
-        //dd($categories);
+        //$categories = Category::all($id);
+
+        $categories = Category::descendantsAndSelf($id)->toTree();
+        //return view('admin.products_show', compact('h1', 'categories', 'id'));
+
+        dd($currency);
 
     }
 
@@ -87,11 +90,13 @@ class ProductsController extends Controller
 
     public function make($id=NULL)
     {
-        $categories = Category::all()->toTree();;
+        $categories = Category::all()->toTree();
+        $currency = Currency::select('currency', 'Name')->get();
         //$category = $categories->find($id);
         $h1='Создть новый товар';
         $category_id = $id;
-        return view('admin.products_create', compact('h1', 'categories', 'category_id' ));
+        return view('admin.products_create', compact('h1', 'categories', 'category_id', 'currency'));
+        //dd($currency);
     }
 
 

@@ -325,8 +325,20 @@
         } else {
             elem.value = 0;
         }
-
     }
+    document.querySelectorAll('.toggle').forEach(function(item){
+        item.addEventListener('click', function (e) {
+            let elem = item.querySelector('input[type=checkbox]');
+            if(elem.value == 0){
+                elem.value = 1;
+                elem.setAttribute('checked', 'checked');
+            }else{
+                elem.value = 0;
+                elem.removeAttribute('checked');
+            }
+        });
+    });
+
     //Input -show file name
     document.querySelectorAll('.custom-file-input').forEach(function (item) {
             item.addEventListener('change',function(e){
@@ -353,43 +365,6 @@
             });
         return false;
     }
-
-    document.querySelectorAll('.toggle').forEach(function(item){
-        item.addEventListener('click', function (e) {
-            let elem = item.querySelector('input[type=checkbox]');
-            if(elem.value == 0){
-                elem.value = 1;
-                elem.setAttribute('checked', 'checked');
-            }else{
-                elem.value = 0;
-                elem.removeAttribute('checked');
-            }
-            //console.log(elem);
-        });
-
-            /*
-            let  elem = this.querySelector('input[type=checkbox]');
-                if(elem.value == 0){
-                    elem.value = 1;
-                    elem.setAttribute('checked', 'checked');
-                }else{
-                    elem.value = 0;
-                    elem.removeAttribute('checked');
-                }
-            });
-            */
-
-    });
-
-
-
-
 </script>
-
-
-
-
 </body>
 </html>
-
-
