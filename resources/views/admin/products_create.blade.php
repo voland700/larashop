@@ -85,7 +85,7 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="name">Наименование категории</label>
+                            <label for="name">Название товра</label>
                             <input type="text" class="form-control @error('name') is-invalid @enderror" id="CreateName" name="name" value="" placeholder="Наименование категории">
                         </div>
 
@@ -137,7 +137,7 @@
                         <div class="form-group">
                             <p class="ml-2 mb-1"><strong>Доплнительные изображения</strong></p>
                             <div class="custom-file">
-                                <input type="file" class="custom-file-input" id="customFile"  name="img[]" multiple>
+                                <input type="file" class="custom-file-input @error('image') is-invalid @enderror" id="customFile"  name="image[]" multiple>
                                 <label class="custom-file-label" for="customFile">Choose file</label>
                             </div>
                         </div>
