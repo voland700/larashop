@@ -3,9 +3,11 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Attribute;
 use App\Models\Category;
 use App\Models\Currency;
 use Illuminate\Http\Request;
+use function PHPUnit\Framework\isNull;
 
 class ProductsController extends Controller
 {
@@ -37,7 +39,26 @@ class ProductsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->all();
+        $properties = [];
+
+
+        if($data['properties']){
+            foreach ($data['properties'] as $key => $property){
+                echo $property['value'];
+                if($property['value'] !== null){
+                    $properties[$key] = $property;
+                }
+            }
+
+        }
+
+
+
+
+        dd($properties);
+
+
     }
 
 
@@ -48,9 +69,9 @@ class ProductsController extends Controller
         //$categories = Category::all($id);
 
         $categories = Category::descendantsAndSelf($id)->toTree();
-        //return view('admin.products_show', compact('h1', 'categories', 'id'));
+        return view('admin.products_show', compact('h1', 'categories', 'id'));
 
-        dd($currency);
+        //dd($currency);
 
     }
 
@@ -92,11 +113,12 @@ class ProductsController extends Controller
     {
         $categories = Category::all()->toTree();
         $currency = Currency::select('currency', 'Name')->get();
-        //$category = $categories->find($id);
+        $attributes = Attribute::all()->sortBy('sort');
+
         $h1='Создть новый товар';
         $category_id = $id;
-        return view('admin.products_create', compact('h1', 'categories', 'category_id', 'currency'));
-        //dd($currency);
+        return view('admin.products_create', compact('h1', 'categories', 'category_id', 'currency', 'attributes'));
+        //dd($attributes);
     }
 
 

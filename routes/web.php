@@ -23,7 +23,7 @@ Route::get('/clear', function() {
     Artisan::call('view:clear');
     Artisan::call('route:clear');
     return "Кэш очищен.";
-});
+})->name('clear.cash');
 
 Route::group(['prefix' => 'admin', 'namespace' => 'Admin'], function () {
     Route::get('/', 'MainController@index')->name('admin.index');
@@ -31,6 +31,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin'], function () {
     Route::get('/get-currency', 'CurrencyController@get')->name('get_currency');
     Route::post('/category_img','ImgDeleteController@category_img')->name('category_img');
     Route::get('/new_product/{id?}', 'ProductsController@make')->name('new_product');
+    Route::post('/product_create','ProductsController@store')->name('product_create');
 
     Route::resource('attributes', AttributesController::class);
     Route::resource('categories', CategoryController::class);

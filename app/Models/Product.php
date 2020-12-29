@@ -53,9 +53,9 @@ class Product extends Model
         return $this->hasOne('App\Models\Currency', 'currency', 'currency');
     }
 
-    public function characteristic()
+    public function attribute()
     {
-        return $this->hasMany(Characteristic::class);
+        return $this->hasMany(Attribute::class);
     }
 
     public function image()

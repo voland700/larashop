@@ -16,7 +16,7 @@ class CreateAttributesTable extends Migration
         Schema::create('attribute', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->integer('sort')->unsigned();
+            $table->integer('sort')->unsigned()->default(200);
             $table->timestamps();
         });
     }

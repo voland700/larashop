@@ -35,6 +35,7 @@ class CreateProductsTable extends Migration
             $table->decimal('base_price', 10, 2, true)->default(0);
             $table->decimal('price', 10, 2, true)->default(0);
             $table->string('currency')->default('RUB');
+            $table->json('properties')->nullable();
         });
     }
 

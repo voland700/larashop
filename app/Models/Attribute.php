@@ -13,8 +13,8 @@ class Attribute extends Model
         'sort'
     ];
 
-    public function characteristic()
+    public function product()
     {
-        return $this->belongsTo(Characteristic::class);
+        return $this->belongsTo(Product::class);
     }
 }
