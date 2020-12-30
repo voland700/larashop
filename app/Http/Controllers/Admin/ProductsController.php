@@ -7,6 +7,7 @@ use App\Models\Attribute;
 use App\Models\Category;
 use App\Models\Currency;
 use Illuminate\Http\Request;
+use App\Http\Requests\ProductsRequesValidate;
 use Illuminate\Support\Str;
 use Intervention\Image\ImageManagerStatic as Image;
 
@@ -39,36 +40,10 @@ class ProductsController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(ProductsRequesValidate $request)
     {
         $data = $request->all();
         $properties = [];
-
-        $messages = [
-            'name.required' => 'Поле "Название товара" обязательно для заполнения',
-            'slug.required' => 'Поле "Символьный код" обязательно для заполнения',
-            'slug.unique' => 'Данные в поле "Символьный код" должны быть уникальными',
-            'img.image' => 'Основное изображение - должно быть файлом c изображением',
-            'img.mimes' => 'Фал с изображением должен иметь расширение: jpeg,jpg,bmp,png',
-            'img.size' => 'Размер изображения не должен превышать 2 мб.',
-            'prev_img.image' => 'Основное изображение - должно быть файлом c изображением',
-            'prev_img.mimes' => 'Фал с изображением должен иметь расширение: jpeg,jpg,bmp,png',
-            'prev_img.size' => 'Размер изображения не должен превышать 2 мб.',
-            'image.image' => 'Доплнительные изображения - должны быть файлами изображений',
-            'image.mimes' => 'Фалы оплнительными изображениями должны иметь расширение: jpeg,jpg,bmp,png',
-            'sort.integer' => 'Номер сортровки должен быть целым числом',
-        ];
-        $this->validate($request, [
-            'name' => 'required',
-            'slug'=>'required|unique:categories',
-            'img' => 'image|mimes:jpeg,jpg,bmp,png|nullable',
-            'img.size' => '2048|nullable',
-            'prev_img' => 'image|mimes:jpeg,jpg,bmp,png|nullable',
-            'prev_img.size' => '2048|nullable',
-            'image' => 'image|mimes:jpeg,jpg,bmp,png|nullable',
-            'image.size' => '2048|nullable',
-            'sort' => 'integer|nullable',
-        ],$messages);
 
         if ($request->hasFile('img')) {
             $image = $request->file('img');
@@ -102,21 +77,34 @@ class ProductsController extends Controller
             $data['prev_img'] = 'storage'.$path_to.'/'.$fileName;
         }
 
+
+
+
         if ($request->isMethod('post') && $request->file('image')) {
-            /*
-            foreach ($request->file('image') as $item) {
-                $images = new Images();
+/*
+            foreach ($request->file('image') as $image) {
+                $bigPathImage = '';
+                $smallPathImage = '';
+
+                $path_to = '/upload/images/'.Str::lower(Str::random(2));
+
+                $fileName =  time().'_'.Str::lower(Str::random(5)).'.'.$image->getClientOriginalExtension();
+                $image->storeAs('public'.$path_to, $fileName);
+
+                //$bigPathImage =  'storage'.$path_to.'/'.$fileName;
 
 
 
-                $imgName = $item->store('images', 'public');
-                $images->pechnik_id = $pechnik->id;
-                $images->img = 'storage/'.$imgName;
-                $images->save();
+
+
+
+                $thumbnail->storeAs('public'.$path_to, $fileName);
+
+
 
                 //Image::create
             }
-            */
+*/
         }
 
 

@@ -3,7 +3,6 @@
 
     <div class="content">
 
-
             @if (count($errors) > 0)
                 <div class="col-md-12">
                 <div class="card bg-danger">
@@ -60,8 +59,6 @@
                                 <input type="text" class="form-control @error('slug') is-invalid @enderror" id="CreateSlug" name="slug" value="" placeholder="category">
                             </div>
 
-
-
                             <div class="form-group">
                                 <label for="parent_id">Родительская категория</label>
                                 <select name="parent_id" class="form-control">
@@ -77,7 +74,6 @@
                                     @endphp
                                 </select>
                             </div>
-
 
                             <div class="row">
                                 <div class="form-group col-md-6">
@@ -100,7 +96,6 @@
                                     </div>
                                 </div>
                             </div>
-
 
                         </div>
                         <div class="card-footer clearfix">

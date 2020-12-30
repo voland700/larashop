@@ -11,7 +11,6 @@ class Image extends Model
     protected $fillable = [
         'product_id',
         'img',
-        'created_at'
     ];
     public function product()
     {
