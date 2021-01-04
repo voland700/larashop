@@ -7,10 +7,10 @@
 
 
 
-    <ul class="nav nav-treeview   88888" style="display: none;" >
+    <ul class="nav nav-treeview " style="display: none;" >
     @foreach ($categories as $category)
          <li class="nav-item  @if(count($category->children)>0) has-treeview @endif" >
-             <a href="{{route('products.show', $category->id)}}" class="nav-link"> <i class="far fa-circle nav-icon"></i>
+             <a href="{{route('catalog_list', $category->id)}}" class="nav-link"> <i class="far fa-circle nav-icon"></i>
              <p>{{$category->name}}@if(count($category->children)>0)<i class="right fas fa-angle-left"></i>@endif</p></a>
 
 

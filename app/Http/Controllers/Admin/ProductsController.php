@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Attribute;
 use App\Models\Category;
 use App\Models\Currency;
+use App\Models\Product;
 use Illuminate\Http\Request;
 use App\Http\Requests\ProductsRequesValidate;
 use Illuminate\Support\Str;
@@ -77,39 +78,6 @@ class ProductsController extends Controller
             $data['prev_img'] = 'storage'.$path_to.'/'.$fileName;
         }
 
-
-
-
-        if ($request->isMethod('post') && $request->file('image')) {
-/*
-            foreach ($request->file('image') as $image) {
-                $bigPathImage = '';
-                $smallPathImage = '';
-
-                $path_to = '/upload/images/'.Str::lower(Str::random(2));
-
-                $fileName =  time().'_'.Str::lower(Str::random(5)).'.'.$image->getClientOriginalExtension();
-                $image->storeAs('public'.$path_to, $fileName);
-
-                //$bigPathImage =  'storage'.$path_to.'/'.$fileName;
-
-
-
-
-
-
-                $thumbnail->storeAs('public'.$path_to, $fileName);
-
-
-
-                //Image::create
-            }
-*/
-        }
-
-
-
-
         if($data['properties']){
             foreach ($data['properties'] as $key => $property){
                 echo $property['value'];
@@ -117,30 +85,46 @@ class ProductsController extends Controller
                     $properties[$key] = $property;
                 }
             }
-
         }
+
+        if($request->base_price != NULL) {
+            if($request->currency == 'RUB') {
+                $data['price'] = $request->base_price;
+            } else {
+                $currency = Currency::find($request->currency);
+                $data['price'] = $request->base_price * $currency->Nominal * $currency->value;
+            }
+        } else {
+            $data['base_price'] = 0;
+            $data['price'] = 0;
+        }
+
         $data['properties'] = json_encode($properties,JSON_UNESCAPED_UNICODE);
 
-
-
-
-        dd($properties);
-
-
+        $product = Product::create($data);
+        if ($request->isMethod('post') && $request->file('image')) {
+            foreach ($request->file('image') as $image) {
+                $path_to = '/upload/images/'.Str::lower(Str::random(2));
+                $FileName =  time().'_'.Str::lower(Str::random(2)).'.'.$image->getClientOriginalExtension();
+                $BigFileName =  'big_'.$FileName;
+                $SmallFileName =  'small_'.$FileName;
+                $image->storeAs('public'.$path_to, $BigFileName);
+                $image->storeAs('public'.$path_to, $SmallFileName);
+                Image::make(storage_path('app/public'.$path_to.'/'.$SmallFileName))->fit(100)->save();
+                \App\Models\Image::create([
+                    'product_id' => $product->id,
+                    'img' => 'storage'.$path_to.'/'.$BigFileName,
+                    'thumbnail' => 'storage'.$path_to.'/'.$SmallFileName,
+                ]);
+            }
+        }
+        return redirect()->route('catalog_list', $data['category_id'] )->with('success', 'Новый товар созздан');
     }
 
 
     public function show($id)
     {
-        $h1 = 'Редактирование товаров каталога';
-
-        //$categories = Category::all($id);
-
-        $categories = Category::descendantsAndSelf($id)->toTree();
-        return view('admin.products_show', compact('h1', 'categories', 'id'));
-
-        //dd($currency);
-
+        //
     }
 
     /**
@@ -176,6 +160,15 @@ class ProductsController extends Controller
     {
         //
     }
+
+    public function list($id=NULL)
+    {
+        $h1 = 'Редактирование товаров каталога';
+        $categories = ($id) ?Category::descendantsAndSelf($id)->toTree() :  Category::get()->toTree();
+        return view('admin.products_show', compact('h1', 'categories', 'id'));
+    }
+
+
 
     public function make($id=NULL)
     {

@@ -43,7 +43,7 @@
                                     $traverse = function ($categories, $prefix = '&#8212;&#8194;') use (&$traverse) {
                                     foreach ($categories as $category) {
                                         $line = '<tr><td class="text-center"><i class="far fa-folder"></i></td><td>';
-                                        $line .= PHP_EOL.$prefix.'<a href="'.route('products.show', $category->id).'" class="mr-3">'.$category->name.'</a></td><td class="text-center">';
+                                        $line .= PHP_EOL.$prefix.'<a href="'.route('catalog_list', $category->id).'" class="mr-3">'.$category->name.'</a></td><td class="text-center">';
                                         $line .= $category->sort.'</td><td class="text-center">'.active($category->active).'</td><td class="text-center">'.$category->id.'</td>';
                                         $line .= '<td class="text-center"><a href="'.route("categories.edit", $category->id).'" class="btn btn-info mr-1"><i class="fas fa-pencil-alt"></i></a>';
 

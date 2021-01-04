@@ -26,8 +26,10 @@ class Product extends Model
         'description',
         'img',
         'prev_img',
+        'base_price',
         'price',
-        'currency'
+        'currency',
+        'properties'
     ];
     /**
      * Return the sluggable configuration array for this model.
@@ -62,13 +64,5 @@ class Product extends Model
     {
         return $this->hasMany(Image::class);
     }
-
-
-
-
-
-
-
-
 
 }

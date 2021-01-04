@@ -30,11 +30,12 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin'], function () {
     Route::get('/currency', 'CurrencyController@index')->name('currency.index');
     Route::get('/get-currency', 'CurrencyController@get')->name('get_currency');
     Route::post('/category_img','ImgDeleteController@category_img')->name('category_img');
+
+    Route::get('/catalog_list/{id?}', 'ProductsController@list')->name('catalog_list');
     Route::get('/new_product/{id?}', 'ProductsController@make')->name('new_product');
     Route::post('/product_create','ProductsController@store')->name('product_create');
 
     Route::resource('attributes', AttributesController::class);
     Route::resource('categories', CategoryController::class);
     Route::resource('products', ProductsController::class);
-
 });

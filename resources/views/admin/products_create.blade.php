@@ -73,7 +73,7 @@
                                 <div class="form-group toggle">
                                     <div class="form-check">
                                         <input class="form-check-input" name="advice" id="advice" value="0" type="checkbox">
-                                        <label class="form-check-label">Советуемн</label>
+                                        <label class="form-check-label">Советуем</label>
                                     </div>
                                 </div>
                             </div>
@@ -96,7 +96,7 @@
 
                         <div class="form-group">
                             <label for="category_id">Родительская категория</label>
-                            <select name="	category_id" class="form-control">
+                            <select name="category_id" class="form-control">
                                 @php
                                     $traverse = function ($categories, $prefix = '-&ensp;', $category_id = 'NULL') use (&$traverse) {
                                         echo '<option  value="NULL"'.($category_id == NULL) ? 'selected' : ''.'>Нет родительской</option>';
@@ -156,9 +156,9 @@
                         <div class="row">
                             <div class="col-6">
                                 <div class="form-group row">
-                                    <label for="price" class="col-sm-2 col-form-label">Цена</label>
+                                    <label for="base_price" class="col-sm-2 col-form-label">Цена</label>
                                     <div class="col-sm-10">
-                                        <input type="text" class="form-control" name="price" id="price" placeholder="Цена">
+                                        <input type="text" class="form-control" name="base_price" id="price" placeholder="Цена">
                                     </div>
                                 </div>
                             </div>
@@ -250,34 +250,17 @@
                             <label for="prev">Краткое описание товара</label>
                             <textarea class="form-control" id="prev" name="prev" rows="3" placeholder="Краткое описание товара..."></textarea>
                         </div>
-
                         <div class="form-group">
                             <label for="description">Описание товара</label>
                             <textarea class="form-control" id="description" name="description" rows="7" placeholder="Описание товара..."></textarea>
                         </div>
-
-
-
                     </div>
                     <div class="card-footer clearfix"><p></p></div>
                 </div>
             </div>
         </div><!-- END ROW col-12 -->
-
         <div class="text-right  mt-3 mb-5 mr-5"><button type="submit" class="btn-lg btn-primary">Создать</button></div>
-
         </form>
-
-
-
-
-
     </div>
-
-
-
-
-
-
 
 @endsection
