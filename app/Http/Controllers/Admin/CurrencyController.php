@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Currency;
+use App\Models\Product;
+use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 
 
@@ -38,6 +40,23 @@ class  CurrencyController extends Controller
         }
         return redirect()->route('currency.index')->with('success', 'Данные курсов валют обновлены');
     }
+
+    public  function updatePrices()
+
+    {
+
+        $currency = Currency::select('currency', 'Nominal', 'value')->get()->keyBy('currency')->toArray();
+
+        //$goods = DB::update("UPDATE `product` SET `price` = `base_price` * IFNULL(ELT(FIELD(`currency`, 'USD', 'EUR', 'BYN', 'UAH'), $currency['USD']['Nominal'] *  $currency['USD']['value'], $currency['EUR']['Nominal'] *  $currency['EUR']['value'],$currency['BYN']['Nominal'] *  $currency['BYN']['value'], $currency['UAH']['Nominal'] *  $currency['UAH']['value']), 1)");
+        //UPDATE `table_name` SET `price` = `base_price` * IFNULL(ELT(FIELD(`currency`, 'USD', 'EUR', 'RUR', 'UAH'), 'usd_value', 'eur_value', 'rur_value', 'uah_value'), 1);
+        //$goods = DB::update(update `products` set `price` = (`base_price` * ".$currency['EUR']['Nominal'] *  $currency['EUR']['value']) where `currency` = 'EUR');
+
+        //dd($goods);
+    }
+
+
+
+
 
 
 }

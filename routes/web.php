@@ -29,6 +29,9 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin'], function () {
     Route::get('/', 'MainController@index')->name('admin.index');
     Route::get('/currency', 'CurrencyController@index')->name('currency.index');
     Route::get('/get-currency', 'CurrencyController@get')->name('get_currency');
+    Route::get('/update-prices', 'CurrencyController@updatePrices')->name('update_prices');
+
+
     Route::post('/category_img','ImgDeleteController@category_img')->name('category_img');
 
     Route::get('/catalog_list/{id?}', 'ProductsController@list')->name('catalog_list');

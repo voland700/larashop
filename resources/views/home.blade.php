@@ -20,7 +20,10 @@
         <form action="{{ route('logout') }}" method="POST" class="uk-flex uk-flex-center">
             @csrf
             <button type="submit" class="uk-button uk-button-primary">Logout</button>
-        </form>                    
+        </form>
+        <div style="display: flex; justify-content: center; margin: 10px 0;">
+                <a class="uk-button uk-button-primary" href="/admin">Админ</a>
+         </div>
         @endauth
     </div>
 </div>
