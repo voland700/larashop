@@ -4,8 +4,6 @@ namespace App\Models;
 
 
 use Illuminate\Database\Eloquent\Model;
-use Cviebrock\EloquentSluggable\Sluggable;
-
 
 
 class Product extends Model
@@ -17,6 +15,10 @@ class Product extends Model
         'name',
         'slug',
         'active',
+        'hit',
+        'new',
+        'stock',
+        'advice',
         'sort',
         'category_id',
         'h1',
@@ -36,14 +38,7 @@ class Product extends Model
      *
      * @return array
      */
-    public function sluggable()
-    {
-        return [
-            'slug' => [
-                'source' => 'name'
-            ]
-        ];
-    }
+
 
     public function category()
     {
@@ -64,5 +59,20 @@ class Product extends Model
     {
         return $this->hasMany(Image::class);
     }
+
+    //Accessors
+    public function getImgAttribute()
+    {
+        return (!$this->img==NULL) ? $this->img : 'img/general/no-photo.jpg';
+    }
+
+    public function getPrevImgAttribute()
+    {
+        return (!$this->prev_img==NULL) ? $this->prev_img : 'img/general/no-photo_thumbnail.jpg';
+    }
+
+
+
+
 
 }

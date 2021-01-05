@@ -31,6 +31,7 @@
                         @endif
                         <p>Получить актуальный действующий курс валют по данным ЦБ России</p>
                         <a href="{{route('get_currency')}}" type="button" class="btn btn-primary">Обновить данные</a>
+                        <a href="{{route('update_prices')}}" type="button" class="btn btn-primary">Обновить цены</a>
                     </div>
                     <!-- /.card-body -->
                     <div class="card-footer">

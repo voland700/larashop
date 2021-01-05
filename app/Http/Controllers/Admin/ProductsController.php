@@ -182,6 +182,11 @@ class ProductsController extends Controller
         //dd($attributes);
     }
 
+    public function redact($categoryId = NULL, $id = NULL)
+    {
 
+
+
+    }
 
 }
