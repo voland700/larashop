@@ -56,11 +56,26 @@
                                     };
                                     $traverse($categories);
                                 @endphp
+                                @if($products)
+                                    @foreach($products as $product)
+                                    <tr>
+                                        <td class="text-center"><i class="fas fa-shopping-bag"></i></td>
+                                        <td><a href="{{route("edit_product", [$product->category_id, $product->id])}}">{{$product->name}}</a></td>
+                                        <td class="text-center">{{$product->sort}}</td>
+                                        <td class="text-center"> @if($product->active) <i class="text-success far fa-check-circle"></i> @else <i class="text-danger fas fa-ban"></i>@endif</td>
+                                        <td class="text-center">{{$product->id}}</td>
+                                        <td class="text-center">
+                                            <a href="{{route("edit_product", [$product->category_id, $product->id])}}" class="btn btn-info mr-1"><i class="fas fa-pencil-alt"></i></a>
+                                            <a href="{{route("products.destroy", $product->id)}}" class="btn btn-danger delete"><i class="fas fa-trash-alt"></i></a>
+                                        </td>
+                                    </tr>
+                                    @endforeach
+                                @endif
                             </tbody>
                         </table>
                     </div>
                     <div class="card-footer clearfix">
-                        <p></p>
+                        {{ $products->links() }}
                     </div>
                 </div>
             </div>

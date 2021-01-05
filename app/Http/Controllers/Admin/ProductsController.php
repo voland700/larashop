@@ -12,6 +12,7 @@ use App\Http\Requests\ProductsRequesValidate;
 use Illuminate\Support\Str;
 use Intervention\Image\ImageManagerStatic as Image;
 
+use Kalnoy\Nestedset\NodeTrait;
 
 class ProductsController extends Controller
 {
@@ -164,8 +165,12 @@ class ProductsController extends Controller
     public function list($id=NULL)
     {
         $h1 = 'Редактирование товаров каталога';
-        $categories = ($id) ?Category::descendantsAndSelf($id)->toTree() :  Category::get()->toTree();
-        return view('admin.products_show', compact('h1', 'categories', 'id'));
+        $DataCategories = ($id) ? Category::descendantsAndSelf($id) :  Category::get();
+        $categories = $DataCategories->toTree();
+        $products = Product::whereIn('category_id', $DataCategories->pluck('id'))->orderBy('sort')->paginate(2);;
+        return view('admin.products_show', compact('h1', 'categories', 'products','id'));
+        //dd($DataCategories);
+
     }
 
 
@@ -179,7 +184,7 @@ class ProductsController extends Controller
         $h1='Создть новый товар';
         $category_id = $id;
         return view('admin.products_create', compact('h1', 'categories', 'category_id', 'currency', 'attributes'));
-        //dd($attributes);
+
     }
 
     public function redact($categoryId = NULL, $id = NULL)
