@@ -26,7 +26,7 @@
             @endif
 
         </div>
-        <form action="{{route('product_create')}}" method="post"  enctype="multipart/form-data">
+        <form action="{{route('products.update', $product->id )}}" method="post"  enctype="multipart/form-data">
             @csrf
 
         <div class="row">
@@ -41,7 +41,7 @@
 
                         <div class="form-group">
                             <div class="form-check">
-                                <input class="form-check-input" name="active" id="active" value="1" type="checkbox" checked="" onchange="checkboxToggle()">
+                                <input class="form-check-input" name="active" id="active" value="{{$product->active}}" type="checkbox" @if($product->active) checked @endif onchange="checkboxToggle()">
                                 <label class="form-check-label" for="active"><strong>Товар активен</strong></label>
                             </div>
                         </div>
@@ -50,14 +50,14 @@
                             <div class="col-6">
                                 <div class="form-group">
                                     <div class="form-check toggle">
-                                        <input class="form-check-input" name="hit" id="hit" value="0" type="checkbox">
+                                        <input class="form-check-input" name="hit" id="hit" value="{{$product->hit}}" type="checkbox" @if($product->hit) checked @endif>
                                         <label class="form-check-label" >Популярный</label>
                                     </div>
                                 </div>
 
                                 <div class="form-group">
                                     <div class="form-check toggle">
-                                        <input class="form-check-input" name="new" id="new" value="0" type="checkbox">
+                                        <input class="form-check-input" name="new" id="new" value="{{$product->new}}" type="checkbox" @if($product->new) checked @endif>
                                         <label class="form-check-label">Новинка</label>
                                     </div>
                                 </div>
@@ -65,14 +65,14 @@
                             <div class="col-6">
                                 <div class="form-group toggle">
                                     <div class="form-check">
-                                        <input class="form-check-input" name="stock" id="stock" value="0" type="checkbox">
+                                        <input class="form-check-input" name="stock" id="stock" value="{{$product->stock}}" type="checkbox" @if($product->stock) checked @endif>
                                         <label class="form-check-label">Товар со скидкой</label>
                                     </div>
                                 </div>
 
                                 <div class="form-group toggle">
                                     <div class="form-check">
-                                        <input class="form-check-input" name="advice" id="advice" value="0" type="checkbox">
+                                        <input class="form-check-input" name="advice" id="advice" value="{{$product->advice}}" type="checkbox" @if($product->advice) checked @endif>
                                         <label class="form-check-label">Советуем</label>
                                     </div>
                                 </div>
@@ -81,17 +81,17 @@
 
                         <div class="form-group col-3">
                             <label for="sort">Сортировка</label>
-                            <input type="text" class="form-control" id="sort" name="sort" value="500" placeholder="500">
+                            <input type="text" class="form-control" id="sort" name="sort" value="{{$product->sort}}">
                         </div>
 
                         <div class="form-group">
                             <label for="name">Название товра</label>
-                            <input type="text" class="form-control @error('name') is-invalid @enderror" id="CreateName" name="name" value="{{ old('name') }}" placeholder="Наименование категории">
+                            <input type="text" class="form-control @error('name') is-invalid @enderror" id="CreateName" name="name" value="{{ old('name', $product->name) }}">
                         </div>
 
                         <div class="form-group">
                             <label for="name">Символьный код</label>
-                            <input type="text" class="form-control @error('slug') is-invalid @enderror" id="CreateSlug" name="slug" value="{{ old('slug') }}" placeholder="category">
+                            <input type="text" class="form-control @error('slug') is-invalid @enderror" id="CreateSlug" name="slug" value="{{ old('slug', $product->slug) }}">
                         </div>
 
                         <div class="form-group">
@@ -106,7 +106,7 @@
                                             $traverse($category->children, $prefix.'-&ensp;', $category_id);
                                         }
                                      };
-                                    $traverse($categories, '-&ensp;', $category_id);
+                                    $traverse($categories, '-&ensp;', $product->category_id);
                                 @endphp
                             </select>
                         </div>
@@ -115,6 +115,7 @@
                         <div class="row">
                             <div class="form-group col-md-6">
                                 <label for="exampleInputFile">Основное изображение</label>
+
                                 <div class="input-group">
                                     <div class="custom-file">
                                         <input type="file" name="img" value="{{ old('img') }}" class="custom-file-input @error('img') is-invalid @enderror" id="img">
@@ -125,7 +126,7 @@
 
                             <div class="form-group col-md-6">
                                 <label for="exampleInputFile">Prev изображение</label>
-                                <div class="input-group">
+                                                      <div class="input-group">
                                     <div class="custom-file">
                                         <input type="file" name="prev_img" value="{{ old('prev_img') }}" class="custom-file-input @error('prev_img') is-invalid @enderror" id="prev_img">
                                         <label class="custom-file-label" for="prev_img">Choose file</label>
@@ -136,6 +137,23 @@
 
                         <div class="form-group">
                             <p class="ml-2 mb-1"><strong>Доплнительные изображения</strong></p>
+
+                        <!--
+                            <div class="product_photo_wrup">
+
+                                <div class="product_photo_inner">
+                                    <img src="/img/goods/10.jpg" alt="" class="product_photo">
+                                    <a href="#"class="product_img_btn"><i class="fas fa-times"></i></a>
+                                </div>
+
+                            </div>
+
+                            -->
+
+
+
+
+
                             <div class="custom-file">
                                 <input type="file" class="custom-file-input @error('image') is-invalid @enderror" id="customFile"  name="image[]" multiple>
                                 <label class="custom-file-label" for="customFile">Choose file</label>
@@ -158,7 +176,7 @@
                                 <div class="form-group row">
                                     <label for="base_price" class="col-sm-2 col-form-label">Цена</label>
                                     <div class="col-sm-10">
-                                        <input type="text" class="form-control" name="base_price" value="{{ old('base_price') }}" id="base_price" placeholder="Цена">
+                                        <input type="text" class="form-control" name="base_price" value="{{ old('base_price', $product->base_price) }}" id="base_price">
                                     </div>
                                 </div>
                             </div>
@@ -168,9 +186,9 @@
                                     <label for="price" class="col-sm-3 col-form-label">Валюта</label>
                                     <div class="col-sm-9">
                                         <select name="currency"  class="form-control">
-                                            <option value="RUB" selected>RUB - Российский рубль</option>
+                                            <option value="RUB" @if($product->currency == "RUB") selected @endif>RUB - Российский рубль /option>
                                             @foreach($currency as $curItem)
-                                                <option value="{{$curItem->currency}}">{{$curItem->currency}} - {{$curItem->Name}}</option>
+                                                <option value="{{$curItem->currency}}" @if($product->currency == $curItem->currency) selected @endif>{{$curItem->currency}} - {{$curItem->Name}}</option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -193,17 +211,17 @@
 
                         <div class="form-group">
                             <label for="h1">Заголовок H1</label>
-                            <input type="text" class="form-control" id="h1" name="h1" value="{{ old('h1') }}" placeholder="Заголовок страницы товара...">
+                            <input type="text" class="form-control" id="h1" name="h1" value="{{ old('h1', $product->h1) }}" placeholder="Заголовок страницы товара...">
                         </div>
 
                         <div class="form-group">
                             <label for="meta_title">META Title</label>
-                            <input type="text" class="form-control" id="meta_title" name="meta_title" value="{{ old('meta_title') }}" placeholder="CEO заголовок страницы товара...">
+                            <input type="text" class="form-control" id="meta_title" name="meta_title" value="{{ old('meta_title', $product->meta_title) }}" placeholder="CEO заголовок страницы товара...">
                         </div>
 
                         <div class="form-group">
                             <label for="meta_description">META Description</label>
-                            <textarea class="form-control" id="meta_description" name="meta_description" rows="3" placeholder="CEO описание страницы товара...">{{ old('meta_description') }}</textarea>
+                            <textarea class="form-control" id="meta_description" name="meta_description" rows="3" placeholder="CEO описание страницы товара...">{{ old('meta_description', $product->meta_title) }}</textarea>
                         </div>
 
                     </div>
@@ -225,7 +243,7 @@
                             <label class="col-sm-6 col-form-label text-lg-right">{{$attr->name}}</label>
                                 <div class="col-sm-6 d-flex align-items-center">
                                     <input type="hidden" name="properties[{{ $attr->id }}][name]" value="{{$attr->name}}">
-                                    <input type="text" name="properties[{{ $attr->id }}][value]" value="{{ old('properties['.$attr->id.'][value]') }}" class="form-control" placeholder="Значение...">
+                                    <input type="text" name="properties[{{ $attr->id }}][value]" value="{{ old('properties['.$attr->id.'][value]', $attr->value)}}" class="form-control">
                                 </div>
                          </div>
                          @endforeach
@@ -247,11 +265,11 @@
 
                         <div class="form-group">
                             <label for="prev">Краткое описание товара</label>
-                            <textarea class="form-control" id="prev" name="prev" rows="3" placeholder="Краткое описание товара...">{{ old('prev') }}</textarea>
+                            <textarea class="form-control" id="prev" name="prev" rows="3" placeholder="Краткое описание товара...">{{ old('prev', $product->description) }}</textarea>
                         </div>
                         <div class="form-group">
                             <label for="description">Описание товара</label>
-                            <textarea class="form-control" id="description" name="description" rows="7" placeholder="Описание товара...">{{ old('description') }}</textarea>
+                            <textarea class="form-control" id="description" name="description" rows="7" placeholder="Описание товара...">{{ old('description', $product->description) }}</textarea>
                         </div>
                     </div>
                     <div class="card-footer clearfix"><p></p></div>

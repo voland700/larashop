@@ -31,12 +31,9 @@ class Product extends Model
         'currency',
         'properties'
     ];
-    /**
-     * Return the sluggable configuration array for this model.
-     *
-     * @return array
-     */
-
+    protected $casts = [
+        'properties' => 'array',
+    ];
 
     public function category()
     {

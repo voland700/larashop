@@ -36,7 +36,6 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin'], function () {
 
     Route::get('/catalog_list/{id?}', 'ProductsController@list')->name('catalog_list');
     Route::get('/new_product/{id?}', 'ProductsController@make')->name('new_product');
-    Route::get('/edit_product/{categoryId?}/{id?}', 'ProductsController@redact')->name('edit_product');
     Route::post('/product_create','ProductsController@store')->name('product_create');
 
     Route::resource('attributes', AttributesController::class);

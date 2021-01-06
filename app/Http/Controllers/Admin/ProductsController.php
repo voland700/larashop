@@ -81,7 +81,6 @@ class ProductsController extends Controller
 
         if($data['properties']){
             foreach ($data['properties'] as $key => $property){
-                echo $property['value'];
                 if($property['value'] !== null){
                     $properties[$key] = $property;
                 }
@@ -128,15 +127,24 @@ class ProductsController extends Controller
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function edit($id)
     {
-        //
+        $h1 = 'редактирование товара';
+        $product = Product::find($id);
+        $categories = Category::all()->toTree();
+        $currency = Currency::select('currency', 'Name')->get();
+        $attributes = Attribute::all()->sortBy('sort');
+        $properties = $product->properties;
+        if($properties) {
+            foreach ($attributes as $item) {
+                if (array_key_exists($item->id, $properties)) {
+                    $item['value'] = $properties[$item->id]['value'];
+                } else {
+                    $item['value'] = null;
+                }
+            }
+        }
+        return view('admin.products_update', compact('h1', 'product', 'categories', 'currency', 'attributes'));
     }
 
     /**
@@ -170,9 +178,7 @@ class ProductsController extends Controller
         $products = Product::whereIn('category_id', $DataCategories->pluck('id'))->orderBy('sort')->paginate(2);;
         return view('admin.products_show', compact('h1', 'categories', 'products','id'));
         //dd($DataCategories);
-
     }
-
 
 
     public function make($id=NULL)
@@ -184,14 +190,8 @@ class ProductsController extends Controller
         $h1='Создть новый товар';
         $category_id = $id;
         return view('admin.products_create', compact('h1', 'categories', 'category_id', 'currency', 'attributes'));
-
     }
 
-    public function redact($categoryId = NULL, $id = NULL)
-    {
 
-
-
-    }
 
 }
