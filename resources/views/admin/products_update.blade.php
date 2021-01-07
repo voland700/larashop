@@ -28,9 +28,8 @@
         </div>
         <form action="{{route('products.update', $product->id )}}" method="post"  enctype="multipart/form-data">
             @csrf
-
+            @method('PUT')
         <div class="row">
-
             <div class="col-md-6">
                 <div class="card">
                     <div class="card-header">
@@ -91,7 +90,7 @@
 
                         <div class="form-group">
                             <label for="name">Символьный код</label>
-                            <input type="text" class="form-control @error('slug') is-invalid @enderror" id="CreateSlug" name="slug" value="{{ old('slug', $product->slug) }}">
+                            <input type="text" class="form-control @error('slug') is-invalid @enderror" id="name" name="slug" value="{{ old('slug', $product->slug) }}">
                         </div>
 
                         <div class="form-group">
@@ -115,7 +114,14 @@
                         <div class="row">
                             <div class="form-group col-md-6">
                                 <label for="exampleInputFile">Основное изображение</label>
-
+                                <div class="product_img_wrup">
+                                    <div class="product_img_inner">
+                                        <img src="{{asset($product->photo)}}" alt="{{$product->name}}" class="product_img">
+                                        @if($product->img)
+                                        <a href="/" class="product_img_btn"><i class="fas fa-times"></i></a>
+                                        @endif
+                                    </div>
+                                </div>
                                 <div class="input-group">
                                     <div class="custom-file">
                                         <input type="file" name="img" value="{{ old('img') }}" class="custom-file-input @error('img') is-invalid @enderror" id="img">
@@ -126,7 +132,15 @@
 
                             <div class="form-group col-md-6">
                                 <label for="exampleInputFile">Prev изображение</label>
-                                                      <div class="input-group">
+                                <div class="product_img_wrup">
+                                    <div class="product_img_inner">
+                                        <img src="{{asset($product->prev_photo)}}" alt="{{$product->name}}" class="product_img">
+                                        @if($product->prev_img)
+                                        <a href="/" class="product_img_btn"><i class="fas fa-times"></i></a>
+                                         @endif
+                                    </div>
+                                </div>
+                                 <div class="input-group">
                                     <div class="custom-file">
                                         <input type="file" name="prev_img" value="{{ old('prev_img') }}" class="custom-file-input @error('prev_img') is-invalid @enderror" id="prev_img">
                                         <label class="custom-file-label" for="prev_img">Choose file</label>
@@ -137,23 +151,19 @@
 
                         <div class="form-group">
                             <p class="ml-2 mb-1"><strong>Доплнительные изображения</strong></p>
-
-                        <!--
+                            @if(!$product->image->isEmpty())
+                             @if(count($product->image)>1)
+                                <div class="product_photo_del_wrap"><a href="#" class="product_photo_delAll"><span>очистить все</span> <i class="fas fa-times"></i></a></div>
+                             @endif
                             <div class="product_photo_wrup">
-
+                                 @foreach($product->image as $image)
                                 <div class="product_photo_inner">
-                                    <img src="/img/goods/10.jpg" alt="" class="product_photo">
+                                    <img src="{{asset($image->thumbnail)}}" alt="{{$product->name}}" class="product_photo">
                                     <a href="#"class="product_img_btn"><i class="fas fa-times"></i></a>
                                 </div>
-
+                                @endforeach
                             </div>
-
-                            -->
-
-
-
-
-
+                            @endif
                             <div class="custom-file">
                                 <input type="file" class="custom-file-input @error('image') is-invalid @enderror" id="customFile"  name="image[]" multiple>
                                 <label class="custom-file-label" for="customFile">Choose file</label>
@@ -186,7 +196,7 @@
                                     <label for="price" class="col-sm-3 col-form-label">Валюта</label>
                                     <div class="col-sm-9">
                                         <select name="currency"  class="form-control">
-                                            <option value="RUB" @if($product->currency == "RUB") selected @endif>RUB - Российский рубль /option>
+                                            <option value="RUB" @if($product->currency == "RUB") selected @endif>RUB - Российский рубль </option>
                                             @foreach($currency as $curItem)
                                                 <option value="{{$curItem->currency}}" @if($product->currency == $curItem->currency) selected @endif>{{$curItem->currency}} - {{$curItem->Name}}</option>
                                             @endforeach
@@ -276,7 +286,7 @@
                 </div>
             </div>
         </div><!-- END ROW col-12 -->
-        <div class="text-right  mt-3 mb-5 mr-5"><button type="submit" class="btn-lg btn-primary">Создать</button></div>
+        <div class="text-right  mt-3 mb-5 mr-5"><button type="submit" class="btn-lg btn-primary">Обновить</button></div>
         </form>
     </div>
 

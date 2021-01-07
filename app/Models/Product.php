@@ -56,12 +56,13 @@ class Product extends Model
     }
 
     //Accessors
-    public function getImgAttribute()
+
+    public function getPhotoAttribute()
     {
         return (!$this->img==NULL) ? $this->img : 'img/general/no-photo.jpg';
     }
 
-    public function getPrevImgAttribute()
+    public function getPrevPhotoAttribute()
     {
         return (!$this->prev_img==NULL) ? $this->prev_img : 'img/general/no-photo_thumbnail.jpg';
     }

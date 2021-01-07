@@ -129,8 +129,8 @@ class ProductsController extends Controller
 
     public function edit($id)
     {
-        $h1 = 'редактирование товара';
-        $product = Product::find($id);
+        $product = Product::with('image')->find($id);
+        $h1 = 'Редактирование: '.$product->name;
         $categories = Category::all()->toTree();
         $currency = Currency::select('currency', 'Name')->get();
         $attributes = Attribute::all()->sortBy('sort');
@@ -145,6 +145,7 @@ class ProductsController extends Controller
             }
         }
         return view('admin.products_update', compact('h1', 'product', 'categories', 'currency', 'attributes'));
+        //dd($product->image);
     }
 
     /**
