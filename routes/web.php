@@ -38,6 +38,11 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin'], function () {
     Route::get('/new_product/{id?}', 'ProductsController@make')->name('new_product');
     Route::post('/product_create','ProductsController@store')->name('product_create');
 
+    Route::post('/product_img_remove', 'ImgDeleteController@imgProductRemove')->name('img_remove');
+    Route::post('/product_image_remove', 'ImgDeleteController@imageProductRemove')->name('image_remove');
+    Route::post('/product_image_all_remove', 'ImgDeleteController@imageAllProductRemove')->name('image_all_remove');
+
+
     Route::resource('attributes', AttributesController::class);
     Route::resource('categories', CategoryController::class);
     Route::resource('products', ProductsController::class);

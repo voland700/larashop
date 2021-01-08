@@ -26,7 +26,7 @@
             @endif
 
         </div>
-        <form action="{{route('products.update', $product->id )}}" method="post"  enctype="multipart/form-data">
+        <form action="{{route('products.update', $product->id )}}" method="post" id="productUpdate" enctype="multipart/form-data">
             @csrf
             @method('PUT')
         <div class="row">
@@ -118,7 +118,7 @@
                                     <div class="product_img_inner">
                                         <img src="{{asset($product->photo)}}" alt="{{$product->name}}" class="product_img">
                                         @if($product->img)
-                                        <a href="/" class="product_img_btn"><i class="fas fa-times"></i></a>
+                                        <a href="{{route('img_remove')}}" data-id="{{$product->id}}" data-type="img" class="product_img_btn" onclick="imgRemove(event);"><i class="fas fa-times"></i></a>
                                         @endif
                                     </div>
                                 </div>
@@ -136,7 +136,7 @@
                                     <div class="product_img_inner">
                                         <img src="{{asset($product->prev_photo)}}" alt="{{$product->name}}" class="product_img">
                                         @if($product->prev_img)
-                                        <a href="/" class="product_img_btn"><i class="fas fa-times"></i></a>
+                                            <a href="{{route('img_remove')}}" data-id="{{$product->id}}" data-type="prev_img" class="product_img_btn" onclick="imgRemove(event);"><i class="fas fa-times"></i></a>
                                          @endif
                                     </div>
                                 </div>
@@ -153,13 +153,13 @@
                             <p class="ml-2 mb-1"><strong>Доплнительные изображения</strong></p>
                             @if(!$product->image->isEmpty())
                              @if(count($product->image)>1)
-                                <div class="product_photo_del_wrap"><a href="#" class="product_photo_delAll"><span>очистить все</span> <i class="fas fa-times"></i></a></div>
+                                <div class="product_photo_del_wrap"><a href="{{route('image_all_remove')}}" data-id="{{$product->id}}" class="product_photo_delAll" onclick="imageAllRemove(event);"><span>очистить все</span> <i class="fas fa-times"></i></a></div>
                              @endif
                             <div class="product_photo_wrup">
                                  @foreach($product->image as $image)
                                 <div class="product_photo_inner">
                                     <img src="{{asset($image->thumbnail)}}" alt="{{$product->name}}" class="product_photo">
-                                    <a href="#"class="product_img_btn"><i class="fas fa-times"></i></a>
+                                    <a href="{{route('image_remove')}}"class="product_img_btn" data-id="{{$image->id}}" onclick="imageRemove(event);"><i class="fas fa-times"></i></a>
                                 </div>
                                 @endforeach
                             </div>
@@ -289,5 +289,4 @@
         <div class="text-right  mt-3 mb-5 mr-5"><button type="submit" class="btn-lg btn-primary">Обновить</button></div>
         </form>
     </div>
-
 @endsection
