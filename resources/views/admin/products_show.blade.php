@@ -48,7 +48,7 @@
                                         $line .= '<td class="text-center"><a href="'.route("categories.edit", $category->id).'" class="btn btn-info mr-1"><i class="fas fa-pencil-alt"></i></a>';
 
 
-                                        $line .= '<a href="'.route("categories.destroy", $category->id).'" class="btn btn-danger delete"><i class="fas fa-trash-alt"></i></a></td></tr>';
+                                        $line .= '<a href="'.route("categories.destroy", $category->id).'" data-name="'.$category->name.'" class="btn btn-danger delete"><i class="fas fa-trash-alt"></i></a></td></tr>';
                                         echo $line;
                                         $traverse($category->children, $prefix.'&#8212;&#8194;');
 
@@ -66,7 +66,7 @@
                                         <td class="text-center">{{$product->id}}</td>
                                         <td class="text-center">
                                             <a href="{{route("products.edit", $product->id)}}" class="btn btn-info mr-1"><i class="fas fa-pencil-alt"></i></a>
-                                            <a href="{{route("products.destroy", $product->id)}}" class="btn btn-danger delete"><i class="fas fa-trash-alt"></i></a>
+                                            <a href="{{route("product_delete", [$product->id, $id])}}" data-name="{{$product->name}}" class="btn btn-danger delete"><i class="fas fa-trash-alt"></i></a>
                                         </td>
                                     </tr>
                                     @endforeach

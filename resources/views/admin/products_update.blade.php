@@ -150,7 +150,7 @@
                         </div>
 
                         <div class="form-group">
-                            <p class="ml-2 mb-1"><strong>Доплнительные изображения</strong></p>
+                            <p class="ml-2 mb-1"><strong>Дополнительные изображения</strong></p>
                             @if(!$product->image->isEmpty())
                              @if(count($product->image)>1)
                                 <div class="product_photo_del_wrap"><a href="{{route('image_all_remove')}}" data-id="{{$product->id}}" class="product_photo_delAll" onclick="imageAllRemove(event);"><span>очистить все</span> <i class="fas fa-times"></i></a></div>

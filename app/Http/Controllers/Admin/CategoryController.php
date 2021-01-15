@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Product;
 use Illuminate\Http\Request;
 use App\Models\Category;
 use Intervention\Image\ImageManagerStatic as Image;
@@ -184,6 +185,16 @@ class CategoryController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $categories = Category::all();
+        $category = $categories->find($id);
+        if (Storage::disk('public')->exists(str_replace('storage', '', $category->img))){
+            Storage::disk('public')->delete(str_replace('storage', '', $category->img));
+        }
+        if (Storage::disk('public')->exists(str_replace('storage', '', $category->prev_img))){
+            Storage::disk('public')->delete(str_replace('storage', '', $category->prev_img));
+        }
+        Product::where('category_id', $id)->update(['category_id' => NULL]);
+        $category->delete();
+        return redirect()->route('categories.index')->with('success', 'Категория удалена');
     }
 }

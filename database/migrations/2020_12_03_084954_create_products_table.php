@@ -24,7 +24,7 @@ class CreateProductsTable extends Migration
             $table->integer('stock')->unsigned()->default(0);
             $table->integer('advice')->unsigned()->default(0);
             $table->integer('sort')->unsigned()->default(500);
-            $table->integer('category_id')->unsigned();
+            $table->integer('category_id')->unsigned()->nullable();;
             $table->string('h1')->nullable();;
             $table->string('meta_title')->nullable();;
             $table->string('meta_description')->nullable();;

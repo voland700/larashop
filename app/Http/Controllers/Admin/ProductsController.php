@@ -9,6 +9,7 @@ use App\Models\Currency;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use App\Http\Requests\ProductsRequesValidate;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Intervention\Image\ImageManagerStatic as Image;
 
@@ -135,8 +136,6 @@ class ProductsController extends Controller
         $currency = Currency::select('currency', 'Name')->get();
         $attributes = Attribute::all()->sortBy('sort');
         $properties = $product->properties;
-
-
         if(!empty($properties) && is_array($properties)) {
 
             foreach($attributes as $item) {
@@ -164,7 +163,6 @@ class ProductsController extends Controller
             $image->storeAs('public'.$path_to, $fileName);
             $data['img'] = 'storage'.$path_to.'/'.$fileName;
         }
-
         if ($request->hasFile('prev_img')) {
             $fileName =  time().'_prev_'.Str::lower(Str::random(2)).'.'.$request->file('prev_img')->getClientOriginalExtension();
             $path_to = '/upload/images/'.Str::lower(Str::random(2));
@@ -176,7 +174,6 @@ class ProductsController extends Controller
             })->save();
             $data['prev_img'] = 'storage'.$path_to.'/'.$fileName;
         }
-
         if($data['properties']){
             foreach ($data['properties'] as $key => $property){
                 if($property['value'] !== null){
@@ -184,7 +181,6 @@ class ProductsController extends Controller
                 }
             }
         }
-
         if($request->base_price != NULL) {
             if($request->currency == 'RUB') {
                 $data['price'] = $request->base_price;
@@ -196,9 +192,7 @@ class ProductsController extends Controller
             $data['base_price'] = 0;
             $data['price'] = 0;
         }
-
         $data['properties'] = json_encode($properties,JSON_UNESCAPED_UNICODE);
-
         if ($request->isMethod('PUT') && $request->file('image')) {
             foreach ($request->file('image') as $image) {
                 $path_to = '/upload/images/'.Str::lower(Str::random(2));
@@ -221,14 +215,7 @@ class ProductsController extends Controller
         //dd($data);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
+    public function destroy($id)    {
         //
     }
 
@@ -237,7 +224,18 @@ class ProductsController extends Controller
         $h1 = 'Редактирование товаров каталога';
         $DataCategories = ($id) ? Category::descendantsAndSelf($id) :  Category::get();
         $categories = $DataCategories->toTree();
-        $products = Product::whereIn('category_id', $DataCategories->pluck('id'))->orderBy('sort')->paginate(2);;
+
+        //$products = Product::whereIn('category_id', $DataCategories->pluck('id'))->orderBy('sort')->paginate(20);
+        if($id) {
+            $products = Product::whereIn('category_id', $DataCategories->pluck('id'))->orderBy('sort')->paginate(20);
+        } else {
+            $products = Product::orderBy('sort', 'asc')->paginate(20);
+        }
+
+
+
+
+
         return view('admin.products_show', compact('h1', 'categories', 'products','id'));
         //dd($DataCategories);
     }
@@ -253,6 +251,38 @@ class ProductsController extends Controller
         $category_id = $id;
         return view('admin.products_create', compact('h1', 'categories', 'category_id', 'currency', 'attributes'));
     }
+
+    public  function delete($id, $category=NULL)
+    {
+        $product = Product::with('image')->find($id);
+        $images = $product->image;
+        if (Storage::disk('public')->exists(str_replace('storage', '', $product->img))){
+            Storage::disk('public')->delete(str_replace('storage', '', $product->img));
+        }
+        if (Storage::disk('public')->exists(str_replace('storage', '', $product->prev_img))){
+            Storage::disk('public')->delete(str_replace('storage', '', $product->prev_img));
+        }
+        if (!$images->isEmpty()){
+            foreach ($images as $image){
+                if (Storage::disk('public')->exists(str_replace('storage', '', $image->img))){
+                    Storage::disk('public')->delete(str_replace('storage', '', $image->img));
+                }
+                if (Storage::disk('public')->exists(str_replace('storage', '', $image->thumbnail))){
+                    Storage::disk('public')->delete(str_replace('storage', '', $image->thumbnail));
+                }
+            }
+            \App\Models\Image::destroy($images->pluck('id'));
+        }
+        $product->delete();
+        return redirect()->route('catalog_list', $category )->with('success', 'Данные товара удалены');
+    }
+
+
+
+
+
+
+
 
 
 }

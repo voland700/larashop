@@ -31,19 +31,21 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin'], function () {
     Route::get('/get-currency', 'CurrencyController@get')->name('get_currency');
     Route::get('/update-prices', 'CurrencyController@updatePrices')->name('update_prices');
 
-
-    Route::post('/category_img','ImgDeleteController@category_img')->name('category_img');
-
     Route::get('/catalog_list/{id?}', 'ProductsController@list')->name('catalog_list');
     Route::get('/new_product/{id?}', 'ProductsController@make')->name('new_product');
     Route::post('/product_create','ProductsController@store')->name('product_create');
+    Route::delete('/product_delete/{id}/{category?}','ProductsController@delete')->name('product_delete');
 
+
+
+
+    Route::post('/category_img','ImgDeleteController@category_img')->name('category_img');
     Route::post('/product_img_remove', 'ImgDeleteController@imgProductRemove')->name('img_remove');
     Route::post('/product_image_remove', 'ImgDeleteController@imageProductRemove')->name('image_remove');
     Route::post('/product_image_all_remove', 'ImgDeleteController@imageAllProductRemove')->name('image_all_remove');
 
-
     Route::resource('attributes', AttributesController::class);
     Route::resource('categories', CategoryController::class);
     Route::resource('products', ProductsController::class);
+
 });
