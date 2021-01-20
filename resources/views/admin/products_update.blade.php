@@ -97,8 +97,13 @@
                             <label for="category_id">Родительская категория</label>
                             <select name="category_id" class="form-control">
                                 @php
+
+                                if($product->category_id == NULL){
+                                    echo '<option  value="NULL" selected >-&ensp; Нет категории</option>';
+                                    } else {
+                                        echo '<option  value="NULL" class="text-black-50">-&ensp; Нет категории</option>';
+                                    }
                                     $traverse = function ($categories, $prefix = '-&ensp;', $category_id = 'NULL') use (&$traverse) {
-                                        echo '<option  value="NULL"'.($category_id == NULL) ? 'selected' : ''.'>Нет родительской</option>';
                                         foreach ($categories as $category) {
                                             $selected = ($category_id == $category->id) ? 'selected' : '';
                                             echo '<option  value="'.$category->id.'"'.$selected.'>'.PHP_EOL.$prefix.' '.$category->name.'</option>';
