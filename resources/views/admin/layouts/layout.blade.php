@@ -313,10 +313,13 @@
         return answer;
     }
 
-    document.getElementById('CreateName').oninput = function () {
-        const CreateSlug = document.getElementById('CreateSlug');
-        CreateSlug.value = translit(CreateName.value);
+    if(document.getElementById('CreateName')){
+        document.getElementById('CreateName').oninput = function () {
+            const CreateSlug = document.getElementById('CreateSlug');
+            CreateSlug.value = translit(CreateName.value);
+        } 
     }
+
 
     function checkboxToggle(e) {
         let elem = document.getElementById('active');
