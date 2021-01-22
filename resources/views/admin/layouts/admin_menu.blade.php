@@ -1,81 +1,27 @@
-
-
-
-
-<li class="nav-item has-treeview">
-    <a class="nav-link">
+<li class="has_children"><span class="m_label m_closed"></span>
+    <a class="nav-link" id="Catalog">
         <i class="nav-icon far fa-folder"></i><p>Каталог<i class="right fas fa-angle-left"></i></p>
     </a>
-
     <ul class="ul_menu">
         <li class="has_children"><span class="m_label m_closed"></span>
-            <a href="/">Первая категория товаров</a>
+            <a href="/admin/catalog_list/" class="m_main_link"><i class="far fa-folder fa-lg"></i>Каталог товаров</a>
             <ul class="ul_in">
-                <li><span class="m_label m_none"></span><a href="/"></span>Вложеная категория товаров</a></li>
-                <li><span class="m_label m_none"></span><a href="/"></span>Вторая вложеная категория товаров</a></li>
-                <li><span class="m_label m_none"></span><a href="/"></span>Третяя вложеная категория товаров</a></li>
-            </ul>
-        </li>
-        <li><span class="m_label m_none"></span><a href="#">Без вложения категория</a></li>
-        <li class="has_children"><span class="m_label m_closed"></span>
-            <a href="/">Первая категория товаров</a>
-            <ul class="ul_in">
-                <li class="has_children"><span class="m_label m_closed"></span>
-                    <a href="/">Вложеная категория товаров</a>
+            @foreach ($categories as $category)
+            <li><span class="m_label {{(count($category->children)>0) ? 'm_closed'  : 'm_none' }}"></span>
+                <a href="{{route('catalog_list', $category->id)}}">{{$category->name}}</a>
+                @if(count($category->children)>0)
                     <ul class="ul_in">
-                        <li><span class="m_label m_none"></span><a href="/"></span>Вложеная категория товаров</a></li>
-                        <li><span class="m_label m_none"></span><a href="/"></span>Вторая вложеная категория товаров</a></li>
-                        <li><span class="m_label m_none"></span><a href="/"></span>Третяя вложеная категория товаров</a></li>
+                        @foreach ($category->children as $childCategory)
+                            @include('admin.layouts.child_categories', ['childCategory' => $childCategory])
+                        @endforeach
                     </ul>
-                </li>
-                <li><span class="m_label m_none"></span><a href="/"></span>Вторая вложеная категория товаров</a></li>
-                <li><span class="m_label m_none"></span><a href="/"></span>Третяя вложеная категория товаров</a></li>
+                @endif
+            </li>
+             @endforeach
             </ul>
         </li>
-        <li><span class="m_label m_none"></span><a href="#">Четвертая главная категория</a></li>
     </ul>
 </li>
-
-
-
-
-
-<li class="nav-item has-treeview">
-    <a href="{{route('products.index')}}" class="nav-link">
-        <i class="nav-icon far fa-folder"></i><p>Каталог<i class="right fas fa-angle-left"></i></p>
-    </a>
-
-
-
-
-
-    <ul class="nav nav-treeview " style="display: none;" >
-    @foreach ($categories as $category)
-         <li class="nav-item  @if(count($category->children)>0) has-treeview @endif" >
-             <a href="{{route('catalog_list', $category->id)}}" class="nav-link"> <i class="far fa-circle nav-icon"></i>
-             <p>{{$category->name}}@if(count($category->children)>0)<i class="right fas fa-angle-left"></i>@endif</p></a>
-
-
-          @if(count($category->children)>0)
-           <ul class="nav nav-treeview" style="display: none;">
-            @foreach ($category->children as $childCategory)
-               @include('admin.layouts.child_category', ['childCategor' => $childCategory])
-            @endforeach
-            </ul>
-            @endif
-            </li>
-    @endforeach
-        <hr>
-    </ul>
-
-
-
-</li>
-
-
-
-
-
 
 <li class="nav-item">
     <a href="{{route('categories.index')}}" class="nav-link">

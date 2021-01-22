@@ -317,7 +317,7 @@
         document.getElementById('CreateName').oninput = function () {
             const CreateSlug = document.getElementById('CreateSlug');
             CreateSlug.value = translit(CreateName.value);
-        } 
+        }
     }
 
 
@@ -439,7 +439,61 @@
             });
     }
 
+    //Меню каталога
+    document.getElementById('Catalog').addEventListener('click', function (elem) {
+        let mainElem = elem.currentTarget.parentNode;
+        mainElem.classList.toggle('menu-open');
+        let ulmenu = mainElem.parentNode.querySelector('.ul_menu');
+        if(ulmenu.style.display != 'block'){
+            ulmenu.style.display = 'block';
+        } else {
+            ulmenu.style.display = '';
+        }
+        document.querySelectorAll('.m_label').forEach(function (item, idx) {
+            item.addEventListener('click', function (elem) {
+                let item = elem.target;
+                function openUl(item) {
+                    let ul = item.parentNode.querySelector('.ul_in');
+                    if(ul.style.display != 'block'){
+                        ul.style.display = 'block';
+                    } else {
+                        ul.style.display = '';
+                    }
+                }
 
+
+                if(item.nextElementSibling.classList.contains('m_main_link')){
+                    let mainLink = item.nextElementSibling.querySelector('i');
+                    mainLink.classList.toggle('fa-folder');
+                    mainLink.classList.toggle('fa-folder-open');
+                    console.log(mainLink);
+                };
+
+
+                console.log(item.nextElementSibling);
+
+
+
+
+                if(item.classList.contains('m_none')){
+                    return false;
+                } else {
+                    if(item.classList.contains('m_closed')){
+                        item.classList.remove('m_closed');
+                        item.classList.add('m_open');
+                        openUl(item);
+                        return false;
+                    }
+                    if(item.classList.contains('m_open')){
+                        item.classList.remove('m_open');
+                        item.classList.add('m_closed');
+                        openUl(item);
+                        return false;
+                    }
+                }
+            });
+        });
+    });
 
 
 
