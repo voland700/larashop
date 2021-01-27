@@ -4,7 +4,7 @@
     @if(count($childCategory->children)>0)
         <ul class="nav nav-treeview" style="display: none;">
             @foreach ($childCategory->children as $childCategory)
-                @include('admin.layouts.child_category', ['childCategor' => $childCategory])
+                @include('admin.layouts.child_category', ['childCategory' => $childCategory])
             @endforeach
         </ul>
     @endif

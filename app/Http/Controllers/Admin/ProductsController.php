@@ -146,8 +146,8 @@ class ProductsController extends Controller
                 }
             }
         }
-        return view('admin.products_update', compact('h1', 'product', 'categories', 'currency', 'attributes'));
 
+        return view('admin.products_update', compact('h1', 'product', 'categories', 'currency', 'attributes'));
     }
 
     public function update(ProductsRequesValidate $request, $id)
@@ -192,6 +192,7 @@ class ProductsController extends Controller
             $data['base_price'] = 0;
             $data['price'] = 0;
         }
+
         $data['properties'] = json_encode($properties,JSON_UNESCAPED_UNICODE);
         if ($request->isMethod('PUT') && $request->file('image')) {
             foreach ($request->file('image') as $image) {
@@ -209,6 +210,7 @@ class ProductsController extends Controller
                 ]);
             }
         }
+
         $product->update($data);
         return redirect()->route('catalog_list', $data['category_id'] )->with('success', 'данные товара изменены');
 

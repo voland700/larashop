@@ -1,4 +1,4 @@
-<li class="has_children"><span class="m_label m_closed"></span>
+<li class="nav-item has-treeview">
     <a class="nav-link" id="Catalog">
         <i class="nav-icon far fa-folder"></i><p>Каталог<i class="right fas fa-angle-left"></i></p>
     </a>
