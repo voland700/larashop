@@ -486,8 +486,10 @@
                 },
                 success: function (response) {
                     //location.reload();
-                    console.log(response);
-
+                    //console.log(response);
+                    let modalBody = document.getElementById('modalBody');
+                    modalBody.innerHTML = response;
+                    $('#modal-xl').modal('show');
                 },
                 error: function (response) {
                     console.log(response);

@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Category;
+use App\Models\Product;
 use Illuminate\Http\Request;
 
 class DiscountController extends Controller
@@ -92,7 +94,18 @@ class DiscountController extends Controller
         $type = $request->type;
         switch ($type) {
             case 'goods':
-                echo "Вывод списка товаров.";
+                $h1 = 'Редактирование товаров каталога';
+                //$DataCategories = ($id) ? Category::descendantsAndSelf($id) :  Category::get();
+                $DataCategories = Category::get();
+                $categories = $DataCategories->toTree();
+                $products = Product::orderBy('sort', 'asc')->paginate(20);
+                return view('admin.ajax.products_show', compact('categories', 'products'));
+
+
+
+
+
+
                 break;
             case 'category':
                 echo "Вывод списка категорий.";
