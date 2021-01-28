@@ -98,15 +98,15 @@
                             <label for="category_id">Родительская категория</label>
                             <select name="category_id" class="form-control">
                                 @php
-                                    $traverse = function ($categories, $prefix = '-&ensp;', $category_id = 'NULL') use (&$traverse) {
-                                        echo '<option  value="NULL"'.($category_id == NULL) ? 'selected' : ''.'>Нет родительской</option>';
-                                        foreach ($categories as $category) {
-                                            $selected = ($category_id == $category->id) ? 'selected' : '';
-                                            echo '<option  value="'.$category->id.'"'.$selected.'>'.PHP_EOL.$prefix.' '.$category->name.'</option>';
-                                            $traverse($category->children, $prefix.'-&ensp;', $category_id);
-                                        }
-                                     };
-                                    $traverse($categories, '-&ensp;', $category_id);
+                                    echo '<option  value="NULL" class="text-black-50">Нет родительской</option>';
+                                $traverse = function ($categories, $prefix = '-&ensp;', $category_id = 'NULL') use (&$traverse) {
+                                    foreach ($categories as $category) {
+                                        $selected = ($category_id == $category->id) ? 'selected' : '';
+                                        echo '<option  value="'.$category->id.'"'.$selected.'>'.PHP_EOL.$prefix.' '.$category->name.'</option>';
+                                        $traverse($category->children, $prefix.'-&ensp;', $category_id);
+                                    }
+                                 };
+                                $traverse($categories, '-&ensp;', $category_id);
                                 @endphp
                             </select>
                         </div>

@@ -135,7 +135,9 @@ class ProductsController extends Controller
         $categories = Category::all()->toTree();
         $currency = Currency::select('currency', 'Name')->get();
         $attributes = Attribute::all()->sortBy('sort');
-        $properties = $product->properties;
+        //$properties = $product->properties;
+        $properties = json_decode($product->properties, true);
+
         if(!empty($properties) && is_array($properties)) {
 
             foreach($attributes as $item) {
@@ -146,8 +148,9 @@ class ProductsController extends Controller
                 }
             }
         }
-
-        return view('admin.products_update', compact('h1', 'product', 'categories', 'currency', 'attributes'));
+       return view('admin.products_update', compact('h1', 'product', 'categories', 'currency', 'attributes'));
+        //dd(json_decode($properties, true));
+        //dd($product->properties);
     }
 
     public function update(ProductsRequesValidate $request, $id)

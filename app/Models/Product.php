@@ -31,9 +31,11 @@ class Product extends Model
         'currency',
         'properties'
     ];
+/*
     protected $casts = [
         'properties' => 'array',
     ];
+*/
 
     public function category()
     {

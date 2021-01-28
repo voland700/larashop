@@ -370,28 +370,6 @@
         return false;
     }
 
-    function imgRemove(elem) {
-        elem.preventDefault();
-        let item = elem.currentTarget;
-        let parentImg = item.parentNode.querySelector('.product_img');
-        $.ajax(
-            {
-                url: item.href,
-                type: 'POST',
-                data: {
-                    _token: document.getElementById('productUpdate').querySelector('[name="_token"]').value,
-                    'id': item.getAttribute('data-id'),
-                    'type': item.getAttribute('data-type')
-                },
-                success: function (response) {
-                    //location.reload();
-                    parentImg.style.opacity = 0.4;
-                },
-                error: function (response) {
-                    console.log(response);
-                }
-            });
-    }
 
     function imageRemove(elem) {
         elem.preventDefault();
@@ -494,6 +472,37 @@
             });
         });
     });
+
+
+
+    function ChangeGoods() {
+         $.ajax(
+            {
+                url: '{{route('discounts_goods')}}',
+                type: 'POST',
+                data: {
+                    _token: document.getElementById('DiscountsForm').querySelector('[name="_token"]').value,
+                    'type': document.getElementById('choiceGoods').value
+                },
+                success: function (response) {
+                    //location.reload();
+                    console.log(response);
+
+                },
+                error: function (response) {
+                    console.log(response);
+                }
+            });
+
+
+
+
+
+        //$('#modal-xl').modal('show');
+
+    }
+
+
 
 
 
