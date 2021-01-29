@@ -58,14 +58,14 @@ class CategoryController extends Controller
         if ($request->hasFile('img')) {
             $image = $request->file('img');
             $fileName =  time().'_'.Str::lower(Str::random(5)).'.'.$image->getClientOriginalExtension();
-            $path_to = '/upload/images/'.Str::lower(Str::random(2));
+            $path_to = '/upload/images/'.getfolderName();
             $image->storeAs('public'.$path_to, $fileName);
             $category->img = 'storage'.$path_to.'/'.$fileName;
         }
 
         if ($request->hasFile('prev_img')) {
             $fileName =  time().'_prev_'.Str::lower(Str::random(2)).'.'.$request->file('prev_img')->getClientOriginalExtension();
-            $path_to = '/upload/images/'.Str::lower(Str::random(2));
+            $path_to = '/upload/images/'.getfolderName();
             $thumbnail = $request->file('prev_img');
             $thumbnail->storeAs('public'.$path_to, $fileName);
             Image::make(storage_path('app/public'.$path_to.'/'.$fileName))->resize(400, 400, function ($constraint) {
@@ -77,7 +77,7 @@ class CategoryController extends Controller
 
         if($request->img && !$request->prev_img){
             $fileName =  time().'_prev_'.Str::lower(Str::random(2)).'.'.$request->file('img')->getClientOriginalExtension();
-            $path_to = '/upload/images/'.Str::lower(Str::random(2));
+            $path_to = '/upload/images/'.getfolderName();
             $thumbnail = $request->file('img');
             $thumbnail->storeAs('public'.$path_to, $fileName);
             Image::make(storage_path('app/public'.$path_to.'/'.$fileName))->resize(400, 400, function ($constraint) {
@@ -138,7 +138,7 @@ class CategoryController extends Controller
             }
             $image = $request->file('img');
             $fileName =  time().'_'.Str::lower(Str::random(5)).'.'.$image->getClientOriginalExtension();
-            $path_to = '/upload/images/'.Str::lower(Str::random(2));
+            $path_to = '/upload/images/'.getfolderName();
             $image->storeAs('public'.$path_to, $fileName);
             $data['img'] = 'storage'.$path_to.'/'.$fileName;
         }
@@ -148,7 +148,7 @@ class CategoryController extends Controller
                 Storage::disk('public')->delete(str_replace('storage', '', $category->prev_img));
             }
             $fileName =  time().'_prev_'.Str::lower(Str::random(2)).'.'.$request->file('prev_img')->getClientOriginalExtension();
-            $path_to = '/upload/images/'.Str::lower(Str::random(2));
+            $path_to = '/upload/images/'.getfolderName();
             $thumbnail = $request->file('prev_img');
             $thumbnail->storeAs('public'.$path_to, $fileName);
             Image::make(storage_path('app/public'.$path_to.'/'.$fileName))->resize(400, 400, function ($constraint) {
@@ -163,7 +163,7 @@ class CategoryController extends Controller
                 Storage::disk('public')->delete(str_replace('storage', '', $category->prev_img));
             }
             $fileName =  time().'_prev_'.Str::lower(Str::random(2)).'.'.$request->file('img')->getClientOriginalExtension();
-            $path_to = '/upload/images/'.Str::lower(Str::random(2));
+            $path_to = '/upload/images/'.getfolderName();
             $thumbnail = $request->file('img');
             $thumbnail->storeAs('public'.$path_to, $fileName);
             Image::make(storage_path('app/public'.$path_to.'/'.$fileName))->resize(400, 400, function ($constraint) {

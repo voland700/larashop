@@ -31,6 +31,9 @@
 
                  <div class="col-md-12">
                     <div class="card">
+
+
+
                         <div class="card-header">
                             <h3 class="card-title">Данные скидки</h3>
                         </div>
@@ -91,6 +94,19 @@
 
                             </div>
                         </div>
+
+                        <ul id="GoodsList">
+                            <li class="d_list-item">Печь-камин № 11<span class="d_id">(11)</span><span class="d_btn-del">×</span></li><li class="d_list-item">Печь-камин № 8<span class="d_id">(8)</span><span class="d_btn-del">×</span></li><li class="d_list-item">Печь-камин № 9<span class="d_id">(9)</span><span class="d_btn-del">×</span></li><li class="d_list-item">Печь-камин № 7<span class="d_id">(7)</span><span class="d_btn-del">×</span></li><li class="d_list-item">Печь-камин № 5<span class="d_id">(5)</span><span class="d_btn-del">×</span></li><li class="d_list-item">Печь-камин № 6<span class="d_id">(6)</span><span class="d_btn-del">×</span></li><li class="d_list-item">Печь-камин № 3<span class="d_id">(3)</span><span class="d_btn-del">×</span></li><li class="d_list-item">Печь-камин № 2<span class="d_id">(2)</span><span class="d_btn-del">×</span></li><li class="d_list-item">Печь-камин №1<span class="d_id">(1)</span><span class="d_btn-del">×</span></li><li class="d_list-item">Печь-камин № 4<span class="d_id">(4)</span><span class="d_btn-del">×</span></li>
+                        </ul>
+
+
+
+
+
+
+
+
+
 
                         <div class="card-footer clearfix">
                             <p></p>

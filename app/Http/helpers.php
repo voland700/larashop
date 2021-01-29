@@ -15,7 +15,12 @@ if (! function_exists('file_get_content_curl')) {
     }
 }
 
+if (! function_exists('getfolderName')) {
+    function getfolderName(){
+        return substr(str_shuffle("0123456789"), 0, 2);
+    }
 
+}
 
 
 

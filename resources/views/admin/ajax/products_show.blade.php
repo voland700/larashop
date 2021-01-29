@@ -21,6 +21,9 @@
                     <li>{{ $product->name }}</li>
                 @endforeach
             </ul>
+
+
+
         </div>
     </div>
 </div>
