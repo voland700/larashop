@@ -135,8 +135,8 @@ class ProductsController extends Controller
         $categories = Category::all()->toTree();
         $currency = Currency::select('currency', 'Name')->get();
         $attributes = Attribute::all()->sortBy('sort');
-        $properties = $product->properties;
-        //$properties = json_decode($product->properties, true);
+        //$properties = $product->properties;
+        $properties = json_decode($product->properties, true);
 
         if(!empty($properties) && is_array($properties)) {
 

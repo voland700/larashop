@@ -26,81 +26,84 @@
 
             <form role="form" action="{{ route('discounts.store') }}" method="post" id="DiscountsForm" enctype="multipart/form-data">
                 @csrf
-                <div class="row">
-
-
-                 <div class="col-md-12">
-                    <div class="card">
-                        <div class="card-header">
-                            <h3 class="card-title">Данные скидки</h3>
-                        </div>
-                        <!-- /.card-header -->
-                        <div class="card-body">
-
-                            <div class="form-group">
-                                <div class="form-check">
-                                    <input class="form-check-input" name="active" id="active"value="1" type="checkbox" checked="" onchange="checkboxToggle()">
-                                    <label class="form-check-label" for="active">Скидка активна</label>
-                                </div>
-                             </div>
-
-                            <div class="form-group col-1">
-                                <label for="sort">Сортировка</label>
-                                <input type="text" class="form-control" id="sort" name="sort" value="100" placeholder="100">
-                            </div>
-
-
-                            <div class="form-group col-md-4">
-                                <label for="name">Наименование скидки</label>
-                                    <input type="text" class="form-control @error('name') is-invalid @enderror" id="CreateName" name="name" value="" placeholder="Наименование категории">
-                            </div>
-
-                            <div class="row">
-
-                                <div class="form-group col-md-2">
-                                    <label for="type">Тип скидки</label>
-                                    <select class="form-control">
-                                        <option value="percent">В процентах</option>
-                                        <option value="fixed">Фиксированная сумма</option>
-                                        <option value="cost">Установить цену на товар</option>
-                                    </select>
-                                </div>
-
-                                <div class="form-group col-md-2">
-                                    <label for="value">Значение скидки</label>
-                                    <input type="text" class="form-control @error('value') is-invalid @enderror" name="value" value="" placeholder="Ввидите сумму">
-                                </div>
-
-                            </div>
-
-                            <div class="row">
-                                <div class="form-group  col-md-2">
-                                    <label for="type">Условия скидки</label>
-                                    <select id="choiceGoods" class="form-control">
-                                        <option value="goods">Скидка на товары</option>
-                                        <option value="category">Скидка на категорию</option>
-                                    </select>
-                                </div>
-                                <div class="form-group  col-md-2">
-                                    <label for="type">Выбрать</label>
-                                    <div class="">
-                                        <button type="button" class="btn btn-default" onclick="return ChangeGoods(this);">Middle</button>
-                                    </div>
-                                </diw>
-                            </div>
-
-                            </div>
-                        </div>
-
-                        <div class="card-footer clearfix">
-                            <p></p>
-                        </div>
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Данные скидки</h3>
                     </div>
-                </div>
+                        <!-- /.card-header -->
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+
+                                <div class="form-group">
+                                    <div class="form-check">
+                                        <input class="form-check-input" name="active" id="active"value="1" type="checkbox" checked="" onchange="checkboxToggle()">
+                                        <label class="form-check-label" for="active">Скидка активна</label>
+                                    </div>
+                                </div>
+
+                                <div class="form-group col-1">
+                                    <label for="sort">Сортировка</label>
+                                    <input type="text" class="form-control" id="sort" name="sort" value="100" placeholder="100">
+                                </div>
+
+
+                                <div class="form-group col-md-4">
+                                    <label for="name">Наименование скидки</label>
+                                    <input type="text" class="form-control @error('name') is-invalid @enderror" id="CreateName" name="name" value="" placeholder="Наименование скидки">
+                                </div>
+
+                                <div class="row">
+                                    <div class="form-group col-md-6">
+                                        <label for="type">Тип скидки</label>
+                                        <select class="form-control">
+                                            <option value="percent">В процентах</option>
+                                            <option value="fixed">Фиксированная сумма</option>
+                                            <option value="cost">Установить цену на товар</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="form-group col-md-6">
+                                        <label for="value">Значение скидки</label>
+                                        <input type="text" class="form-control @error('value') is-invalid @enderror" name="value" value="" placeholder="Ввидите сумму">
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="form-group  col-md-6">
+                                        <label for="type">Условия скидки</label>
+                                        <select id="choiceGoods" class="form-control">
+                                            <option value="goods">Скидка на товары</option>
+                                            <option value="category">Скидка на категорию</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group  col-md-6">
+                                        <label for="type">Выбрать</label>
+                                        <div>
+                                            <button type="button" class="btn btn-default" onclick="return ChangeGoods(this);">Middle</button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div><!-- ./COL-MD-6 -->
+                            <div class="col-md-6">
+                                <div class="container">
+                                    <div class="discount-list">
+                                        <h5>Список выбранных товаров</h5>
+                                        <ul class="d_list" id="GoodsList"></ul>
+                                    </div>
+                                </div>
+                            </div>
 
 
 
-
+                        </div><!-- ./Card row -->
+                    </div><!-- ./CARD-BODY -->
+                    <div class="card-footer clearfix">
+                            <p></p>
+                    </div>
+               </div> <!-- ./card -->
+             </div>
                 <button type="submit" class="btn btn-primary mt-3 mb-5 ml-3">Создать</button>
              </div>
         </form>
@@ -122,10 +125,9 @@
                 <div class="modal-body" id="modalBody">
 
                 </div>
-                <div class="modal-footer justify-content-between">
+                <div class="modal-footer justify-content-end">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Save changes</button>
-                </div>
+                 </div>
             </div>
             <!-- /.modal-content -->
         </div>

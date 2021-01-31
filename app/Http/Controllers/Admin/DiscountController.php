@@ -88,13 +88,12 @@ class DiscountController extends Controller
     }
 
 
-    public function choice(Request $request)
+    public function goods(Request $request)
     {
 
         $type = $request->type;
         switch ($type) {
             case 'goods':
-                $h1 = 'Редактирование товаров каталога';
                 //$DataCategories = ($id) ? Category::descendantsAndSelf($id) :  Category::get();
                 $DataCategories = Category::get();
                 $categories = $DataCategories->toTree();
@@ -103,21 +102,18 @@ class DiscountController extends Controller
 
 
 
-
-
-
                 break;
             case 'category':
                 echo "Вывод списка категорий.";
                 break;
         }
+    }
 
-
-
-
-
-
-        // return $request->type;
+    public function choice(Request $request){
+        $id = $request->id;
+        $DataCategories = Category::descendantsAndSelf($id);
+        $products = Product::whereIn('category_id', $DataCategories->pluck('id'))->orderBy('sort')->paginate(20);
+        return view('admin.ajax.products_choice', compact('products'));
     }
 
 
