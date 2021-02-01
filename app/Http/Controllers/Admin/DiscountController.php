@@ -99,8 +99,7 @@ class DiscountController extends Controller
                 $categories = $DataCategories->toTree();
                 $products = Product::orderBy('sort', 'asc')->paginate(2);
                 $categoryId = 0;
-                $products->withPath('/admin/discounts_paginate', ['categoryId'=> $categoryId]);
-
+                $products->withPath('/admin/discounts_paginate');
                 return view('admin.ajax.products_show', compact('categoryId','categories', 'products'));
 
 
@@ -119,18 +118,17 @@ class DiscountController extends Controller
         $id = $request->id;
         $DataCategories = Category::descendantsAndSelf($id);
         $products = Product::whereIn('category_id', $DataCategories->pluck('id'))->orderBy('sort')->paginate(2);
-
-        $products->appends(['category' => $id]);
+        $categoryId = $request->id;
         $products->withPath('/admin/discounts_paginate');
-        return view('admin.ajax.products_choice', compact('products'));
+        return view('admin.ajax.products_choice', compact('products', 'categoryId'));
     }
 
     public function paginate(Request $request){
-        $id = $request->id;
-        $DataCategories = Category::descendantsAndSelf($id);
+        $categoryId = $request->category;
+        $DataCategories = Category::descendantsAndSelf($categoryId);
         $products = Product::whereIn('category_id', $DataCategories->pluck('id'))->orderBy('sort')->paginate(2);
         $products->withPath('/admin/discounts_paginate');
-        return view('admin.ajax.products_choice', compact('products'));
+        return view('admin.ajax.products_choice', compact('products', 'categoryId'));
     }
 
 

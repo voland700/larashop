@@ -17,7 +17,7 @@
                 @endforeach
             </ui>
         </div>
-        <div class="col-md-9" id="DiscountContemt">
+        <div class="col-md-9" class="d_contemt" id="DiscountContemt" style="display: flex; flex-direction: column; justify-content: space-between; min-height: 350px;">
             <table class="table table-bordered">
                 <thead>
                     <tr>

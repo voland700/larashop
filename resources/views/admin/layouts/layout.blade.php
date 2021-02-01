@@ -370,7 +370,6 @@
         return false;
     }
 
-
     function imageRemove(elem) {
         elem.preventDefault();
         let item = elem.currentTarget;
@@ -576,34 +575,40 @@
     }
 
     function discountPaginate() {
+        const DiscountContemt = document.getElementById('DiscountContemt');
         document.querySelectorAll('.dis_link').forEach(function (item) {
             item.addEventListener('click', function(e){
                 e.preventDefault();
                 const url =e.currentTarget.getAttribute('href');
-                url.indexOf('?');
-/*
-                let params = url.replace('?','')
-                    .split('&')
-                    .reduce(
-                        function(p,e){
-                            var a = e.split('=');
-                            p[ decodeURIComponent(a[0])] = decodeURIComponent(a[1]);
-                            return p;
+                let params = url.substr(url.indexOf('?')+1).split('&').reduce(function(p,e){
+                    var a = e.split('=');
+                    p[ decodeURIComponent(a[0])] = decodeURIComponent(a[1]);
+                    return p;
+                     },
+                     {}
+                );
+                $.ajax(
+                    {
+                        url: '{{route('discounts_paginate')}}',
+                        type: 'GET',
+                        data: {
+                            _token: document.getElementById('DiscountsForm').querySelector('[name="_token"]').value,
+                            'page': params.page,
+                            'category': params.category
                         },
-                        {}
-                    );
-
-*/
-
-                console.log(url.indexOf('?'));
-
-
-
-                //alert('!!!!!!!!');
+                        success: function (response) {
+                            //location.reload();
+                            //console.log(response);
+                            DiscountContemt.innerHTML = response;
+                            selectionGoods();
+                            discountPaginate();
+                        },
+                        error: function (response) {
+                            console.log(response);
+                        }
+                    });
             });
         });
-
-
 
     }
 
