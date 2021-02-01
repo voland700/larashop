@@ -41,7 +41,6 @@
         <p>Курсы валют</p>
     </a>
 </li>
-
 <li class="nav-item">
     <a href="{{route('discounts.index')}}" class="nav-link">
         <i class="nav-icon fas fa-percent"></i>

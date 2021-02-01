@@ -419,6 +419,7 @@
 
     //Меню каталога
     document.getElementById('Catalog').addEventListener('click', function (elem) {
+
         let mainElem = elem.currentTarget.parentNode;
         mainElem.classList.toggle('menu-open');
         let ulmenu = mainElem.parentNode.querySelector('.ul_menu');
@@ -438,20 +439,12 @@
                         ul.style.display = '';
                     }
                 }
-
-
                 if(item.nextElementSibling.classList.contains('m_main_link')){
                     let mainLink = item.nextElementSibling.querySelector('i');
                     mainLink.classList.toggle('fa-folder');
                     mainLink.classList.toggle('fa-folder-open');
                     console.log(mainLink);
                 };
-
-
-                console.log(item.nextElementSibling);
-
-
-
 
                 if(item.classList.contains('m_none')){
                     return false;
@@ -473,8 +466,6 @@
         });
     });
 
-
-
     function ChangeGoods() {
          $.ajax(
             {
@@ -490,19 +481,132 @@
                     let modalBody = document.getElementById('modalBody');
                     modalBody.innerHTML = response;
                     $('#modal-xl').modal('show');
+                    choiceGoods();
+                    selectionGoods();
+                    discountPaginate();
                 },
                 error: function (response) {
                     console.log(response);
                 }
             });
 
+            function choiceGoods() {
+                document.querySelectorAll('.d_label').forEach(function (item) {
+                    item.addEventListener('click', function(e){
+                        let elem = e.target;
+                        let ul = elem.parentNode.nextElementSibling;
+                        if(elem.classList.contains('d_label-closed')){
+                            elem.classList.remove('d_label-closed');
+                            elem.classList.add('d_label-open');
+                        }
+                        else if(elem.classList.contains('d_label-open')){
+                            elem.classList.remove('d_label-open');
+                            elem.classList.add('d_label-closed');
+                        }
+                        if(ul.classList.contains('d_closed')){
+                            ul.classList.remove('d_closed');
+                            ul.classList.add('d_open');
+                        }
+                        else if(ul.classList.contains('d_open')){
+                            ul.classList.remove('d_open');
+                            ul.classList.add('d_closed');
+                        }
+                    });
+                });
+            }
+    }
+
+    function ChoiceGoodsCategory(id) {
+        let DiscountContemt = document.getElementById('DiscountContemt');
+        $.ajax(
+            {
+                url: '{{route('discounts_choice')}}',
+                type: 'POST',
+                data: {
+                    _token: document.getElementById('DiscountsForm').querySelector('[name="_token"]').value,
+                    'id': id
+                },
+                success: function (response) {
+                    //location.reload();
+                    //console.log(response);
+                    DiscountContemt.innerHTML = response;
+                    selectionGoods();
+                    discountPaginate();
+                },
+                error: function (response) {
+                    console.log(response);
+                }
+            });
+    }
+
+    function selectionGoods(){
+        let arrID = [];
+        document.querySelectorAll('.d_btn').forEach(function (item) {
+            item.addEventListener('click', function(e){
+                let elem = e.currentTarget;
+                const GoodsList =document.getElementById('GoodsList');
+                if(elem.classList.contains('btn-default') && !elem.classList.contains('btn-success')){
+                    elem.classList.remove('btn-default');
+                    elem.classList.add('btn-success');
+                }
+                let id = elem.getAttribute('data-id');
+                let name = elem.getAttribute('data-name');
+                let li = document.createElement("li");
+                let btn = document.createElement("span");
+                let namberId = document.createElement("span");
+                li.className = "d_list-item";
+                namberId.className = "d_id";
+                namberId.innerText = '('+id+')';
+                btn.className = "d_btn-del";
+                btn.innerText = '×';
+                btn.addEventListener('click', function(){
+                    arrID.splice(arrID.indexOf(id),1);
+                    this.parentNode.remove();
+                });
+                li.innerText = name;
+                li.append(namberId);
+                li.append(btn);
+                if(!arrID.includes(id)){
+                    arrID.push(id);
+                    GoodsList.append(li);
+                    document.querySelector('.discount-list').style.display = 'block';
+                }
+            });
+        });
+    }
+
+    function discountPaginate() {
+        document.querySelectorAll('.dis_link').forEach(function (item) {
+            item.addEventListener('click', function(e){
+                e.preventDefault();
+                const url =e.currentTarget.getAttribute('href');
+                url.indexOf('?');
+/*
+                let params = url.replace('?','')
+                    .split('&')
+                    .reduce(
+                        function(p,e){
+                            var a = e.split('=');
+                            p[ decodeURIComponent(a[0])] = decodeURIComponent(a[1]);
+                            return p;
+                        },
+                        {}
+                    );
+
+*/
+
+                console.log(url.indexOf('?'));
 
 
 
+                //alert('!!!!!!!!');
+            });
+        });
 
-        //$('#modal-xl').modal('show');
+
 
     }
+
 
 
 

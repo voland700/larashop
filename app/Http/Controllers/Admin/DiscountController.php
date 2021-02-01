@@ -88,18 +88,20 @@ class DiscountController extends Controller
     }
 
 
-    public function choice(Request $request)
+    public function goods(Request $request)
     {
 
         $type = $request->type;
         switch ($type) {
             case 'goods':
-                $h1 = 'Редактирование товаров каталога';
                 //$DataCategories = ($id) ? Category::descendantsAndSelf($id) :  Category::get();
                 $DataCategories = Category::get();
                 $categories = $DataCategories->toTree();
-                $products = Product::orderBy('sort', 'asc')->paginate(20);
-                return view('admin.ajax.products_show', compact('categories', 'products'));
+                $products = Product::orderBy('sort', 'asc')->paginate(2);
+                $categoryId = 0;
+                $products->withPath('/admin/discounts_paginate', ['categoryId'=> $categoryId]);
+
+                return view('admin.ajax.products_show', compact('categoryId','categories', 'products'));
 
 
 
@@ -111,13 +113,24 @@ class DiscountController extends Controller
                 echo "Вывод списка категорий.";
                 break;
         }
+    }
 
+    public function choice(Request $request){
+        $id = $request->id;
+        $DataCategories = Category::descendantsAndSelf($id);
+        $products = Product::whereIn('category_id', $DataCategories->pluck('id'))->orderBy('sort')->paginate(2);
 
+        $products->appends(['category' => $id]);
+        $products->withPath('/admin/discounts_paginate');
+        return view('admin.ajax.products_choice', compact('products'));
+    }
 
-
-
-
-        // return $request->type;
+    public function paginate(Request $request){
+        $id = $request->id;
+        $DataCategories = Category::descendantsAndSelf($id);
+        $products = Product::whereIn('category_id', $DataCategories->pluck('id'))->orderBy('sort')->paginate(2);
+        $products->withPath('/admin/discounts_paginate');
+        return view('admin.ajax.products_choice', compact('products'));
     }
 
 

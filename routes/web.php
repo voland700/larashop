@@ -36,7 +36,10 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin'], function () {
     Route::post('/product_create','ProductsController@store')->name('product_create');
     Route::delete('/product_delete/{id}/{category?}','ProductsController@delete')->name('product_delete');
 
-    Route::post('/discounts_goods','DiscountController@choice')->name('discounts_goods');
+    Route::post('/discounts_goods','DiscountController@goods')->name('discounts_goods');
+    Route::post('/discounts_choice','DiscountController@choice')->name('discounts_choice');
+
+    Route::get('/discounts_paginate','DiscountController@paginate')->name('discounts_paginate');
 
 
     Route::post('/category_img','ImgDeleteController@category_img')->name('category_img');
