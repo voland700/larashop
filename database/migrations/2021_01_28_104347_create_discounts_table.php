@@ -17,6 +17,7 @@ class CreateDiscountsTable extends Migration
             $table->bigIncrements('id');
             $table->string('name', 100);
             $table->string('type');
+            $table->string('kind')->default('percent');
             $table->unsignedInteger('value');
             $table->bigInteger('active')->unsigned()->default(1);
             $table->bigInteger('sort')->unsigned()->default(100);

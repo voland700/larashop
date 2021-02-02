@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Category;
+use App\Models\Discount;
 use App\Models\Product;
 use Illuminate\Http\Request;
 
@@ -39,7 +40,40 @@ class DiscountController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $messages = [
+            'name.required' => 'Поле "Наименование скидки" обязательно для заполнения',
+            'value.required' => 'Укажите значение размера скидки',
+            'value.integer' => 'Размер скидки должен быть целым числом',
+        ];
+        $this->validate($request, [
+            'name' => 'required',
+            'value' => 'required|integer',
+        ],$messages);
+        $discount = new Discount();
+        $discount->name = $request->name;
+        $discount->type = $request->type;
+        $discount->kind = $request->kind;
+        $discount->value = $request->value;
+        $discount->active = $request->active;
+        $discount->sort = $request->sort;
+        $discount->save();
+        switch ($request->kind) {
+            case 'goods':
+                $products = Product::find($request->productsID);
+                $discount->product()->attach($products);
+                return redirect()->route('discounts.index')->with('success', 'Скидка '.$request->name.' создана');
+                break;
+            case 'category':
+                echo "Вывод списка категорий.";
+                break;
+        }
+
+
+
+
+
+
+
     }
 
     /**
@@ -90,26 +124,20 @@ class DiscountController extends Controller
 
     public function goods(Request $request)
     {
-
-        $type = $request->type;
-        switch ($type) {
+        $kind = $request->kind;
+        $DataCategories = Category::get();
+        $categories = $DataCategories->toTree();
+        switch ($kind) {
             case 'goods':
-                //$DataCategories = ($id) ? Category::descendantsAndSelf($id) :  Category::get();
-                $DataCategories = Category::get();
-                $categories = $DataCategories->toTree();
                 $products = Product::orderBy('sort', 'asc')->paginate(2);
                 $categoryId = 0;
                 $products->withPath('/admin/discounts_paginate');
                 return view('admin.ajax.products_show', compact('categoryId','categories', 'products'));
-
-
-
-
-
-
                 break;
             case 'category':
-                echo "Вывод списка категорий.";
+
+
+                return view('admin.ajax.categories_show', compact('categories', ));
                 break;
         }
     }
@@ -125,8 +153,12 @@ class DiscountController extends Controller
 
     public function paginate(Request $request){
         $categoryId = $request->category;
-        $DataCategories = Category::descendantsAndSelf($categoryId);
-        $products = Product::whereIn('category_id', $DataCategories->pluck('id'))->orderBy('sort')->paginate(2);
+        if($categoryId == 0){
+            $products = Product::paginate(2);
+        }else{
+            $DataCategories = Category::descendantsAndSelf($categoryId);
+            $products = Product::whereIn('category_id', $DataCategories->pluck('id'))->orderBy('sort')->paginate(2);
+        }
         $products->withPath('/admin/discounts_paginate');
         return view('admin.ajax.products_choice', compact('products', 'categoryId'));
     }

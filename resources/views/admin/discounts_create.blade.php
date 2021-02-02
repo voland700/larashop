@@ -55,13 +55,13 @@
 
                                 <div class="form-group col-md-4">
                                     <label for="name">Наименование скидки</label>
-                                    <input type="text" class="form-control @error('name') is-invalid @enderror" id="CreateName" name="name" value="" placeholder="Наименование скидки">
+                                    <input type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="" placeholder="Наименование скидки" required>
                                 </div>
 
                                 <div class="row">
                                     <div class="form-group col-md-6">
                                         <label for="type">Тип скидки</label>
-                                        <select class="form-control">
+                                        <select name="type" class="form-control">
                                             <option value="percent">В процентах</option>
                                             <option value="fixed">Фиксированная сумма</option>
                                             <option value="cost">Установить цену на товар</option>
@@ -70,14 +70,14 @@
 
                                     <div class="form-group col-md-6">
                                         <label for="value">Значение скидки</label>
-                                        <input type="text" class="form-control @error('value') is-invalid @enderror" name="value" value="" placeholder="Ввидите сумму">
+                                        <input type="text" class="form-control @error('value') is-invalid @enderror" name="value" value="" placeholder="Ввидите сумму" required pattern="[0-9]+" title="Размер скидки - целое число">
                                     </div>
                                 </div>
 
                                 <div class="row">
                                     <div class="form-group  col-md-6">
-                                        <label for="type">Условия скидки</label>
-                                        <select id="choiceGoods" class="form-control">
+                                        <label for="kind">Условия скидки</label>
+                                        <select name="kind" id="choiceGoods" class="form-control">
                                             <option value="goods">Скидка на товары</option>
                                             <option value="category">Скидка на категорию</option>
                                         </select>

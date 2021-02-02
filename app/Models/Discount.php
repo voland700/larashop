@@ -15,4 +15,9 @@ class Discount extends Model
         'active',
         'sort'
     ];
+    public function product()
+    {
+        return $this->belongsToMany(Product::class);
+    }
 }
+

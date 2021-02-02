@@ -52,23 +52,7 @@
                     </div>
                 </div>
                 <!-- /.card -->
-
             </div>
-
-
-
-
-
-
-
-
-
         </div>
     </div>
-
-
-
-
-
-
 @endsection

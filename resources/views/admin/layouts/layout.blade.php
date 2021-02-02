@@ -466,13 +466,15 @@
     });
 
     function ChangeGoods() {
+        let kind = document.getElementById('choiceGoods').value;
+
          $.ajax(
             {
                 url: '{{route('discounts_goods')}}',
                 type: 'POST',
                 data: {
                     _token: document.getElementById('DiscountsForm').querySelector('[name="_token"]').value,
-                    'type': document.getElementById('choiceGoods').value
+                    'kind': kind
                 },
                 success: function (response) {
                     //location.reload();
@@ -480,9 +482,19 @@
                     let modalBody = document.getElementById('modalBody');
                     modalBody.innerHTML = response;
                     $('#modal-xl').modal('show');
-                    choiceGoods();
-                    selectionGoods();
-                    discountPaginate();
+                    switch (kind) {
+                        case 'goods':
+                            choiceGoods();
+                            selectionGoods();
+                            discountPaginate();
+                            break;
+                        case 'category':
+                            alert('КАТЕГОРИИ');
+                            break;
+                    }
+
+
+
                 },
                 error: function (response) {
                     console.log(response);
@@ -553,7 +565,14 @@
                 let li = document.createElement("li");
                 let btn = document.createElement("span");
                 let namberId = document.createElement("span");
-                li.className = "d_list-item";
+                let input = document.createElement("input");
+
+                input.setAttribute('type', 'hidden');
+                input.setAttribute('name', `productsID[]`);
+                input.setAttribute('value', id);
+
+
+                //li.className = "d_list-item";
                 namberId.className = "d_id";
                 namberId.innerText = '('+id+')';
                 btn.className = "d_btn-del";
@@ -565,6 +584,7 @@
                 li.innerText = name;
                 li.append(namberId);
                 li.append(btn);
+                li.append(input);
                 if(!arrID.includes(id)){
                     arrID.push(id);
                     GoodsList.append(li);
@@ -597,8 +617,7 @@
                             'category': params.category
                         },
                         success: function (response) {
-                            //location.reload();
-                            //console.log(response);
+
                             DiscountContemt.innerHTML = response;
                             selectionGoods();
                             discountPaginate();
@@ -609,6 +628,12 @@
                     });
             });
         });
+
+    }
+
+    function choiceCategories() {
+        let DiscountContemt = document.getElementById('DiscountContemt');
+
 
     }
 
