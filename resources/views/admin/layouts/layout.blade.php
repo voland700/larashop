@@ -479,17 +479,21 @@
                 success: function (response) {
                     //location.reload();
                     //console.log(response);
-                    let modalBody = document.getElementById('modalBody');
-                    modalBody.innerHTML = response;
-                    $('#modal-xl').modal('show');
+
                     switch (kind) {
                         case 'goods':
+                            let modalBody = document.getElementById('modalBody');
+                            modalBody.innerHTML = response;
+                            $('#modal-xl').modal('show');
                             choiceGoods();
                             selectionGoods();
                             discountPaginate();
                             break;
                         case 'category':
-                            alert('КАТЕГОРИИ');
+                            const modalBodyCategories = document.getElementById('modalBodyCategories');
+                            modalBodyCategories.innerHTML = response;
+                            $('#modalCategory').modal('show');
+                            document.getElementById('btnChoiceCategories').addEventListener('click', getCategories);
                             break;
                     }
 
@@ -631,11 +635,14 @@
 
     }
 
-    function choiceCategories() {
-        let DiscountContemt = document.getElementById('DiscountContemt');
+    function  getCategories(){
+        let selected = Array.from(FormChoice.options)
+            .filter(option => option.selected);
+            //.map(option => option.value);
 
-
+        console.log(selected);
     }
+
 
 
 

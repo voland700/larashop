@@ -136,7 +136,6 @@ class DiscountController extends Controller
                 break;
             case 'category':
 
-
                 return view('admin.ajax.categories_show', compact('categories', ));
                 break;
         }
