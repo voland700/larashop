@@ -64,7 +64,9 @@ class DiscountController extends Controller
                 return redirect()->route('discounts.index')->with('success', 'Скидка '.$request->name.' создана');
                 break;
             case 'category':
-                echo "Вывод списка категорий.";
+                //echo "Вывод списка категорий.";
+
+                dd($request->all());
                 break;
         }
 

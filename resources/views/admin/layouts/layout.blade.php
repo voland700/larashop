@@ -621,7 +621,6 @@
                             'category': params.category
                         },
                         success: function (response) {
-
                             DiscountContemt.innerHTML = response;
                             selectionGoods();
                             discountPaginate();
@@ -636,11 +635,38 @@
     }
 
     function  getCategories(){
-        let selected = Array.from(FormChoice.options)
-            .filter(option => option.selected);
+        let selected = Array.from(FormChoice.options).filter(option => option.selected);
             //.map(option => option.value);
+        const GoodsList =document.getElementById('GoodsList');
+        selected.forEach(function (item) {
+            let id = item.value;
+            let name = item.getAttribute('data-name');
+            let li = document.createElement("li");
+            let btn = document.createElement("span");
+            let namberId = document.createElement("span");
+            let input = document.createElement("input");
+            input.setAttribute('type', 'hidden');
+            input.setAttribute('name', `productsID[]`);
+            input.setAttribute('value', id);
+            namberId.className = "d_id";
+            namberId.innerText = '('+id+')';
+            btn.className = "d_btn-del";
+            btn.innerText = '×';
+            btn.addEventListener('click', function(){
+                selected.splice(selected.indexOf(id),1);
+                this.parentNode.remove();
+            });
+            li.innerText = name;
+            li.append(namberId);
+            li.append(btn);
+            li.append(input);
+            GoodsList.append(li);
+        });
+        if(!selected.length == 0){
+            document.querySelector('.discount-list').style.display = 'block';
+            $('#modalCategory').modal('toggle');
+        }
 
-        console.log(selected);
     }
 
 
