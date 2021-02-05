@@ -229,8 +229,6 @@ class ProductsController extends Controller
         $h1 = 'Редактирование товаров каталога';
         $DataCategories = ($id) ? Category::descendantsAndSelf($id) :  Category::get();
         $categories = $DataCategories->toTree();
-
-        //$products = Product::whereIn('category_id', $DataCategories->pluck('id'))->orderBy('sort')->paginate(20);
         if($id) {
             $products = Product::whereIn('category_id', $DataCategories->pluck('id'))->orderBy('sort')->paginate(20);
         } else {

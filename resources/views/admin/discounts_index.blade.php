@@ -10,12 +10,6 @@
                         <p>{{ $message }}</p>
                     </div>
                 @endif
-
-
-
-
-
-
                 <div class="card">
                     <div class="card-header">
                         <h3 class="card-title">Скидки на товары каталога</h3>
@@ -35,17 +29,23 @@
                                 </tr>
                             </thead>
                             <tbody>
-
-
-
-
-
-
+                            @forelse ($discounts as $discount)
+                                <th>{{ $discount->id }}</th>
+                                <td>{{ $discount->name }}</td>
+                                <td>{{ $discount->type }}</td>
+                                <td>{{ $discount->value }}</td>
+                                <td>{{ $discount->active }}</td>
+                                <td>Редактировать</td>
+                                </tr>
+                             @empty
+                                <p>Нет скидок</p>
+                            @endforelse
                             </tbody>
                         </table>
+
                     </div>
                     <div class="card-footer clearfix">
-                        <p></p>
+                        {{ $discounts->links() }}
                     </div>
                 </div>
             </div>

@@ -18,7 +18,8 @@ class DiscountController extends Controller
     public function index()
     {
         $h1 = 'Список скидок на товары коталога ';
-        return view('admin.discounts_index', compact('h1'));
+        $discounts = Discount::orderBy('sort')->paginate(20);
+        return view('admin.discounts_index', compact('h1', 'discounts'));
     }
 
     /**
@@ -64,9 +65,15 @@ class DiscountController extends Controller
                 return redirect()->route('discounts.index')->with('success', 'Скидка '.$request->name.' создана');
                 break;
             case 'category':
-                //echo "Вывод списка категорий.";
+                $arrProductsId = [];
+                foreach ($request->productsID as $item){
+                    $DataCategories = Category::descendantsAndSelf($item);
+                    $arrProductsId = array_merge($arrProductsId, Product::whereIn('category_id', $DataCategories->pluck('id'))->select('id')->get()->toArray());
+                }
+                $productsID =array_unique($arrProductsId, SORT_REGULAR);
+                $discount->product()->attach(Product::find($productsID));
 
-                dd($request->all());
+                return redirect()->route('discounts.index')->with('success', 'Скидка '.$request->name.' создана');
                 break;
         }
 
@@ -137,7 +144,6 @@ class DiscountController extends Controller
                 return view('admin.ajax.products_show', compact('categoryId','categories', 'products'));
                 break;
             case 'category':
-
                 return view('admin.ajax.categories_show', compact('categories', ));
                 break;
         }
