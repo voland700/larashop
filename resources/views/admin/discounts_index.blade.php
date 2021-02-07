@@ -29,13 +29,35 @@
                                 </tr>
                             </thead>
                             <tbody>
+                            @php
+                            function showKind($kind){
+                                if($kind == 'percent'){
+                                    return '%';
+                                } elseif ($kind == 'fixed'){
+                                    return 'сумма';
+                                }elseif ($kind == 'cost') {
+                                    return 'стоимость';
+                                } else {
+                                    return false;
+                                }
+                            }
+                            function isActive($active){
+                            if($active) {
+                            return '<i class="text-success far fa-check-circle"></i>';
+                            } else {
+                            return '<i class="text-danger fas fa-ban"></i>';
+                            }}
+                            @endphp
                             @forelse ($discounts as $discount)
                                 <th>{{ $discount->id }}</th>
-                                <td>{{ $discount->name }}</td>
-                                <td>{{ $discount->type }}</td>
-                                <td>{{ $discount->value }}</td>
-                                <td>{{ $discount->active }}</td>
-                                <td>Редактировать</td>
+                                <td><a href="{{route("discounts.edit", $discount->id)}}">{{ $discount->name }}</a></td>
+                                <td style="text-align: center">{!!  showKind($discount->type) !!}</td>
+                                <td style="text-align: center">{{ $discount->value }}</td>
+                                <td style="text-align: center">{!! isActive($discount->active) !!}</td>
+                                <td class="text-center">
+                                    <a href="{{route("discounts.edit", $discount->id)}}" class="btn btn-info mr-1"><i class="fas fa-pencil-alt"></i></a>
+                                    <a href="{{route("discounts.destroy", $discount->id)}}" data-name="Первая главная категория" class="btn btn-danger delete"><i class="fas fa-trash-alt"></i></a>
+                                </td>
                                 </tr>
                              @empty
                                 <p>Нет скидок</p>

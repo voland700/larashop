@@ -72,7 +72,6 @@ class DiscountController extends Controller
                 }
                 $productsID =array_unique($arrProductsId, SORT_REGULAR);
                 $discount->product()->attach(Product::find($productsID));
-
                 return redirect()->route('discounts.index')->with('success', 'Скидка '.$request->name.' создана');
                 break;
         }
@@ -93,7 +92,7 @@ class DiscountController extends Controller
      */
     public function show($id)
     {
-        //
+
     }
 
     /**
@@ -104,7 +103,28 @@ class DiscountController extends Controller
      */
     public function edit($id)
     {
-        //
+        $h1 = 'Редактирование скидки';
+        $discount = Discount::with('product')->find($id);
+        switch ($discount->kind) {
+            case 'goods':
+                $products = $discount->product;
+                return view('admin.discounts_update', compact('h1', 'discount', 'products'));
+                break;
+            case 'category':
+                $categories = $productsID =array_unique($discount->product()->pluck('category_id')->toArray(), SORT_REGULAR);
+
+
+
+
+
+                // redirect()->route('discounts.index')->with('success', 'Скидка '.$request->name.' создана');
+                break;
+            }
+
+
+
+
+        //dd($discount->product);
     }
 
     /**
