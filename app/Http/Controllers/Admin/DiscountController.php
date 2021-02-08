@@ -107,15 +107,19 @@ class DiscountController extends Controller
         $discount = Discount::with('product')->find($id);
         switch ($discount->kind) {
             case 'goods':
+                $categories = false;
                 $products = $discount->product;
-                return view('admin.discounts_update', compact('h1', 'discount', 'products'));
+                return view('admin.discounts_update', compact('h1', 'discount', 'products', 'categories'));
                 break;
             case 'category':
-                $categories = $productsID =array_unique($discount->product()->pluck('category_id')->toArray(), SORT_REGULAR);
+                $products = [];
+                $categoriesID = $productsID =array_unique($discount->product()->pluck('category_id')->toArray(), SORT_REGULAR);
+                $categories = Category::select('id', 'name')->find($categoriesID);
+                //return view('admin.discounts_update', compact('h1', 'discount', 'products', 'categories'));
 
 
 
-
+                dd($categories);
 
                 // redirect()->route('discounts.index')->with('success', 'Скидка '.$request->name.' создана');
                 break;
