@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Category;
+use App\Models\Currency;
 use App\Models\Discount;
 use App\Models\Product;
 use Illuminate\Http\Request;
@@ -57,6 +58,7 @@ class DiscountController extends Controller
         $discount->value = $request->value;
         $discount->active = $request->active;
         $discount->sort = $request->sort;
+        $discount->categories = ($request->kind=='category') ? json_encode($request->productsID) : NULL;
         $discount->save();
         switch ($request->kind) {
             case 'goods':
@@ -113,14 +115,10 @@ class DiscountController extends Controller
                 break;
             case 'category':
                 $products = [];
-                $categoriesID = $productsID =array_unique($discount->product()->pluck('category_id')->toArray(), SORT_REGULAR);
-                $categories = Category::select('id', 'name')->find($categoriesID);
+                //$categories = Category::select('id', 'name', 'parent_id')->find(json_decode($discount->categories, true));
+                //$allCategories = Category::select('id', 'name')->get();
                 //return view('admin.discounts_update', compact('h1', 'discount', 'products', 'categories'));
-
-
-
-                dd($categories);
-
+                dd($discount->categories);
                 // redirect()->route('discounts.index')->with('success', 'Скидка '.$request->name.' создана');
                 break;
             }
@@ -128,7 +126,7 @@ class DiscountController extends Controller
 
 
 
-        //dd($discount->product);
+        //dd($discount->categories);
     }
 
     /**

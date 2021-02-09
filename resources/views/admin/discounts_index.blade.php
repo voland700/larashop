@@ -22,7 +22,7 @@
                                  <tr>
                                     <th style="width: 10px">ID</th>
                                     <th>Название категории</th>
-                                    <th style="width: 20px">Тип</th>
+
                                     <th style="width: 20px">Значение</th>
                                     <th  style="width: 10px">Активность</th>
                                     <th  style="width: 40px">Редактировать</th>
@@ -30,13 +30,13 @@
                             </thead>
                             <tbody>
                             @php
-                            function showKind($kind){
+                            function showValue($kind, $value){
                                 if($kind == 'percent'){
-                                    return '%';
+                                    return $value.'%';
                                 } elseif ($kind == 'fixed'){
-                                    return 'сумма';
+                                    return '- '.$value;
                                 }elseif ($kind == 'cost') {
-                                    return 'стоимость';
+                                    return '= '.$value;
                                 } else {
                                     return false;
                                 }
@@ -51,8 +51,7 @@
                             @forelse ($discounts as $discount)
                                 <th>{{ $discount->id }}</th>
                                 <td><a href="{{route("discounts.edit", $discount->id)}}">{{ $discount->name }}</a></td>
-                                <td style="text-align: center">{!!  showKind($discount->type) !!}</td>
-                                <td style="text-align: center">{{ $discount->value }}</td>
+                                <td style="text-align: center">{!!  showValue($discount->type, $discount->value) !!}</td>
                                 <td style="text-align: center">{!! isActive($discount->active) !!}</td>
                                 <td class="text-center">
                                     <a href="{{route("discounts.edit", $discount->id)}}" class="btn btn-info mr-1"><i class="fas fa-pencil-alt"></i></a>

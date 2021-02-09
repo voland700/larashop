@@ -13,7 +13,11 @@ class Discount extends Model
         'type',
         'value',
         'active',
-        'sort'
+        'sort',
+        'categories'
+    ];
+    protected $casts = [
+        'categories' => 'array'
     ];
     public function product()
     {

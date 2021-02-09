@@ -19,6 +19,7 @@ class CreateDiscountsTable extends Migration
             $table->string('type');
             $table->string('kind')->default('percent');
             $table->unsignedInteger('value');
+            $table->json('categories')->nullable();
             $table->bigInteger('active')->unsigned()->default(1);
             $table->bigInteger('sort')->unsigned()->default(100);
             $table->timestamps();
