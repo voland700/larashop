@@ -477,9 +477,6 @@
                     'kind': kind
                 },
                 success: function (response) {
-                    //location.reload();
-                    //console.log(response);
-
                     switch (kind) {
                         case 'goods':
                             let modalBody = document.getElementById('modalBody');
@@ -496,9 +493,6 @@
                             document.getElementById('btnChoiceCategories').addEventListener('click', getCategories);
                             break;
                     }
-
-
-
                 },
                 error: function (response) {
                     console.log(response);
@@ -575,8 +569,6 @@
                 input.setAttribute('name', `productsID[]`);
                 input.setAttribute('value', id);
 
-
-                //li.className = "d_list-item";
                 namberId.className = "d_id";
                 namberId.innerText = '('+id+')';
                 btn.className = "d_btn-del";
@@ -631,7 +623,6 @@
                     });
             });
         });
-
     }
 
     function  getCategories(){
@@ -666,8 +657,141 @@
             document.querySelector('.discount-list').style.display = 'block';
             $('#modalCategory').modal('toggle');
         }
+    }
+
+
+
+    // DISCOUNT UPDATE
+    function RemoveElem(e) {
+        e.parentNode.remove();
+    }
+
+    function ChangeUpdateGoods(){
+        let kind = document.getElementById('choiceGoods').value;
+        let arrItemsId = [];
+        document.querySelectorAll('.d_input').forEach(function (item) {
+            arrItemsId.push(Number(item.value));
+        });
+        $.ajax(
+            {
+                url: '{{route('discounts_goods_update')}}',
+                type: 'POST',
+                data: {
+                    _token: document.getElementById('DiscountsForm').querySelector('[name="_token"]').value,
+                    'kind': kind,
+                    'items_id': arrItemsId,
+                },
+                success: function (response) {
+                    switch (kind) {
+                        case 'goods':
+                            let modalBody = document.getElementById('modalBody');
+                            modalBody.innerHTML = response;
+                            $('#modal-xl').modal('show');
+                            choiceGoods();
+                            selectionGoodsUptate();
+                            //selectionGoods();
+                            discountPaginate();
+                            break;
+                        case 'category':
+                            const modalBodyCategories = document.getElementById('modalBodyCategories');
+                            modalBodyCategories.innerHTML = response;
+                            $('#modalCategory').modal('show');
+                            document.getElementById('btnChoiceCategoriesUpdate').addEventListener('click', updateCategories);
+                            break;
+                    }
+                },
+                error: function (response) {
+                    console.log(response);
+                }
+            });
+
+        function choiceGoods() {
+            document.querySelectorAll('.d_label').forEach(function (item) {
+                item.addEventListener('click', function(e){
+                    let elem = e.target;
+                    let ul = elem.parentNode.nextElementSibling;
+                    if(elem.classList.contains('d_label-closed')){
+                        elem.classList.remove('d_label-closed');
+                        elem.classList.add('d_label-open');
+                    }
+                    else if(elem.classList.contains('d_label-open')){
+                        elem.classList.remove('d_label-open');
+                        elem.classList.add('d_label-closed');
+                    }
+                    if(ul.classList.contains('d_closed')){
+                        ul.classList.remove('d_closed');
+                        ul.classList.add('d_open');
+                    }
+                    else if(ul.classList.contains('d_open')){
+                        ul.classList.remove('d_open');
+                        ul.classList.add('d_closed');
+                    }
+                });
+            });
+        }
+
+        function selectionGoodsUptate(){
+            const GoodsList =document.getElementById('GoodsList');
+            function createElem(id, name){
+                let li = document.createElement("li");
+                let btn = document.createElement("span");
+                let namberId = document.createElement("span");
+                let input = document.createElement("input");
+                input.setAttribute('type', 'hidden');
+                input.setAttribute('name', `productsID[]`);
+                input.setAttribute('value', id);
+                namberId.className = "d_id";
+                namberId.innerText = '['+id+']';
+                btn.className = "d_btn-del";
+                btn.innerText = '×';
+                btn.addEventListener('click', function(){
+                    arrItemsId.splice(arrItemsId.indexOf(id),1);
+                    this.parentNode.remove();
+                });
+                li.innerText = name;
+                li.append(namberId);
+                li.append(btn);
+                li.append(input);
+                if(!arrItemsId.includes(id)){
+                    arrItemsId.push(id);
+                    GoodsList.append(li);
+                }
+            }
+            document.querySelectorAll('.d_btn').forEach(function (item) {
+                item.addEventListener('click', function(e){
+                    let elem = e.currentTarget;
+                    let id = elem.getAttribute('data-id');
+                    let name = elem.getAttribute('data-name');
+                    createElem(id, name);
+                    elem.classList.toggle('btn-default');
+                    elem.classList.toggle('btn-success');
+                });
+            });
+        }
+
+        function updateCategories(){
+            document.getElementById('GoodsList').innerText = '';
+            getCategories()
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     }
+
+
+
+
 
 
 

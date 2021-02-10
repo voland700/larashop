@@ -86,7 +86,7 @@
                                     <div class="form-group  col-md-6">
                                         <label for="type">Выбрать</label>
                                         <div>
-                                            <button type="button" class="btn btn-default" onclick="return ChangeGoods(this);">Middle</button>
+                                            <button type="button" class="btn btn-default" onclick="return ChangeUpdateGoods(this);">Выбор</button>
                                         </div>
                                     </div>
                                 </div>
@@ -99,10 +99,16 @@
                                         <ul class="d_list" id="GoodsList">
                                             @if(count($products))
                                             @foreach($products as $product)
-                                                <li>{{$product->name}}<span class="d_id">({{$product->id}})</span><span class="d_btn-del">×</span><input type="hidden" name="productsID[]" value="{{$product->id}}"></li>
+                                                <li>{{$product->name}}<span class="d_id">({{$product->id}})</span><span class="d_btn-del" onclick="return RemoveElem(this);">×</span><input type="hidden" name="productsID[]" value="{{$product->id}}" class="d_input"></li>
                                             @endforeach
+                                            @endif
+                                            @if($categories)
+                                                @foreach($categories as $category)
+                                                     <li>{{$category->name}}<span class="d_id">({{$category->id}})</span><span class="d_btn-del" onclick="return RemoveElem(this);">×</span><input type="hidden" name="productsID[]" value="{{$category->id}}" class="d_input"></li>
+                                                @endforeach
+                                             @endif
                                         </ul>
-                                        @endif
+
                                         </ul>
                                     </div>
                                 </div>
@@ -152,7 +158,7 @@
                     </div>
                     <div class="modal-footer justify-content-between">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary" id="btnChoiceCategories">Выбрать</button>
+                        <button type="button" class="btn btn-primary" id="btnChoiceCategoriesUpdate">Выбрать</button>
                     </div>
                 </div>
                 <!-- /.modal-content -->

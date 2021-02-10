@@ -115,11 +115,8 @@ class DiscountController extends Controller
                 break;
             case 'category':
                 $products = [];
-                //$categories = Category::select('id', 'name', 'parent_id')->find(json_decode($discount->categories, true));
-                //$allCategories = Category::select('id', 'name')->get();
-                //return view('admin.discounts_update', compact('h1', 'discount', 'products', 'categories'));
-                dd($discount->categories);
-                // redirect()->route('discounts.index')->with('success', 'Скидка '.$request->name.' создана');
+                $categories = Category::select('id', 'name')->find(json_decode($discount->categories, true));
+                return view('admin.discounts_update', compact('h1', 'discount', 'products', 'categories'));
                 break;
             }
 
@@ -194,7 +191,35 @@ class DiscountController extends Controller
 
 
 
+    public function goods_update(Request $request){
 
+        $DataCategories = Category::get();
+        $categories = $DataCategories->toTree();
+        $items_id = $request->items_id;
+
+        switch ($request->kind) {
+            case 'goods':
+                $products = Product::orderBy('sort', 'asc')->paginate(2);
+                $categoryId = 0;
+                $products->withPath('/admin/discounts_paginate');
+                return view('admin.ajax.products_update', compact('categoryId','categories', 'products', 'items_id'));
+                break;
+            case 'category':
+                return view('admin.ajax.categories_update', compact('categories', 'items_id'));
+                break;
+
+        }
+
+    }
+
+    public function choice_update(Request $request){
+        $id = $request->id;
+        $DataCategories = Category::descendantsAndSelf($id);
+        $products = Product::whereIn('category_id', $DataCategories->pluck('id'))->orderBy('sort')->paginate(2);
+        $categoryId = $request->id;
+        $products->withPath('/admin/discounts_paginate');
+        return view('admin.ajax.products_choice_update', compact('products', 'categoryId'));
+    }
 
 
 

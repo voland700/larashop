@@ -10,7 +10,7 @@
     @forelse ($products as $product)
         <tr>
             <td>
-                <span class="d_btn btn btn-block  btn-default" data-id="{{ $product->id }}" data-name="{{ $product->name }}"><i class="far fa-check-square fa-sm"></i></span>
+                <span class="d_btn btn btn-block  {{ (in_array($product->id, $items_id)) ? 'btn-success' : 'btn-default' }}" data-id="{{ $product->id }}" data-name="{{ $product->name }}"><i class="far fa-check-square fa-sm"></i></span>
             </td>
             <td>{{ $product->name }}</td>
             <td>{{ $product->id }}</td>

@@ -39,6 +39,13 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin'], function () {
     Route::post('/discounts_goods','DiscountController@goods')->name('discounts_goods');
     Route::post('/discounts_choice','DiscountController@choice')->name('discounts_choice');
 
+    Route::post('/discounts_goods_update','DiscountController@goods_update')->name('discounts_goods_update');
+    Route::post('/discounts_choice_update','DiscountController@choice_update')->name('discounts_choice_update');
+
+
+
+
+
     Route::get('/discounts_paginate','DiscountController@paginate')->name('discounts_paginate');
 
 
