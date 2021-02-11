@@ -689,18 +689,14 @@
                             $('#modal-xl').modal('show');
                             choiceGoods();
                             selectionGoodsUptate();
-                            discountPaginateUpdate();
-
                             document.querySelectorAll('.d_update').forEach(function (item) {
                                 item.addEventListener('click', ChoiceGoodsCategoryUpdate);
-
                             });
 
 
-
-
+                            discountPaginateUpdate();
                             //selectionGoods();
-                            discountPaginate();//OLD- replace/
+                            //discountPaginate();//OLD- replace/
                             break;
                         case 'category':
                             const modalBodyCategories = document.getElementById('modalBodyCategories');
@@ -742,6 +738,7 @@
 
         function selectionGoodsUptate(){
             const GoodsList =document.getElementById('GoodsList');
+
             function createElem(id, name){
                 let li = document.createElement("li");
                 let btn = document.createElement("span");
@@ -802,8 +799,8 @@
                         //location.reload();
                         //console.log(response);
                         DiscountContemt.innerHTML = response;
-                        selectionGoodsUptate;
-                        discountPaginateUpdate;
+                        selectionGoodsUptate();
+                        discountPaginateUpdate();
                     },
                     error: function (response) {
                         console.log(response);
@@ -811,41 +808,40 @@
                 });
         }
 
-        function discountPaginateUpdate() {
-            const DiscountContemt = document.getElementById('DiscountContemt');
-            document.querySelectorAll('.dis_link').forEach(function (item) {
-                item.addEventListener('click', function(e){
+        function discountPaginateUpdate(e) {
+            document.querySelectorAll('.d_pag').forEach(function (item) {
+                item.addEventListener('click', function (e) {
+
+                    const DiscountContemt = document.getElementById('DiscountContemt');
                     e.preventDefault();
-                    const url =e.currentTarget.getAttribute('href');
-                    let params = url.substr(url.indexOf('?')+1).split('&').reduce(function(p,e){
-                            var a = e.split('=');
-                            p[ decodeURIComponent(a[0])] = decodeURIComponent(a[1]);
-                            return p;
-                        },
-                        {}
-                    );
+                    let elem = e.currentTarget;
+                    let category = elem.getAttribute('data-category');
+                    let page = elem.getAttribute('data-page');
                     $.ajax(
                         {
                             url: '{{route('discounts_paginate_update')}}',
                             type: 'POST',
                             data: {
                                 _token: document.getElementById('DiscountsForm').querySelector('[name="_token"]').value,
-                                'page': params.page,
-                                'category': params.category,
+                                'page': page,
+                                'category': category,
                                 itemsId: arrItemsId,
                             },
                             success: function (response) {
                                 DiscountContemt.innerHTML = response;
                                 selectionGoods();
-                                discountPaginateUpdate;
+                                discountPaginateUpdate();
                             },
                             error: function (response) {
                                 console.log(response);
                             }
                         });
-                });
+                    });
             });
         }
+
+
+
 
 
     }
