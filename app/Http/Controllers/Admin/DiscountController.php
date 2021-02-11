@@ -201,28 +201,40 @@ class DiscountController extends Controller
             case 'goods':
                 $products = Product::orderBy('sort', 'asc')->paginate(2);
                 $categoryId = 0;
-                $products->withPath('/admin/discounts_paginate');
+                $products->withPath('/admin/discounts_paginate_update');
                 return view('admin.ajax.products_update', compact('categoryId','categories', 'products', 'items_id'));
                 break;
             case 'category':
                 return view('admin.ajax.categories_update', compact('categories', 'items_id'));
                 break;
-
         }
 
     }
 
     public function choice_update(Request $request){
         $id = $request->id;
+        $items_id = $request->itemsId;
         $DataCategories = Category::descendantsAndSelf($id);
         $products = Product::whereIn('category_id', $DataCategories->pluck('id'))->orderBy('sort')->paginate(2);
         $categoryId = $request->id;
-        $products->withPath('/admin/discounts_paginate');
-        return view('admin.ajax.products_choice_update', compact('products', 'categoryId'));
+        $products->withPath('/admin/discounts_paginate_update');
+
+        return view('admin.ajax.products_choice_update', compact('products', 'categoryId', 'items_id'));
     }
 
 
-
+    public function paginate_update(Request $request){
+        $categoryId = $request->category;
+        $items_id = $request->itemsId;
+        if($categoryId == 0){
+            $products = Product::paginate(2);
+        }else{
+            $DataCategories = Category::descendantsAndSelf($categoryId);
+            $products = Product::whereIn('category_id', $DataCategories->pluck('id'))->orderBy('sort')->paginate(2);
+        }
+        $products->withPath('/admin/discounts_paginate_update');
+        return view('admin.ajax.products_choice_update', compact('products', 'categoryId', 'items_id'));
+    }
 
 
 

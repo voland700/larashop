@@ -5,11 +5,11 @@
 
                 @foreach ($categories as $category)
                     <ul class="d_item">
-                        <li><span class="d_label {{(count($category->children)>0) ? 'd_label-closed'  : 'd_label-none' }}"></span><a href="/" class="d_link" onclick="ChoiceGoodsCategory({{$category->id}}); return false;">{{$category->name}}</a></li>
+                        <li><span class="d_label {{(count($category->children)>0) ? 'd_label-closed'  : 'd_label-none' }}"></span><a href="#" class="d_link d_update" data-id="{{$category->id}}">{{$category->name}}</a></li>
                         @if(count($category->children)>0)
                         <ul class="d_item d_closed">
                             @foreach ($category->children as $childCategory)
-                                @include('admin.ajax.child_categories', ['childCategory' => $childCategory])
+                                @include('admin.ajax.child_categories_update', ['childCategory' => $childCategory])
                             @endforeach
                         </ul>
                         @endif
@@ -40,7 +40,7 @@
                 @endforelse
                 </tbody>
             </table>
-            {{ $products->appends(['category' => $categoryId])->links('admin.ajax.ajax_paginate') }}
+            {{ $products->appends(['category' => $categoryId])->links('admin.ajax.ajax_paginate_update') }}
         </div>
     </div>
 </div>

@@ -1,7 +1,7 @@
 <table class="table table-bordered">
     <thead>
     <tr>
-        <th style="width: 10px"> </th>
+        <th style="width: 10px">777</th>
         <th>Наименование</th>
         <th style="width: 20px">ID</th>
     </tr>
@@ -24,4 +24,4 @@
     @endforelse
     </tbody>
 </table>
-{{ $products->appends(['category' => $categoryId])->links('admin.ajax.ajax_paginate') }}
+{{ $products->appends(['category' => $categoryId])->links('admin.ajax.ajax_paginate_update') }}

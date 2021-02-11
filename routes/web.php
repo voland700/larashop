@@ -47,6 +47,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin'], function () {
 
 
     Route::get('/discounts_paginate','DiscountController@paginate')->name('discounts_paginate');
+    Route::post('/discounts_paginate_update','DiscountController@paginate_update')->name('discounts_paginate_update');
 
 
     Route::post('/category_img','ImgDeleteController@category_img')->name('category_img');

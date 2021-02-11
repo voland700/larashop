@@ -689,8 +689,18 @@
                             $('#modal-xl').modal('show');
                             choiceGoods();
                             selectionGoodsUptate();
+                            discountPaginateUpdate();
+
+                            document.querySelectorAll('.d_update').forEach(function (item) {
+                                item.addEventListener('click', ChoiceGoodsCategoryUpdate);
+
+                            });
+
+
+
+
                             //selectionGoods();
-                            discountPaginate();
+                            discountPaginate();//OLD- replace/
                             break;
                         case 'category':
                             const modalBodyCategories = document.getElementById('modalBodyCategories');
@@ -774,20 +784,72 @@
             getCategories()
         }
 
+        function ChoiceGoodsCategoryUpdate(e) {
+            e.preventDefault();
+            let elem = e.currentTarget;
+            let id = elem.getAttribute('data-id');
+            let DiscountContemt = document.getElementById('DiscountContemt');
+            $.ajax(
+                {
+                    url: '{{route('discounts_choice_update')}}',
+                    type: 'POST',
+                    data: {
+                        _token: document.getElementById('DiscountsForm').querySelector('[name="_token"]').value,
+                        'id': id,
+                        itemsId: arrItemsId,
+                    },
+                    success: function (response) {
+                        //location.reload();
+                        //console.log(response);
+                        DiscountContemt.innerHTML = response;
+                        selectionGoodsUptate;
+                        discountPaginateUpdate;
+                    },
+                    error: function (response) {
+                        console.log(response);
+                    }
+                });
+        }
 
-
-
-
-
-
-
-
-
-
-
+        function discountPaginateUpdate() {
+            const DiscountContemt = document.getElementById('DiscountContemt');
+            document.querySelectorAll('.dis_link').forEach(function (item) {
+                item.addEventListener('click', function(e){
+                    e.preventDefault();
+                    const url =e.currentTarget.getAttribute('href');
+                    let params = url.substr(url.indexOf('?')+1).split('&').reduce(function(p,e){
+                            var a = e.split('=');
+                            p[ decodeURIComponent(a[0])] = decodeURIComponent(a[1]);
+                            return p;
+                        },
+                        {}
+                    );
+                    $.ajax(
+                        {
+                            url: '{{route('discounts_paginate_update')}}',
+                            type: 'POST',
+                            data: {
+                                _token: document.getElementById('DiscountsForm').querySelector('[name="_token"]').value,
+                                'page': params.page,
+                                'category': params.category,
+                                itemsId: arrItemsId,
+                            },
+                            success: function (response) {
+                                DiscountContemt.innerHTML = response;
+                                selectionGoods();
+                                discountPaginateUpdate;
+                            },
+                            error: function (response) {
+                                console.log(response);
+                            }
+                        });
+                });
+            });
+        }
 
 
     }
+
 
 
 
