@@ -672,6 +672,9 @@
         document.querySelectorAll('.d_input').forEach(function (item) {
             arrItemsId.push(Number(item.value));
         });
+
+        console.log(arrItemsId);
+
         $.ajax(
             {
                 url: '{{route('discounts_goods_update')}}',
@@ -738,7 +741,6 @@
 
         function selectionGoodsUptate(){
             const GoodsList =document.getElementById('GoodsList');
-
             function createElem(id, name){
                 let li = document.createElement("li");
                 let btn = document.createElement("span");
@@ -747,6 +749,7 @@
                 input.setAttribute('type', 'hidden');
                 input.setAttribute('name', `productsID[]`);
                 input.setAttribute('value', id);
+                input.className = "d_input";
                 namberId.className = "d_id";
                 namberId.innerText = '['+id+']';
                 btn.className = "d_btn-del";
@@ -759,19 +762,40 @@
                 li.append(namberId);
                 li.append(btn);
                 li.append(input);
-                if(!arrItemsId.includes(id)){
-                    arrItemsId.push(id);
-                    GoodsList.append(li);
-                }
+                GoodsList.append(li);
             }
+
+
             document.querySelectorAll('.d_btn').forEach(function (item) {
                 item.addEventListener('click', function(e){
                     let elem = e.currentTarget;
                     let id = elem.getAttribute('data-id');
                     let name = elem.getAttribute('data-name');
-                    createElem(id, name);
-                    elem.classList.toggle('btn-default');
-                    elem.classList.toggle('btn-success');
+
+
+                    if(elem.classList.contains('btn-default') && !elem.classList.contains('btn-success')){
+                        elem.classList.remove('btn-default');
+                        elem.classList.add('btn-success');
+                        if(!arrItemsId.includes(Number(id))){
+                            arrItemsId.push(Number(id));
+                            createElem(id, name);
+                            //console.log(arrItemsId);
+                            //console.log(arrItemsId.includes(id))
+                        }
+                        return false;
+                    }
+                    if(elem.classList.contains('btn-success') && !elem.classList.contains('btn-default')){
+                        elem.classList.remove('btn-success');
+                        elem.classList.add('btn-default');
+                        if(arrItemsId.includes(Number(id))){
+                            arrItemsId.splice(arrItemsId.indexOf(Number(id)),1);
+                            GoodsList.querySelectorAll('.d_input').forEach(function (item){
+                                if(item.value == id) item.parentNode.remove();
+                                return false;
+                            });
+                            return false;
+                        }
+                    }
                 });
             });
         }
@@ -809,6 +833,10 @@
         }
 
         function discountPaginateUpdate(e) {
+            let arrItemsId = [];
+            document.querySelectorAll('.d_input').forEach(function (item) {
+                arrItemsId.push(Number(item.value));
+            });
             document.querySelectorAll('.d_pag').forEach(function (item) {
                 item.addEventListener('click', function (e) {
 
@@ -829,7 +857,7 @@
                             },
                             success: function (response) {
                                 DiscountContemt.innerHTML = response;
-                                selectionGoods();
+                                selectionGoodsUptate();
                                 discountPaginateUpdate();
                             },
                             error: function (response) {
@@ -839,11 +867,6 @@
                     });
             });
         }
-
-
-
-
-
     }
 
 

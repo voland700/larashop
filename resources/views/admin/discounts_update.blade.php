@@ -24,7 +24,7 @@
                 </div>
             @endif
 
-            <form role="form" action="{{ route('discounts.store') }}" method="post" id="DiscountsForm" enctype="multipart/form-data">
+            <form role="form" action="{{ route('discounts.update', $discount->id) }}" method="post" id="DiscountsForm" enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
                 <div class="row">
@@ -120,7 +120,7 @@
                     </div>
                </div> <!-- ./card -->
              </div>
-                <button type="submit" class="btn btn-primary mt-3 mb-5 ml-3">Создать</button>
+                <button type="submit" class="btn btn-primary mt-3 mb-5 ml-3">Обновить</button>
              </div>
         </form>
     </div>

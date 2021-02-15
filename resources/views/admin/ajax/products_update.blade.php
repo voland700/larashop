@@ -40,6 +40,9 @@
                 @endforelse
                 </tbody>
             </table>
+
+
+
             {{ $products->appends(['category' => $categoryId])->links('admin.ajax.ajax_paginate_update') }}
         </div>
     </div>

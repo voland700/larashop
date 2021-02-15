@@ -9,6 +9,10 @@ use App\Models\Discount;
 use App\Models\Product;
 use Illuminate\Http\Request;
 
+
+
+use Illuminate\Support\Arr;
+
 class DiscountController extends Controller
 {
     /**
@@ -135,7 +139,40 @@ class DiscountController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+
+        $messages = [
+            'name.required' => 'Поле "Наименование скидки" обязательно для заполнения',
+            'value.required' => 'Укажите значение размера скидки',
+            'value.integer' => 'Размер скидки должен быть целым числом',
+        ];
+        $this->validate($request, [
+            'name' => 'required',
+            'value' => 'required|integer',
+        ],$messages);
+        $data = $request->all();
+        $data['categories'] = ($request->kind=='category') ? json_encode($request->productsID) : NULL;
+        $discount = Discount::find($id);
+
+        switch ($request->kind) {
+            case 'goods':
+                //$products = Product::find($request->productsID);
+                $discount->product()->sync($request->productsID);
+           // dd($request->productsID);
+            case 'category':
+                $arrProductsId = [];
+                foreach ($request->productsID as $item){
+                    $DataCategories = Category::descendantsAndSelf($item);
+                    $arrProductsId = array_merge($arrProductsId, Product::whereIn('category_id', $DataCategories->pluck('id'))->select('id')->get()->toArray());
+                }
+                $productsID =array_unique($arrProductsId, SORT_REGULAR);
+                $discount->product()->sync(Arr::flatten($productsID));
+        }
+
+        $discount->update($data);
+        return redirect()->route('discounts.index')->with('success', 'Данные скидки обновлены');
+        //dd($request->productsID);
+
+
     }
 
     /**
@@ -146,7 +183,16 @@ class DiscountController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $discount = Discount::with('product')->find($id);
+        //$discount->detach($discount->product);
+
+        //$discount->delete();
+        //return redirect()->route('discounts.index')->with('success', 'Скидка удалена');
+
+
+
+
+        dd($discount->product);
     }
 
 
@@ -227,7 +273,7 @@ class DiscountController extends Controller
         $categoryId = $request->category;
         $items_id = $request->itemsId;
         if($categoryId == 0){
-            $products = Product::paginate(2);
+            $products = Product::orderBy('sort')->paginate(2);
         }else{
             $DataCategories = Category::descendantsAndSelf($categoryId);
             $products = Product::whereIn('category_id', $DataCategories->pluck('id'))->orderBy('sort')->paginate(2);
