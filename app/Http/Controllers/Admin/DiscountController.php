@@ -4,13 +4,9 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Category;
-use App\Models\Currency;
 use App\Models\Discount;
 use App\Models\Product;
 use Illuminate\Http\Request;
-
-
-
 use Illuminate\Support\Arr;
 
 class DiscountController extends Controller
@@ -81,13 +77,6 @@ class DiscountController extends Controller
                 return redirect()->route('discounts.index')->with('success', 'Скидка '.$request->name.' создана');
                 break;
         }
-
-
-
-
-
-
-
     }
 
     /**
@@ -123,11 +112,6 @@ class DiscountController extends Controller
                 return view('admin.discounts_update', compact('h1', 'discount', 'products', 'categories'));
                 break;
             }
-
-
-
-
-        //dd($discount->categories);
     }
 
     /**
@@ -152,12 +136,10 @@ class DiscountController extends Controller
         $data = $request->all();
         $data['categories'] = ($request->kind=='category') ? json_encode($request->productsID) : NULL;
         $discount = Discount::find($id);
-
         switch ($request->kind) {
             case 'goods':
-                //$products = Product::find($request->productsID);
-                $discount->product()->sync($request->productsID);
-           // dd($request->productsID);
+                $productsID = array_map('intval', $request->productsID);
+                $discount->product()->sync($productsID);
             case 'category':
                 $arrProductsId = [];
                 foreach ($request->productsID as $item){
@@ -167,11 +149,8 @@ class DiscountController extends Controller
                 $productsID =array_unique($arrProductsId, SORT_REGULAR);
                 $discount->product()->sync(Arr::flatten($productsID));
         }
-
         $discount->update($data);
         return redirect()->route('discounts.index')->with('success', 'Данные скидки обновлены');
-        //dd($request->productsID);
-
 
     }
 
@@ -183,18 +162,11 @@ class DiscountController extends Controller
      */
     public function destroy($id)
     {
-        $discount = Discount::with('product')->find($id);
-        //$discount->detach($discount->product);
-
-        //$discount->delete();
-        //return redirect()->route('discounts.index')->with('success', 'Скидка удалена');
-
-
-
-
-        dd($discount->product);
+        $discount = Discount::find($id);
+        $discount->product()->sync([]);
+        $discount->delete();
+        return redirect()->route('discounts.index')->with('success', 'Скидка удалена');
     }
-
 
     public function goods(Request $request)
     {
@@ -235,14 +207,10 @@ class DiscountController extends Controller
         return view('admin.ajax.products_choice', compact('products', 'categoryId'));
     }
 
-
-
     public function goods_update(Request $request){
-
         $DataCategories = Category::get();
         $categories = $DataCategories->toTree();
         $items_id = $request->items_id;
-
         switch ($request->kind) {
             case 'goods':
                 $products = Product::orderBy('sort', 'asc')->paginate(2);
@@ -264,10 +232,8 @@ class DiscountController extends Controller
         $products = Product::whereIn('category_id', $DataCategories->pluck('id'))->orderBy('sort')->paginate(2);
         $categoryId = $request->id;
         $products->withPath('/admin/discounts_paginate_update');
-
         return view('admin.ajax.products_choice_update', compact('products', 'categoryId', 'items_id'));
     }
-
 
     public function paginate_update(Request $request){
         $categoryId = $request->category;
@@ -281,8 +247,5 @@ class DiscountController extends Controller
         $products->withPath('/admin/discounts_paginate_update');
         return view('admin.ajax.products_choice_update', compact('products', 'categoryId', 'items_id'));
     }
-
-
-
 
 }

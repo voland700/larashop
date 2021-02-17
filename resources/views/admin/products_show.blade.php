@@ -31,6 +31,12 @@
                                 </tr>
                             </thead>
                             <tbody>
+                            @if($id !== null)
+                            <tr>
+                                <td class="text-center"><a href="{{ route('catalog_list', $parentId) }}"><i class="fas fa-arrow-alt-circle-left"></i></a></td>
+                                <td colspan="5"></td>
+                            </tr>
+                            @endif
                                 @php
                                     function active($type){
                                     if($type) {
@@ -38,7 +44,6 @@
                                     } else {
                                         return '<i class="text-danger fas fa-ban"></i>';
                                     }}
-
 
                                     $traverse = function ($categories, $prefix = '&#8212;&#8194;') use (&$traverse) {
                                     foreach ($categories as $category) {

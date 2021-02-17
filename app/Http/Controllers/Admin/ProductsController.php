@@ -227,26 +227,20 @@ class ProductsController extends Controller
     public function list($id=NULL)
     {
         $h1 = 'Редактирование товаров каталога';
-        $DataCategories = ($id) ? Category::descendantsAndSelf($id) :  Category::get();
+        if($id){
+            $DataCategories = Category::descendantsAndSelf($id);
+            $parentId = Category::find($id)->parent_id;
+        }else{
+            $DataCategories = Category::get();
+            $parentId = null;
+        }
         $categories = $DataCategories->toTree();
         if($id) {
             $products = Product::whereIn('category_id', $DataCategories->pluck('id'))->orderBy('sort')->paginate(20);
         } else {
             $products = Product::orderBy('sort', 'asc')->paginate(20);
         }
-
-
-
-
-
-        return view('admin.products_show', compact('h1', 'categories', 'products','id'));
-        //dd($DataCategories);
-
-
-
-
-
-
+        return view('admin.products_show', compact('h1', 'categories', 'products','id', 'parentId'));
     }
 
 
@@ -285,13 +279,4 @@ class ProductsController extends Controller
         $product->delete();
         return redirect()->route('catalog_list', $category )->with('success', 'Данные товара удалены');
     }
-
-
-
-
-
-
-
-
-
 }
