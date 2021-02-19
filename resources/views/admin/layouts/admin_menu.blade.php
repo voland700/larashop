@@ -1,10 +1,17 @@
+
+
+
+
+
+<ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+    <li class="nav-header">КАТАЛОГ</li>
 <li class="nav-item has-treeview">
     <a class="nav-link" id="Catalog">
-        <i class="nav-icon far fa-folder"></i><p>Каталог<i class="right fas fa-angle-left"></i></p>
+        <i class="nav-icon far fa-folder"></i><p>Товары<i class="right fas fa-angle-left"></i></p>
     </a>
     <ul class="ul_menu">
         <li class="has_children"><span class="m_label m_closed"></span>
-            <a href="/admin/catalog_list/" class="m_main_link"><i class="far fa-folder fa-lg"></i>Каталог товаров</a>
+            <a href="/admin/catalog_list/" class="m_main_link"><i class="far fa-folder fa-lg"></i>Разделы каталога</a>
             <ul class="ul_in">
             @foreach ($categories as $category)
             <li><span class="m_label {{(count($category->children)>0) ? 'm_closed'  : 'm_none' }}"></span>
@@ -47,3 +54,36 @@
         <p>Скидки</p>
     </a>
 </li>
+    <li class="nav-header">КОНТЕНТ</li>
+
+    <li class="nav-item has-treeview">
+        <a href="#" class="nav-link">
+            <i class="nav-icon far fa-image"></i>
+            <p>
+                Слайдер
+                <i class="fas fa-angle-left right"></i>
+            </p>
+        </a>
+        <ul class="nav nav-treeview" style="display: none;">
+
+            <li class="nav-item">
+                <a href="{{route('sliders.index')}}" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Слайды</p>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="{{route('sliders.create')}}" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Создать слайд</p>
+                </a>
+            </li>
+        </ul>
+    </li>
+
+
+
+
+
+
+</ul>
