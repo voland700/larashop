@@ -65,7 +65,7 @@
                                         <div class="product_img_inner">
                                             <img src="{{asset($slide->img)}}" alt="{{$slide->name}}" class="product_img">
                                             @if($slide->img)
-                                                <a href="{{route('img_remove')}}" data-id="{{$slide->id}}" data-type="img" class="product_img_btn" onclick="imgRemove(event);"><i class="fas fa-times"></i></a>
+                                                <a href="{{route('slide_remove')}}" data-id="{{$slide->id}}" class="product_img_btn" id="slideImg" onclick="slideRemove(event);"><i class="fas fa-times"></i></a>
                                             @endif
                                         </div>
                                     </div>

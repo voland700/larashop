@@ -62,6 +62,7 @@ class SliderController extends Controller
             $slide->img = 'storage'.$path_to.'/'.$fileName;
         }
         $slide->save();
+        return redirect()->route('sliders.index')->with('success', 'Слайд создан');
     }
 
     /**

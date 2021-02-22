@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Image;
 use App\Models\Product;
+use App\Models\Slider;
 use Illuminate\Http\Request;
 use App\Models\Category;
 use Illuminate\Support\Str;
@@ -62,6 +63,7 @@ class ImgDeleteController extends Controller
                 Storage::disk('public')->delete(str_replace('storage', '', $image->thumbnail));
             }
         }
-        $images->delete();
+        //$images->delete();
     }
+
 }

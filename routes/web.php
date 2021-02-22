@@ -55,6 +55,10 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin'], function () {
     Route::post('/product_image_remove', 'ImgDeleteController@imageProductRemove')->name('image_remove');
     Route::post('/product_image_all_remove', 'ImgDeleteController@imageAllProductRemove')->name('image_all_remove');
 
+
+
+    Route::post('/slide_remove', 'ImgDeleteController@slideRemove')->name('slide_remove');
+
     Route::resource('attributes', AttributesController::class);
     Route::resource('categories', CategoryController::class);
     Route::resource('products', ProductsController::class);

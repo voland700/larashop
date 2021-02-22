@@ -395,7 +395,7 @@
     function imageAllRemove(elem) {
         elem.preventDefault();
         let item = elem.currentTarget;
-        let parentImages = document.querySelectorAll('.product_photo');
+        let parentImg = item.parentNode.querySelector('.product_photo');
         $.ajax(
             {
                 url: item.href,
@@ -415,6 +415,30 @@
                 }
             });
     }
+
+    //Удаление IMG - слайда
+    function slideRemove(elem){
+        elem.preventDefault();
+        let item = elem.currentTarget;
+        let parentImg = item.parentNode.querySelector('.product_img');
+        $.ajax(
+            {
+                url: item.href,
+                type: 'POST',
+                data: {
+                    _token: document.getElementById('SlidersForm').querySelector('[name="_token"]').value,
+                    'id': item.getAttribute('data-id')
+                },
+                success: function (response) {
+                    //console.log(response);
+                    parentImg.style.opacity = 0.4;
+                },
+                error: function (response) {
+                    console.log(response);
+                }
+            });
+    }
+
 
     //Меню каталога
     document.getElementById('Catalog').addEventListener('click', function (elem) {
