@@ -64,7 +64,7 @@
                                     <div class="product_img_wrup  mb-3" style="justify-content: flex-start;">
                                         <div class="product_img_inner">
                                             <img src="{{asset($slide->img)}}" alt="{{$slide->name}}" class="product_img">
-                                            @if($slide->img)
+                                            @if($slide->img && $slide->btn)
                                                 <a href="{{route('slide_remove')}}" data-id="{{$slide->id}}" class="product_img_btn" id="slideImg" onclick="slideRemove(event);"><i class="fas fa-times"></i></a>
                                             @endif
                                         </div>
@@ -98,12 +98,10 @@
                                     </div>
                                 </div>
 
-
                                 <div class="form-group">
                                     <label for="text">Текст на слайде</label>
                                     <textarea class="form-control" name="text" rows="3" placeholder="Текст на слайде">{{ $slide->text }}</textarea>
                                 </div>
-
 
                             </div>
 
@@ -118,7 +116,7 @@
                     </div>
                </div> <!-- ./card -->
              </div>
-                <button type="submit" class="btn btn-primary mt-3 mb-5 ml-3">Создать</button>
+                <button type="submit" class="btn btn-primary mt-3 mb-5 ml-3">Обновить</button>
              </div>
         </form>
     </div>

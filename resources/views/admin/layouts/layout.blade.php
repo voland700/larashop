@@ -225,6 +225,10 @@
 <script src="{{ asset('assets/admin/plugins/ckeditor5/build/ckeditor.js') }}"></script>
 <script src="{{ asset('assets/admin/plugins/ckfinder/ckfinder.js') }}"></script>
 <script>
+    $(document).ready(function () {
+        bsCustomFileInput.init();
+    });
+
     document.querySelectorAll('.delete').forEach(function (item) {
         item.addEventListener('click', modalShow);
     })
@@ -420,7 +424,7 @@
     function slideRemove(elem){
         elem.preventDefault();
         let item = elem.currentTarget;
-        let parentImg = item.parentNode.querySelector('.product_img');
+        let parentElem = item.parentNode;
         $.ajax(
             {
                 url: item.href,
@@ -431,14 +435,15 @@
                 },
                 success: function (response) {
                     //console.log(response);
-                    parentImg.style.opacity = 0.4;
+                    document.getElementById('img').setAttribute('value', '');
+                    parentElem.querySelector('.product_img').setAttribute('src', '/img/general/no-slide.jpg');
+                   document.getElementById('slideImg').style.display = 'none';
                 },
                 error: function (response) {
                     console.log(response);
                 }
             });
     }
-
 
     //Меню каталога
     document.getElementById('Catalog').addEventListener('click', function (elem) {

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Slider;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 class SliderController extends Controller
@@ -86,6 +87,7 @@ class SliderController extends Controller
     {
         $h1 = 'Редактирование слайда';
         $slide = Slider::find($id);
+        $slide->btn = ($slide->img == 'img/general/no-slide.jpg') ? false : true;
         return view('admin.sliders_update', compact('h1',  'slide'));
     }
 
@@ -98,7 +100,35 @@ class SliderController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $slide = Slider::find($id);
+        $data = $request->all();
+        if ($request->hasFile('img')) {
+            $messages = [
+                'img.required' => 'Картинка для слайда - обязательно',
+                'img.image' => 'Картинка для слайда - должна быть файлом c изображением',
+                'img.mimes' => 'Фал с изображением должен иметь расширение: jpeg,jpg,bmp,png',
+                'img.size' => 'Размер изображения не должен превышать 2 мб.',
+                'sort.integer' => 'Номер сортровки должен быть целым числом',
+            ];
+            $this->validate($request, [
+                'img' => 'required|image|mimes:jpeg,jpg,bmp,png|nullable',
+                'img.size' => '2048|nullable',
+                'sort' => 'integer|nullable',
+            ],$messages);
+            if (Storage::disk('public')->exists(str_replace('storage', '', $slide->img))){
+                Storage::disk('public')->delete(str_replace('storage', '', $slide->img));
+            }
+            $image = $request->file('img');
+            $fileName =  time().'_'.Str::lower(Str::random(5)).'.'.$image->getClientOriginalExtension();
+            $path_to = '/upload/images/'.getfolderName();
+            $image->storeAs('public'.$path_to, $fileName);
+            $data['img'] = 'storage'.$path_to.'/'.$fileName;
+        }
+        $slide->update($data);
+        return redirect()->route('sliders.index')->with('success', 'Слайд обнавлен');
+
+
+        //dd($request->all());
     }
 
     /**
@@ -109,6 +139,10 @@ class SliderController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $slide = Slider::find($id);
+        if (Storage::disk('public')->exists(str_replace('storage', '', $slide->img))){
+            Storage::disk('public')->delete(str_replace('storage', '', $slide->img));
+        }
+        return redirect()->route('sliders.index')->with('success', 'Слайд удалён');
     }
 }

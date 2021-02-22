@@ -63,7 +63,22 @@ class ImgDeleteController extends Controller
                 Storage::disk('public')->delete(str_replace('storage', '', $image->thumbnail));
             }
         }
-        //$images->delete();
+        $images->delete();
     }
+
+    public function slideRemove(Request $request)
+    {
+        $slide = Slider::find($request->id);
+        if (Storage::disk('public')->exists(str_replace('storage', '', $slide->img))){
+            Storage::disk('public')->delete(str_replace('storage', '', $slide->img));
+        }
+        $slide->img = 'img/general/no-slide.jpg';
+        $slide->save();
+    }
+
+
+
+
+
 
 }

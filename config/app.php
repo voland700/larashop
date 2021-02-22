@@ -178,6 +178,8 @@ return [
         App\Providers\FortifyServiceProvider::class,
         Intervention\Image\ImageServiceProvider::class,
 
+        Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
+
 
     ],
 

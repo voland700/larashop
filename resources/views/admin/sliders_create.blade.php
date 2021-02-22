@@ -59,7 +59,7 @@
 
 
                                 <div class="form-group col-md-6">
-                                    <label for="exampleInputFile">Изображение слайда</label>
+                                    <label for="img">Изображение слайда</label>
                                     <div class="input-group">
                                         <div class="custom-file">
                                             <input type="file" name="img" value="{{ old('img') }}" class="custom-file-input @error('img') is-invalid @enderror" id="img">
