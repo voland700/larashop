@@ -3,6 +3,14 @@
 <title>{{ config('app.name', 'Laravel') }}</title>
 @endsection
 @section('content')
+
+
+
+
+
+
+
+
 <div class="uk-flex uk-flex-center uk-flex-middle" style="min-height: calc(100vh - 161px);">
     <div class="">
         <h1 class="uk-heading-medium uk-text-muted uk-text-uppercase">{{ config('app.name', 'Laravel') }}</h1>

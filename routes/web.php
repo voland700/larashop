@@ -63,6 +63,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin'], function () {
     Route::resource('categories', CategoryController::class);
     Route::resource('products', ProductsController::class);
     Route::resource('discounts', DiscountController::class);
+    Route::resource('banners', BannerController::class);
 
     Route::resource('sliders', SliderController::class);
 

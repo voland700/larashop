@@ -78,6 +78,27 @@
                     <p>Создать слайд</p>
                 </a>
             </li>
+
+
+            <li class="nav-item">
+                <a href="{{route('banners.index')}}" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Банеры слайдера</p>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="{{route('banners.create')}}" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Создать банер</p>
+                </a>
+            </li>
+
+
+
+
+
+
+
         </ul>
     </li>
 
