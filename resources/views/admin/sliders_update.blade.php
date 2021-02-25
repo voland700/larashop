@@ -54,32 +54,50 @@
 
 
                                 <div class="form-group col-md-12">
-                                    <label for="name">Название, заголовок слйда</label>
+                                    <label for="name">Название, заголовок слйда</label><code>*</code>
                                     <input type="text" class="form-control name="name" value="{{$slide->name}}">
                                 </div>
 
+                                <div class="row">
 
-                                <div class="form-group col-md-6">
-                                    <label for="exampleInputFile">Изображение слайда</label>
-                                    <div class="product_img_wrup  mb-3" style="justify-content: flex-start;">
-                                        <div class="product_img_inner">
-                                            <img src="{{asset($slide->img)}}" alt="{{$slide->name}}" class="product_img">
-                                            @if($slide->img && $slide->btn)
-                                                <a href="{{route('slide_remove')}}" data-id="{{$slide->id}}" class="product_img_btn" id="slideImg" onclick="slideRemove(event);"><i class="fas fa-times"></i></a>
-                                            @endif
+                                    <div class="form-group col-md-6">
+                                        <label for="exampleInputFile">Основное изображение - фон</label><code>*</code>
+                                        <div class="slider_img_wrup">
+                                            <div class="slider_img_inner">
+                                                <img src="{{asset($slide->background)}}" alt="{{$slide->name}}" class="slider_img">
+                                                @if($slide->background !== 'img/general/no-slide.jpg')
+                                                    <a href="{{route('slide_remove')}}" data-id="{{$slide->id}}" data-type="background" class="product_img_btn" id="slideBackground" onclick="slideRemove(event);"><i class="fas fa-times"></i></a>
+                                                @endif
+                                            </div>
+                                        </div>
+
+                                        <div class="input-group">
+                                            <div class="custom-file">
+                                                <input type="file" name="background" value="{{ $slide->background }}" class="custom-file-input @error('background') is-invalid @enderror" id="background">
+                                                <label class="custom-file-label" for="background">Choose file</label>
+                                            </div>
                                         </div>
                                     </div>
 
+                                    <div class="form-group col-md-6">
+                                        <label for="exampleInputFile">Изображение слайда</label>
+                                        <div class="slider_img_wrup">
+                                            <div class="slider_img_inner">
+                                                @if($slide->img)
+                                                <img src="{{asset($slide->img)}}" alt="{{$slide->name}}" class="slider_img">
+                                                <a href="{{route('slide_remove')}}" data-id="{{$slide->id}}" data-type="img" class="product_img_btn" id="slideImg" onclick="slideRemove(event);"><i class="fas fa-times"></i></a>
+                                                @endif
+                                            </div>
+                                        </div>
 
-
-                                    <div class="input-group">
-                                        <div class="custom-file">
-                                            <input type="file" name="img" value="{{ $slide->img }}" class="custom-file-input @error('img') is-invalid @enderror" id="img">
-                                            <label class="custom-file-label" for="img">Choose file</label>
+                                        <div class="input-group">
+                                            <div class="custom-file">
+                                                <input type="file" name="img" value="{{ $slide->img }}" class="custom-file-input @error('img') is-invalid @enderror" id="img">
+                                                <label class="custom-file-label" for="img">Choose file</label>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-
 
                                 <div class="row">
                                     <div class="form-group col-md-6">
@@ -87,13 +105,6 @@
                                         <select name="color" class="form-control">
                                             <option value="slider_dark" {{ ($slide->color == 'slider_dark')? 'selected' : ''}}>Темный</option>
                                             <option value="slider_light" {{ ($slide->color == 'slider_light')? 'selected' : ''}}>Светлый</option>
-                                        </select>
-                                    </div>
-                                    <div class="form-group col-md-6">
-                                        <label for="position">Расположен на слайде</label>
-                                        <select name="position" class="form-control">
-                                            <option value="slider_left" {{ ($slide->position == 'slider_left')? 'selected' : ''}}>Слева</option>
-                                            <option value="slider_right" {{ ($slide->position == 'slider_right')? 'selected' : ''}}>Справа</option>
                                         </select>
                                     </div>
                                 </div>

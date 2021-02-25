@@ -42,7 +42,7 @@
                                 <div class="form-group">
                                     <div class="form-check">
                                         <input class="form-check-input" name="active" id="active" value="1" type="checkbox" checked="" onchange="checkboxToggle()">
-                                        <label class="form-check-label" for="active">Скидка активна</label>
+                                        <label class="form-check-label" for="active">Слайд активен</label>
                                     </div>
                                 </div>
 
@@ -53,17 +53,27 @@
 
 
                                 <div class="form-group col-md-12">
-                                    <label for="name">Название, заголовок слйда</label>
+                                    <label for="name">Название, заголовок слйда</label><code>*</code>
                                     <input type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" placeholder="Наименование скидки" required>
                                 </div>
+                                <div class="row">
+                                    <div class="form-group col-md-6">
+                                        <label for="img">Основное изображение - фон</label><code>*</code>
+                                        <div class="input-group">
+                                            <div class="custom-file">
+                                                <input type="file" name="background" value="{{ old('background') }}" class="custom-file-input @error('background') is-invalid @enderror" id="background">
+                                                <label class="custom-file-label" for="background">Choose file</label>
+                                            </div>
+                                        </div>
+                                    </div>
 
-
-                                <div class="form-group col-md-6">
-                                    <label for="img">Изображение слайда</label>
-                                    <div class="input-group">
-                                        <div class="custom-file">
-                                            <input type="file" name="img" value="{{ old('img') }}" class="custom-file-input @error('img') is-invalid @enderror" id="img">
-                                            <label class="custom-file-label" for="img">Choose file</label>
+                                    <div class="form-group col-md-6">
+                                        <label for="img">Доплнительное Изображение слайда</label>
+                                        <div class="input-group">
+                                            <div class="custom-file">
+                                                <input type="file" name="img" value="{{ old('img') }}" class="custom-file-input @error('img') is-invalid @enderror" id="img">
+                                                <label class="custom-file-label" for="img">Choose file</label>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -73,17 +83,15 @@
                                     <div class="form-group col-md-6">
                                         <label for="color">Цвет текста</label>
                                         <select name="color" class="form-control">
-                                            <option value="slider_dark">Темный</option>
-                                            <option value="slider_light">Светлый</option>
+                                            <option value="txt-black">Темный</option>
+                                            <option value="txt-white">Светлый</option>
                                         </select>
                                     </div>
-                                    <div class="form-group col-md-6">
-                                        <label for="position">Расположен на слайде</label>
-                                        <select name="position" class="form-control">
-                                            <option value="slider_left">Слева</option>
-                                            <option value="slider_right">Справа</option>
-                                        </select>
-                                    </div>
+                                </div>
+
+                                <div class="form-group col-md-12">
+                                    <label for="link">Сылка для перехода</label>
+                                    <input type="text" class="form-control  name="link" value="{{ old('link') }}" placeholder="Укажите ссылку">
                                 </div>
 
 

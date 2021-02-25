@@ -69,10 +69,18 @@ class ImgDeleteController extends Controller
     public function slideRemove(Request $request)
     {
         $slide = Slider::find($request->id);
-        if (Storage::disk('public')->exists(str_replace('storage', '', $slide->img))){
-            Storage::disk('public')->delete(str_replace('storage', '', $slide->img));
+        if($request->type == 'background'){
+            if (Storage::disk('public')->exists(str_replace('storage', '', $slide->background))){
+                Storage::disk('public')->delete(str_replace('storage', '', $slide->background));
+            }
+            $slide->background = 'img/general/no-slide.jpg';
         }
-        $slide->img = 'img/general/no-slide.jpg';
+        if($request->type == 'img'){
+            if (Storage::disk('public')->exists(str_replace('storage', '', $slide->img))){
+                Storage::disk('public')->delete(str_replace('storage', '', $slide->img));
+            }
+            $slide->img = null;
+        }
         $slide->save();
     }
 

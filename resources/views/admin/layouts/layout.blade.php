@@ -425,24 +425,44 @@
         elem.preventDefault();
         let item = elem.currentTarget;
         let parentElem = item.parentNode;
+        let img = parentElem.querySelector('.slider_img');
+        let type = item.getAttribute('data-type');
+
+
+
+        document.getElementById('background').setAttribute('value', '');
+
+        //console.log(img);
+
+
+
         $.ajax(
             {
                 url: item.href,
                 type: 'POST',
                 data: {
                     _token: document.getElementById('SlidersForm').querySelector('[name="_token"]').value,
-                    'id': item.getAttribute('data-id')
+                    'id': item.getAttribute('data-id'),
+                    'type': type
                 },
                 success: function (response) {
-                    //console.log(response);
-                    document.getElementById('img').setAttribute('value', '');
-                    parentElem.querySelector('.product_img').setAttribute('src', '/img/general/no-slide.jpg');
-                   document.getElementById('slideImg').style.display = 'none';
+                    console.log(response);
+                    if(type == 'background'){
+                        document.getElementById('background').setAttribute('value', '');
+                        img.setAttribute('src', '/img/general/no-slide.jpg');
+                        item.remove();
+                    }
+                    if(type == 'img'){
+                        document.getElementById('img').setAttribute('value', '');
+                        item.remove();
+                        img.remove();
+                    }
                 },
                 error: function (response) {
                     console.log(response);
                 }
             });
+
     }
 
     //Меню каталога

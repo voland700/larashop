@@ -44,17 +44,28 @@ class SliderController extends Controller
         $slide = new Slider($request->all());
 
         $messages = [
-            'img.required' => 'Картинка для слайда - обязательно',
+            'background.required' => 'Основная картинка для слайда - обязательна',
+            'background.image' => 'Картинка для слайда - должна быть файлом c изображением',
+            'background.mimes' => 'Фал с изображением должен иметь расширение: jpeg,jpg,bmp,png',
+            'background.size' => 'Размер изображения не должен превышать 2 мб.',
             'img.image' => 'Картинка для слайда - должна быть файлом c изображением',
-            'img.mimes' => 'Фал с изображением должен иметь расширение: jpeg,jpg,bmp,png',
             'img.size' => 'Размер изображения не должен превышать 2 мб.',
-            'sort.integer' => 'Номер сортровки должен быть целым числом',
+            'sort.integer' => 'Номер сортровки должен быть целым числом'
         ];
         $this->validate($request, [
-            'img' => 'required|image|mimes:jpeg,jpg,bmp,png|nullable',
+            'img' => 'image|mimes:jpeg,jpg,bmp,png|nullable',
             'img.size' => '2048|nullable',
-            'sort' => 'integer|nullable',
+            'background' => 'required|image|mimes:jpeg,jpg,bmp,png|nullable',
+            'background.size' => '2048|nullable',
+            'sort' => 'integer|nullable'
         ],$messages);
+        if($request->hasFile('background')) {
+            $image = $request->file('background');
+            $fileName =  time().'_'.Str::lower(Str::random(5)).'.'.$image->getClientOriginalExtension();
+            $path_to = '/upload/images/'.getfolderName();
+            $image->storeAs('public'.$path_to, $fileName);
+            $slide->background = 'storage'.$path_to.'/'.$fileName;
+        }
         if($request->hasFile('img')) {
             $image = $request->file('img');
             $fileName =  time().'_'.Str::lower(Str::random(5)).'.'.$image->getClientOriginalExtension();
@@ -62,6 +73,7 @@ class SliderController extends Controller
             $image->storeAs('public'.$path_to, $fileName);
             $slide->img = 'storage'.$path_to.'/'.$fileName;
         }
+
         $slide->save();
         return redirect()->route('sliders.index')->with('success', 'Слайд создан');
     }
@@ -89,6 +101,8 @@ class SliderController extends Controller
         $slide = Slider::find($id);
         $slide->btn = ($slide->img == 'img/general/no-slide.jpg') ? false : true;
         return view('admin.sliders_update', compact('h1',  'slide'));
+
+        //dd($slide);
     }
 
     /**
@@ -103,18 +117,6 @@ class SliderController extends Controller
         $slide = Slider::find($id);
         $data = $request->all();
         if ($request->hasFile('img')) {
-            $messages = [
-                'img.required' => 'Картинка для слайда - обязательно',
-                'img.image' => 'Картинка для слайда - должна быть файлом c изображением',
-                'img.mimes' => 'Фал с изображением должен иметь расширение: jpeg,jpg,bmp,png',
-                'img.size' => 'Размер изображения не должен превышать 2 мб.',
-                'sort.integer' => 'Номер сортровки должен быть целым числом',
-            ];
-            $this->validate($request, [
-                'img' => 'required|image|mimes:jpeg,jpg,bmp,png|nullable',
-                'img.size' => '2048|nullable',
-                'sort' => 'integer|nullable',
-            ],$messages);
             if (Storage::disk('public')->exists(str_replace('storage', '', $slide->img))){
                 Storage::disk('public')->delete(str_replace('storage', '', $slide->img));
             }
@@ -124,11 +126,20 @@ class SliderController extends Controller
             $image->storeAs('public'.$path_to, $fileName);
             $data['img'] = 'storage'.$path_to.'/'.$fileName;
         }
+
+        if ($request->hasFile('background')) {
+
+            if (Storage::disk('public')->exists(str_replace('storage', '', $slide->background))){
+                Storage::disk('public')->delete(str_replace('storage', '', $slide->background));
+            }
+            $image = $request->file('background');
+            $fileName =  time().'_'.Str::lower(Str::random(5)).'.'.$image->getClientOriginalExtension();
+            $path_to = '/upload/images/'.getfolderName();
+            $image->storeAs('public'.$path_to, $fileName);
+            $data['background'] = 'storage'.$path_to.'/'.$fileName;
+        }
         $slide->update($data);
         return redirect()->route('sliders.index')->with('success', 'Слайд обнавлен');
-
-
-        //dd($request->all());
     }
 
     /**
@@ -143,6 +154,10 @@ class SliderController extends Controller
         if (Storage::disk('public')->exists(str_replace('storage', '', $slide->img))){
             Storage::disk('public')->delete(str_replace('storage', '', $slide->img));
         }
+        if (Storage::disk('public')->exists(str_replace('storage', '', $slide->background))){
+            Storage::disk('public')->delete(str_replace('storage', '', $slide->background));
+        }
+        $slide->delete();
         return redirect()->route('sliders.index')->with('success', 'Слайд удалён');
     }
 }

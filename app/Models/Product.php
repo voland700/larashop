@@ -56,9 +56,24 @@ class Product extends Model
     {
         return $this->hasMany(Image::class);
     }
+
     public function discount()
     {
         return $this->belongsToMany(Discount::class);
+    }
+
+    public function brand()
+    {
+        return $this->belongsTo(Brand::class);
+    }
+
+    public function advantages()
+    {
+        return $this->belongsToMany(Advantage::class);
+    }
+    public function categories()
+    {
+        return $this->belongsToMany(Category::class);
     }
 
     //Accessors

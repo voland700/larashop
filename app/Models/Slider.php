@@ -15,6 +15,7 @@ class Slider extends Model
         'img',
         'text',
         'position',
-        'color'
+        'color',
+        'background'
     ];
 }
