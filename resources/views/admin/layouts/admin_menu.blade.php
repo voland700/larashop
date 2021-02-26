@@ -54,6 +54,19 @@
         <p>Скидки</p>
     </a>
 </li>
+<li class="nav-item">
+    <a href="{{route('brands.index')}}" class="nav-link">
+        <i class="nav-icon fas fa-cogs"></i>
+        <p>Производители</p>
+    </a>
+</li>
+<li class="nav-item">
+    <a href="{{route('brands.index')}}" class="nav-link">
+        <i class="nav-icon fas fa-thumbs-up"></i>
+        <p>Преимущества</p>
+    </a>
+</li>
+
     <li class="nav-header">КОНТЕНТ</li>
 
     <li class="nav-item has-treeview">

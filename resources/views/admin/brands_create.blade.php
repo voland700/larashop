@@ -24,14 +24,14 @@
                 </div>
             @endif
 
-            <form role="form" action="{{ route('banners.store') }}" method="post" id="bannerForm" enctype="multipart/form-data">
+            <form role="form" action="{{ route('brands.store') }}" method="post" id="brandsForm" enctype="multipart/form-data">
                 @csrf
                 <div class="row">
                  <div class="col-md-12">
 
                 <div class="card">
                     <div class="card-header">
-                        <h3 class="card-title">Данные баннера</h3>
+                        <h3 class="card-title">Данные производителя</h3>
                     </div>
 
                         <!-- /.card-header -->
@@ -42,23 +42,34 @@
                                 <div class="form-group">
                                     <div class="form-check">
                                         <input class="form-check-input" name="active" id="active" value="1" type="checkbox" checked="" onchange="checkboxToggle()">
-                                        <label class="form-check-label" for="active">Баннер активен</label>
+                                        <label class="form-check-label" for="active">Производитель активен</label>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="form-check">
+                                        <input class="form-check-input" name="slider" id="slider" value="1" type="checkbox" checked="" onchange="checkboxToggle()">
+                                        <label class="form-check-label" for="slider">В слайдере на главной</label>
                                     </div>
                                 </div>
 
                                 <div class="form-group col-1">
                                     <label for="sort">Сортировка</label>
-                                    <input type="text" class="form-control" id="sort" name="sort" value="50" placeholder="50">
+                                    <input type="text" class="form-control" id="sort" name="sort" value="100" placeholder="100">
                                 </div>
 
-
                                 <div class="form-group col-md-12">
-                                    <label for="name">Название, заголовок банера</label><code>*</code>
-                                    <input type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" placeholder="Заголовок баннера" required>
+                                    <label for="name">Название призводителя</label><code>*</code>
+                                    <input type="text" id="CreateName" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" placeholder="Название бренда" required>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="name">Символьный код</label>
+                                    <input type="text" class="form-control @error('slug') is-invalid @enderror" id="CreateSlug" name="slug" value="{{ old('slug') }}" placeholder="manufacture">
                                 </div>
 
                                 <div class="form-group col-md-6">
-                                    <label for="img">Изображение банера</label><code>*</code>
+                                    <label for="img">Изображение логотипа</label><code>*</code>
                                     <div class="input-group">
                                         <div class="custom-file">
                                             <input type="file" name="img" value="{{ old('img') }}" class="custom-file-input @error('img') is-invalid @enderror">
@@ -67,22 +78,33 @@
                                     </div>
                                 </div>
 
+                                <h5 class="mb-3 mt-5">Мета данные производителя</h5>
+
                                 <div class="form-group col-md-12">
-                                    <label for="link">Сылка для перехода</label>
-                                    <input type="text" class="form-control"  name="link" value="{{ old('link') }}" placeholder="Добавте ссылку">
+                                    <label for="h1">Заголовок H1</label>
+                                    <input type="text" id="h1" class="form-control" name="h1" value="{{ old('h1') }}" placeholder="Заголовок H1">
                                 </div>
 
+                                <div class="form-group col-md-12">
+                                    <label for="meta_title">meta title</label>
+                                    <input type="text" id="meta_title" class="form-control" name="meta_title" value="{{ old('meta_title') }}" placeholder="Заголовок окна браузера">
+                                </div>
 
+                                <div class="form-group col-md-12">
+                                    <label for="meta_keys">meta keywords</label>
+                                    <input type="text" id="meta_keys" class="form-control" name="meta_keys" value="{{ old('meta_keys') }}" placeholder="Ключевые слова">
+                                </div>
                                 <div class="form-group">
-                                    <label for="text">Текст на слайде</label>
-                                    <textarea class="form-control" name="text" rows="3" placeholder="Короткий текст на слайде">{{ old('text') }}</textarea>
+                                    <label for="meta_description">meta discription</label>
+                                    <textarea class="form-control" name="meta_description" rows="3">{{ old('meta_description') }}</textarea>
                                 </div>
 
+                                <div class="form-group mt-5">
+                                    <label for="description">Описание производителя</label>
+                                    <textarea class="form-control" name="description" rows="7">{{ old('description') }}</textarea>
+                                </div>
 
                             </div>
-
-
-
 
 
                         </div><!-- ./Card row -->

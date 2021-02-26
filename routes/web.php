@@ -58,13 +58,17 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin'], function () {
 
 
     Route::post('/slide_remove', 'ImgDeleteController@slideRemove')->name('slide_remove');
+    Route::post('/banner_remove', 'ImgDeleteController@bannerRemove')->name('banner_remove');
+
+    Route::post('/brand_img_remove', 'BrandController@brandImgRemove')->name('brand_img_remove');
+
 
     Route::resource('attributes', AttributesController::class);
     Route::resource('categories', CategoryController::class);
     Route::resource('products', ProductsController::class);
     Route::resource('discounts', DiscountController::class);
     Route::resource('banners', BannerController::class);
-
     Route::resource('sliders', SliderController::class);
+    Route::resource('brands', BrandController::class);
 
 });

@@ -427,15 +427,6 @@
         let parentElem = item.parentNode;
         let img = parentElem.querySelector('.slider_img');
         let type = item.getAttribute('data-type');
-
-
-
-        document.getElementById('background').setAttribute('value', '');
-
-        //console.log(img);
-
-
-
         $.ajax(
             {
                 url: item.href,
@@ -446,7 +437,6 @@
                     'type': type
                 },
                 success: function (response) {
-                    console.log(response);
                     if(type == 'background'){
                         document.getElementById('background').setAttribute('value', '');
                         img.setAttribute('src', '/img/general/no-slide.jpg');
@@ -462,8 +452,35 @@
                     console.log(response);
                 }
             });
-
     }
+
+    //Удаление IMG - баннеров слайдера
+    function bannerRemove(elem){
+        elem.preventDefault();
+        let item = elem.currentTarget;
+        let parentElem = item.parentNode;
+        let img = parentElem.querySelector('.brand_img');
+        $.ajax(
+            {
+                url: item.href,
+                type: 'POST',
+                data: {
+                    _token: document.getElementById('bannerForm').querySelector('[name="_token"]').value,
+                    'id': item.getAttribute('data-id')
+                },
+                success: function (response) {
+                    console.log(response);
+                    document.getElementById('img').setAttribute('value', '');
+                    img.setAttribute('src', '/img/general/no_banner.jpg');
+                    item.remove();
+
+                },
+                error: function(response) {
+                    console.log(response);
+                }
+            });
+    }
+
 
     //Меню каталога
     document.getElementById('Catalog').addEventListener('click', function (elem) {

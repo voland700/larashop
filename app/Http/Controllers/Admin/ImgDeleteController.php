@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Banner;
 use App\Models\Image;
 use App\Models\Product;
 use App\Models\Slider;
@@ -82,6 +83,16 @@ class ImgDeleteController extends Controller
             $slide->img = null;
         }
         $slide->save();
+    }
+
+    public function bannerRemove(Request $request)
+    {
+        $banner = Banner::find($request->id);
+        if (Storage::disk('public')->exists(str_replace('storage', '', $banner->img))){
+            Storage::disk('public')->delete(str_replace('storage', '', $banner->img));
+        }
+        $banner->img = 'img/general/no_banner.jpg';
+        $banner->save();
     }
 
 
