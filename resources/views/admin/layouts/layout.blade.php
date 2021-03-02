@@ -936,6 +936,17 @@
     }
 
 
+    // Choise ICON for advantages
+    if(document.getElementById('choiceIcon')){
+        document.getElementById('choiceIcon').addEventListener("change", function () {
+            let advantageIcon = document.getElementById('advantageIcon');
+            advantageIcon.className = 'advantage_admin_icon';
+            advantageIcon.classList.add(this.options[this.selectedIndex].value);
+        });
+    }
+
+
+
 
 
 

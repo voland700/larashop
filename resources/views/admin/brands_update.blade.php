@@ -56,7 +56,7 @@
 
                                 <div class="form-group col-1">
                                     <label for="sort">Сортировка</label>
-                                    <input type="text" class="form-control" id="sort" name="sort" value="{{$brand->sort}}">
+                                    <input type="text" class="form-control @error('sort') is-invalid @enderror" id="sort" name="sort" value="{{$brand->sort}}">
                                 </div>
 
                                 <div class="form-group col-md-12">
