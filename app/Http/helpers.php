@@ -19,10 +19,4 @@ if (! function_exists('getfolderName')) {
     function getfolderName(){
         return substr(str_shuffle("0123456789"), 0, 2);
     }
-
 }
-
-
-
-
-

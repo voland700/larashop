@@ -62,6 +62,16 @@
     </a>
 </li>
 
+
+
+
+
+
+
+
+
+
+
     <li class="nav-header">КОНТЕНТ</li>
 
     <li class="nav-item has-treeview">
@@ -100,14 +110,13 @@
                     <p>Создать банер</p>
                 </a>
             </li>
-
-
-
-
-
-
-
         </ul>
+    </li>
+    <li class="nav-item">
+        <a href="{{route('services.create')}}" class="nav-link">
+            <i class="nav-icon fab fa-whmcs"></i>
+            <p>Услуги</p>
+        </a>
     </li>
 
 

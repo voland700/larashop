@@ -71,4 +71,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin'], function () {
     Route::resource('sliders', SliderController::class);
     Route::resource('brands', BrandController::class);
     Route::resource('advantages', AdvantageController::class);
+    Route::resource('services', ServiceController::class);
+
+
 });
