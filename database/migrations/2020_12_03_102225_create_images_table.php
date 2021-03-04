@@ -13,11 +13,10 @@ class CreateImagesTable extends Migration
      */
     public function up()
     {
-        Schema::create('image', function (Blueprint $table) {
+        Schema::create('gallery', function (Blueprint $table) {
             $table->increments('id');
-            $table->bigInteger('product_id')->unsigned();
-            $table->foreign('product_id')->references('id')->on('product')->onDelete('cascade');
-            $table->integer('sort')->unsigned()->default(500);
+            $table->bigInteger('blog_id')->unsigned();
+            $table->foreign('blog_id')->references('id')->on('blog')->onDelete('cascade');
             $table->string('img')->nullable();
             $table->string('thumbnail')->nullable();
             $table->timestamps();
@@ -31,6 +30,6 @@ class CreateImagesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('image');
+        Schema::dropIfExists('gallery');
     }
 }

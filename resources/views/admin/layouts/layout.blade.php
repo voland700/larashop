@@ -481,6 +481,35 @@
             });
     }
 
+    //Удаление IMG - Предложений услуг
+
+    function ServiseImgRemove(elem){
+        elem.preventDefault();
+        let item = elem.currentTarget;
+        let parentElem = item.parentNode;
+        let img = parentElem.querySelector('.slider_img');
+        let type = item.getAttribute('data-type');
+        $.ajax(
+            {
+                url: item.href,
+                type: 'POST',
+                data: {
+                    _token: document.getElementById('updateForm').querySelector('[name="_token"]').value,
+                    'id': item.getAttribute('data-id'),
+                    'type': type
+                },
+                success: function (response) {
+                    console.log(response);
+                    document.getElementById(type).setAttribute('value', '');
+                    item.remove();
+                    img.remove();
+                },
+                error: function(response) {
+                    console.log(response);
+                }
+            });
+    }
+
 
     //Меню каталога
     document.getElementById('Catalog').addEventListener('click', function (elem) {

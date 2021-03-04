@@ -61,6 +61,10 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin'], function () {
     Route::post('/banner_remove', 'ImgDeleteController@bannerRemove')->name('banner_remove');
 
     Route::post('/brand_img_remove', 'BrandController@brandImgRemove')->name('brand_img_remove');
+    Route::post('/service_img_remove', 'ServiceController@ServiceImgRemove')->name('service_img_remove');
+
+
+
 
 
     Route::resource('attributes', AttributesController::class);

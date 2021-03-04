@@ -24,8 +24,9 @@
                 </div>
             @endif
 
-            <form role="form" action="{{ route('services.store') }}" method="post" id="bannerForm" enctype="multipart/form-data">
+            <form role="form" id="updateForm" action="{{ route('services.update', $service->id) }}" method="post" enctype="multipart/form-data">
                 @csrf
+                @method('PUT')
                 <div class="row">
                  <div class="col-md-12">
 
@@ -41,44 +42,60 @@
 
                                 <div class="form-group">
                                     <div class="form-check">
-                                        <input class="form-check-input" name="active" id="active" value="1" type="checkbox" checked="" onchange="checkboxToggle()">
+                                        <input class="form-check-input" name="active" id="active" value="{{$service->active}}" type="checkbox" @if($service->active) checked @endif  onchange="checkboxToggle()">
                                         <label class="form-check-label" for="active">Предложение активно</label>
                                     </div>
                                 </div>
 
                                 <div class="form-group col-1">
                                     <label for="sort">Сортировка</label>
-                                    <input type="text" class="form-control" id="sort" name="sort" value="500" placeholder="500">
+                                    <input type="text" class="form-control @error('sort') is-invalid @enderror" id="sort" name="sort" value="{{$service->sort}}" @if($service->sort) checked @endif>
                                 </div>
 
 
                                 <div class="form-group col-md-12">
                                     <label for="name">Название предложения</label><code>*</code>
-                                    <input type="text" id="CreateName" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" placeholder="Наименование предложения" required>
+                                    <input type="text" id="CreateName" class="form-control @error('name') is-invalid @enderror" name="name" value="{{$service->name}}" required>
                                 </div>
 
                                 <div class="form-group">
                                     <label for="slug">Символьный код</label><code>*</code>
-                                    <input type="text" id="CreateSlug" class="form-control @error('slug') is-invalid @enderror" id="CreateSlug" name="slug" value="{{ old('slug') }}" placeholder="slug-slug">
+                                    <input type="text" id="CreateSlug" class="form-control @error('slug') is-invalid @enderror" id="CreateSlug" name="slug" value="{{ $service->slug }}">
                                 </div>
 
 
                                 <div class="row">
                                     <div class="form-group col-md-6">
                                         <label for="exampleInputFile">Основное изображение</label>
+                                        <div class="slider_img_wrup">
+                                            <div class="slider_img_inner">
+                                                @if($service->img)
+                                                <img src="{{asset($service->img)}}" class="slider_img">
+                                                    <a href="{{route('service_img_remove')}}" data-id="{{$service->id}}" data-type="img" class="product_img_btn" onclick="ServiseImgRemove(event);"><i class="fas fa-times"></i></a>
+                                                @endif
+                                            </div>
+                                        </div>
                                         <div class="input-group">
                                             <div class="custom-file">
-                                                <input type="file" name="img" value="{{ old('img') }}" class="custom-file-input @error('img') is-invalid @enderror" id="img">
+                                                <input type="file" name="img" value="{{$service->img}}" class="custom-file-input @error('img') is-invalid @enderror" id="img">
                                                 <label class="custom-file-label" for="img">Choose file</label>
                                             </div>
                                         </div>
                                     </div>
 
                                     <div class="form-group col-md-6">
-                                        <label for="exampleInputFile">Изображение для анонса</label>
+                                        <label for="exampleInputFile">Prev изображение</label>
+                                        <div class="slider_img_wrup">
+                                            <div class="slider_img_inner">
+                                                @if($service->prev_img)
+                                                    <img src="{{asset($service->prev_img)}}" class="slider_img">
+                                                    <a href="{{route('service_img_remove')}}" data-id="{{$service->id}}" data-type="prev_img" class="product_img_btn" onclick="ServiseImgRemove(event);"><i class="fas fa-times"></i></a>
+                                                @endif
+                                            </div>
+                                        </div>
                                         <div class="input-group">
                                             <div class="custom-file">
-                                                <input type="file" name="prev_img" value="{{ old('prev_img') }}" class="custom-file-input @error('prev_img') is-invalid @enderror" id="prev_img">
+                                                <input type="file" name="prev_img" value="{{ $service->prev_img }}" class="custom-file-input @error('prev_img') is-invalid @enderror" id="prev_img">
                                                 <label class="custom-file-label" for="prev_img">Choose file</label>
                                             </div>
                                         </div>
@@ -89,9 +106,9 @@
                                 <div class="form-group col-md-6">
                                     <label for="location">Размещение изображения</label>
                                     <select name="location" class="form-control" id="choiceIcon">
-                                        <option value="	center">По центру</option>
-                                        <option value="left">Слево</option>
-                                        <option value="right">Справо</option>
+                                        <option value="center" {{($service->icon == 'center')? 'selected' : ''}}>По центру</option>
+                                        <option value="left" {{($service->icon == 'left')? 'selected' : ''}}>Слево</option>
+                                        <option value="right" {{($service->icon == 'right')? 'selected' : ''}}>Справо</option>
                                     </select>
                                 </div>
 
@@ -100,28 +117,27 @@
 
                                 <div class="form-group col-md-12">
                                     <label for="h1">Заголовок H1</label>
-                                    <input type="text" id="h1" class="form-control" name="h1" value="{{ old('h1') }}" placeholder="Заголовок H1">
+                                    <input type="text" id="h1" class="form-control" name="h1" value="{{ $service->h1 }}">
                                 </div>
 
                                 <div class="form-group col-md-12">
                                     <label for="meta_title">meta title</label>
-                                    <input type="text" id="meta_title" class="form-control" name="meta_title" value="{{ old('meta_title') }}" placeholder="Заголовок окна браузера">
+                                    <input type="text" id="meta_title" class="form-control" name="meta_title" value="{{ $service->meta_title }}">
                                 </div>
 
                                 <div class="form-group col-md-12">
                                     <label for="meta_keys">meta keywords</label>
-                                    <input type="text" id="meta_keys" class="form-control" name="meta_keys" value="{{ old('meta_keys') }}" placeholder="Ключевые слова">
+                                    <input type="text" id="meta_keys" class="form-control" name="meta_keys" value="{{ $service->meta_keys }}">
                                 </div>
                                 <div class="form-group">
                                     <label for="meta_description">meta discription</label>
-                                    <textarea class="form-control" name="meta_description" rows="3">{{ old('meta_description') }}</textarea>
+                                    <textarea class="form-control" name="meta_description" rows="3">{{ $service->meta_description }}</textarea>
                                 </div>
 
                                 <div class="form-group mt-5">
                                     <label for="description">Описание</label>
-                                    <textarea class="form-control" name="description" rows="7">{{ old('description') }}</textarea>
+                                    <textarea class="form-control" name="description" rows="7">{{ $service->description }}</textarea>
                                 </div>
-
 
                             </div>
 
@@ -132,7 +148,7 @@
                     </div>
                </div> <!-- ./card -->
              </div>
-                <button type="submit" class="btn btn-primary mt-3 mb-5 ml-3">Создать</button>
+                <button type="submit" class="btn btn-primary mt-3 mb-5 ml-3">Обновить</button>
              </div>
         </form>
     </div>
