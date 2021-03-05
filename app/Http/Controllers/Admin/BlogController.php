@@ -24,7 +24,8 @@ class BlogController extends Controller
      */
     public function create()
     {
-        //
+        $h1 = 'Создание статьи для блога';
+        return view('admin.blogs_create', compact('h1'));
     }
 
     /**

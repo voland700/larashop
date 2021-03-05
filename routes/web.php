@@ -76,6 +76,6 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin'], function () {
     Route::resource('brands', BrandController::class);
     Route::resource('advantages', AdvantageController::class);
     Route::resource('services', ServiceController::class);
-
+    Route::resource('blogs', BlogController::class);
 
 });
