@@ -24,7 +24,7 @@
                 </div>
             @endif
 
-            <form role="form" action="{{ route('services.store') }}" method="post" id="CreateForm" enctype="multipart/form-data">
+            <form role="form" action="{{ route('blogs.store') }}" method="post" id="CreateForm" enctype="multipart/form-data">
                 @csrf
                 <div class="row">
                  <div class="col-md-12">
@@ -95,32 +95,18 @@
                                     </select>
                                 </div>
 
-
-
-
                                 <div class="form-group col-md-12">
                                     <label for="exampleInputFile">Изображения галереи</label>
                                     <div class="input-group">
 
-                                        <div id="some-dropzone"></div>
+                                        <div class="dropzone" id="dropzone" style="width: 100%; border: 1px dashed #ced4da; border-radius: .25rem"
+                                             data-url="{{route('blogs_img_upload')}}"
+                                             data-remove="{{route('blogs_img_remove')}}"></div>
 
 
 
                                     </div>
                                 </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -160,7 +146,7 @@
                     </div>
                </div> <!-- ./card -->
              </div>
-                <button type="submit" class="btn btn-primary mt-3 mb-5 ml-3">Создать</button>
+                <button type="submit" class="btn btn-primary mt-3 mb-5 ml-3" id="btnForm">Создать</button>
              </div>
         </form>
     </div>

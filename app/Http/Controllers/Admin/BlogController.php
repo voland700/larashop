@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class BlogController extends Controller
 {
@@ -36,7 +37,12 @@ class BlogController extends Controller
      */
     public function store(Request $request)
     {
-        //
+
+        $files = Storage::disk('temp')->files();
+
+
+
+        dd($files);
     }
 
     /**
@@ -83,4 +89,25 @@ class BlogController extends Controller
     {
         //
     }
+
+    public function upload(Request $request)
+    {
+
+        $image = $request->file('file');
+        $imageName = $image->getClientOriginalName();
+        $path = Storage::disk('temp')->putFileAs('/', $image,$imageName);
+
+        return response()->json(['success'=>$path]);
+    }
+
+    public function remove(Request $request)
+    {
+        $filename = $request->name;
+        if (Storage::disk('temp')->exists($filename)){
+            Storage::disk('temp')->delete($filename);
+        }
+        return response()->json(['success'=>'Файл удален']);
+    }
+
+
 }

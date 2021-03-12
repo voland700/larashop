@@ -63,6 +63,8 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin'], function () {
     Route::post('/brand_img_remove', 'BrandController@brandImgRemove')->name('brand_img_remove');
     Route::post('/service_img_remove', 'ServiceController@ServiceImgRemove')->name('service_img_remove');
 
+    Route::post('blogs_img_upload','BlogController@upload')->name('blogs_img_upload');
+    Route::post('blogs_img_remove','BlogController@remove')->name('blogs_img_remove');
 
 
 
