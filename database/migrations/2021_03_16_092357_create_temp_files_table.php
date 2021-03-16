@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class ModifyServiceTable extends Migration
+class CreateTempFilesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,10 @@ class ModifyServiceTable extends Migration
      */
     public function up()
     {
-        Schema::table('service', function($table) {
-           $table->string('location')->default('center');
+        Schema::create('temp_files', function (Blueprint $table) {
+            $table->id();
+            $table->string('image')->nullable();
+            $table->string('thumbnail')->nullable();
         });
     }
 
@@ -25,6 +27,6 @@ class ModifyServiceTable extends Migration
      */
     public function down()
     {
-        //
+        Schema::dropIfExists('temp_files');
     }
 }

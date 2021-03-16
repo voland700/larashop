@@ -216,8 +216,6 @@ class ProductsController extends Controller
 
         $product->update($data);
         return redirect()->route('catalog_list', $data['category_id'] )->with('success', 'данные товара изменены');
-
-        //dd($data);
     }
 
     public function destroy($id)    {

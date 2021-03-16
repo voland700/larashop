@@ -5,10 +5,15 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ServiceRequestValidate;
 use App\Models\Blog;
+use App\Models\Gallery;
+use App\Models\Temp;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Intervention\Image\ImageManagerStatic as Image;
+
+
+use Illuminate\Support\Facades\DB;
 
 class BlogController extends Controller
 {
@@ -19,7 +24,9 @@ class BlogController extends Controller
      */
     public function index()
     {
-        //
+        $h1 = "Статьи, дополнительная информация";
+        $blogs = Blog::orderBy('sort', 'asc')->paginate(20);
+        return view('admin.blogs_index', compact('h1', 'blogs'));
     }
 
     /**
@@ -41,75 +48,34 @@ class BlogController extends Controller
      */
     public function store(ServiceRequestValidate $request)
     {
-        $blog = new Blog();
-        $data = $request->all();
-        $files = Storage::disk('temp')->files();
+        $blog = new Blog($request->all());
+        $galleryFiles = Temp::get();
         if($request->hasFile('img')) {
             $image = $request->file('img');
             $fileName =  time().'_'.Str::lower(Str::random(5)).'.'.$image->getClientOriginalExtension();
             $path_to = '/upload/images/'.getfolderName();
             $image->storeAs('public'.$path_to, $fileName);
-            $data['img']= 'storage'.$path_to.'/'.$fileName;
+            $blog->img= 'storage'.$path_to.'/'.$fileName;
         }
         if($request->hasFile('prev_img')) {
             $image = $request->file('prev_img');
             $fileName =  time().'_'.Str::lower(Str::random(5)).'.'.$image->getClientOriginalExtension();
             $path_to = '/upload/images/'.getfolderName();
             $image->storeAs('public'.$path_to, $fileName);
-            $data['prev_img'] = 'storage'.$path_to.'/'.$fileName;
+            $blog->prev_img = 'storage'.$path_to.'/'.$fileName;
         }
-
-
-
-
-
-        if(!empty($files)){
-            foreach ($files as $file){
-
-                //$image = Image::make(Storage::disk('temp')->path($file));
-                //$thumbnail = Image::make(Storage::disk('temp')->path($file));
-                $FilePath = '/upload/images/'.getfolderName();
-                $FileName = time().'_'.Str::lower(Str::random(2)).''.'_gallery_';
-
-                Storage::disk('public')->copy(Storage::disk('temp')->path($file), $FileName.'big.jpg');
-
-
-
-                //$data['image'] = Storage::disk('public')->putFileAs($FilePath, $image, $FileName.'big.jpg');
-
-
-
-
-
-               //Storage::disk('public')->storeAs($FilePath.'big.jpg');
-               //Storage::disk('public')->storeAs($FilePath.'small.jpg');
-
-
-               //$image->save($FilePath.'big.jpg');
-                /*
-               $thumbnail->resize(null, 250, function ($constraint) {
-                   $constraint->aspectRatio();
-                   })->save($FilePath.'small.jpg');
-                */
-
-                //$data['image'] = $FilePath.'big.jpg';
+        $blog->save();
+        if(!$galleryFiles->isEmpty()){
+            foreach ($galleryFiles as $gallery){
+                Gallery::create([
+                    'blog_id' => $blog->id,
+                    'image' => $gallery->image,
+                    'thumbnail' => $gallery->thumbnail,
+                ]);
             }
-         //Storage::disk('temp')->delete();
-
-
-
+            DB::delete('delete from temp_files');
         }
-
-        //$blog = new Blog($data);
-
-
-        //$temp = Storage::disk('temp')->get('1.jpg');
-
-        //$path = Storage::disk('temp')->path('1.jpg');
-
-
-
-        dd($data);
+        return redirect()->route('blogs.index')->with('success', 'Статья создана');
     }
 
     /**
@@ -131,7 +97,10 @@ class BlogController extends Controller
      */
     public function edit($id)
     {
-        //
+        $h1 = "Редактирование данных статьи";
+        $blog = Blog::find($id);
+        $galleries = Gallery::where('blog_id', $id)->get();
+        return view('admin.blogs_update', compact('h1', 'blog', 'galleries'));
     }
 
     /**
@@ -160,19 +129,41 @@ class BlogController extends Controller
     public function upload(Request $request)
     {
 
-        $image = $request->file('file');
-        $imageName = $image->getClientOriginalName();
-        $path = Storage::disk('temp')->putFileAs('/', $image,$imageName);
-
-        return response()->json(['success'=>$path]);
+        if ($request->hasFile('file')) {
+            $image = $request->file('file');
+            $thumbnail = $request->file('file');
+            $original = $image->getClientOriginalName();
+            $path = '/upload/images/' . getfolderName().'/';
+            $FileName =    time() .'_gallery_';
+            $FileNameImages = $FileName.'big' .'.'.$image->getClientOriginalExtension();
+            $FileNameThumbnail = $FileName.'small' .'.'.$thumbnail->getClientOriginalExtension();
+            $image->storeAs('public'.$path, $FileNameImages);
+            $thumbnail->storeAs('public'.$path, $FileNameThumbnail);
+            Image::make(storage_path('app/public'.$path.'/'.$FileNameThumbnail))->resize(250, null, function ($constraint) {
+                $constraint->aspectRatio();
+            })->save();
+            $TempFile = new Temp();
+            $TempFile->image = 'storage'.$path.$FileNameImages;
+            $TempFile->thumbnail = 'storage'.$path.$FileNameThumbnail;
+            $TempFile->original =$original;
+            $TempFile->save();
+            return response()->json(['success'=>'ok']);
+        }
     }
 
     public function remove(Request $request)
     {
         $filename = $request->name;
-        if (Storage::disk('temp')->exists($filename)){
-            Storage::disk('temp')->delete($filename);
+        $TempFiles = Temp::where('original', $filename);
+        foreach($TempFiles->get() as  $temp){
+            if (Storage::disk('public')->exists(str_replace('storage', '', $temp->image))){
+                Storage::disk('public')->delete(str_replace('storage', '', $temp->image));
+            }
+            if (Storage::disk('public')->exists(str_replace('storage', '', $temp->thumbnail))){
+                Storage::disk('public')->delete(str_replace('storage', '', $temp->thumbnail));
+            }
         }
+        $TempFiles->delete();
         return response()->json(['success'=>'Файл удален']);
     }
 

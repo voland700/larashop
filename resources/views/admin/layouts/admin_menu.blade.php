@@ -113,7 +113,7 @@
         </a>
     </li>
     <li class="nav-item">
-        <a href="{{route('blogs.create')}}" class="nav-link">
+        <a href="{{route('blogs.index')}}" class="nav-link">
             <i class="nav-icon fas fa-paste"></i>
             <p>Статьи</p>
         </a>

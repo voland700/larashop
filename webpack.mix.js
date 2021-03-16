@@ -27,7 +27,6 @@ mix.scripts([
     'resources/assets/admin/plugins/bootstrap/js/bootstrap.bundle.min.js',
     'resources/assets/admin/js/adminlte.min.js',
     'resources/assets/admin/plugins/bs-custom-file-input/bs-custom-file-input.js',
-    'resources/assets/admin/plugins/dropzone/dropzone.min.js',
     'resources/assets/admin/js/demo.js',
 ], 'public/assets/admin/js/admin.js');
 

@@ -63,14 +63,7 @@ return [
             'bucket' => env('AWS_BUCKET'),
             'url' => env('AWS_URL'),
             'endpoint' => env('AWS_ENDPOINT'),
-        ],
-        'temp' => [
-            'driver' => 'local',
-            'root' => storage_path('app/temp'),
-            'visibility' => 'private',
-            'url' => '/storage/app/temp',
         ]
-
     ],
 
     /*
