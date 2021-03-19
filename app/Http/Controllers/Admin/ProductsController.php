@@ -46,6 +46,13 @@ class ProductsController extends Controller
     public function store(ProductsRequesValidate $request)
     {
         $data = $request->all();
+        $data['active'] = $request->has('active') ? 1 : 0;
+        $data['hit'] = $request->has('hit') ? 1 : 0;
+        $data['new'] = $request->has('new') ? 1 : 0;
+        $data['stock'] = $request->has('stock') ? 1 : 0;
+        $data['advice'] = $request->has('advice') ? 1 : 0;
+
+
         $properties = [];
 
         if ($request->hasFile('img')) {
@@ -157,6 +164,11 @@ class ProductsController extends Controller
     {
         $product = Product::find($id);
         $data = $request->all();
+        $data['active'] = $request->has('active') ? 1 : 0;
+        $data['hit'] = $request->has('hit') ? 1 : 0;
+        $data['new'] = $request->has('new') ? 1 : 0;
+        $data['stock'] = $request->has('stock') ? 1 : 0;
+        $data['advice'] = $request->has('advice') ? 1 : 0;
         $properties = [];
 
         if ($request->hasFile('img')) {

@@ -42,7 +42,7 @@ class SliderController extends Controller
     public function store(Request $request)
     {
         $slide = new Slider($request->all());
-
+        $slide->active = $request->has('active') ? 1 : 0;
         $messages = [
             'background.required' => 'Основная картинка для слайда - обязательна',
             'background.image' => 'Картинка для слайда - должна быть файлом c изображением',
@@ -116,6 +116,7 @@ class SliderController extends Controller
     {
         $slide = Slider::find($id);
         $data = $request->all();
+        $data['active']= $request->has('active') ? 1 : 0;
         if ($request->hasFile('img')) {
             if (Storage::disk('public')->exists(str_replace('storage', '', $slide->img))){
                 Storage::disk('public')->delete(str_replace('storage', '', $slide->img));

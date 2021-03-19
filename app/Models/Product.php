@@ -36,7 +36,6 @@ class Product extends Model
         'properties' => 'array',
     ];
 
-
     public function category()
     {
         return $this->belongsTo(Category::class);

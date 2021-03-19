@@ -71,7 +71,7 @@
                                             <div class="slider_img_inner">
                                                 @if($blog->img)
                                                     <img src="{{asset($blog->img)}}" class="slider_img">
-                                                    <a href="{{route('blogs_img_remove')}}" data-id="{{$blog->id}}" data-type="img" class="product_img_btn" onclick="ServiseImgRemove(event);"><i class="fas fa-times"></i></a>
+                                                    <a href="{{route('blogs_images_remove')}}" data-id="{{$blog->id}}" data-type="img" class="product_img_btn" onclick="ServiseImgRemove(event);"><i class="fas fa-times"></i></a>
                                                 @else
                                                     <img src="{{asset('img/general/no-photo_small.jpg')}}" class="slider_img">
                                                 @endif
@@ -91,7 +91,7 @@
                                             <div class="slider_img_inner">
                                                 @if($blog->prev_img)
                                                     <img src="{{asset($blog->prev_img)}}" class="slider_img">
-                                                    <a href="{{route('blogs_img_remove')}}" data-id="{{$blog->id}}" data-type="prev_img" class="product_img_btn" onclick="ServiseImgRemove(event);"><i class="fas fa-times"></i></a>
+                                                    <a href="{{route('blogs_images_remove')}}" data-id="{{$blog->id}}" data-type="prev_img" class="product_img_btn" onclick="ServiseImgRemove(event);"><i class="fas fa-times"></i></a>
                                                 @else
                                                     <img src="{{asset('img/general/no-photo_small.jpg')}}" class="slider_img">
                                                 @endif
@@ -117,7 +117,7 @@
                                 </div>
 
                                 <div class="form-group col-md-12">
-                                    <label for="exampleInputFile">Изображения галереи</label>
+                                    <label for="exampleInputFile">Добавить изображения галереи</label>
                                     <div class="input-group">
                                         <div class="dropzone" id="dropzone" style="width: 100%; border: 1px dashed #ced4da; border-radius: .25rem"
                                              data-url="{{route('blogs_img_upload')}}"
@@ -125,6 +125,24 @@
                                         </div>
                                     </div>
                                 </div>
+                                @if(!$galleries->isEmpty())
+                                <div class="form-group">
+                                    <p class="ml-2 mb-1"><strong>Изображения галереи</strong></p>
+                                        @if(count($galleries)>1)
+                                            <div class="product_photo_del_wrap"><a href="{{route('blogs_gallery_all_remove')}}" data-id="{{$blog->id}}" class="product_photo_delAll" onclick="galleryAllRemove(event);"><span>очистить все</span> <i class="fas fa-times"></i></a></div>
+                                        @endif
+                                        <div class="product_photo_wrup">
+                                            @foreach($galleries as $gallery)
+                                                <div class="product_photo_inner">
+                                                    <img src="{{asset($gallery->thumbnail)}}"  class="product_photo">
+                                                    <a href="{{route('blogs_gallery_remove')}}" class="product_img_btn" data-id="{{$gallery->id}}" onclick="galleryRemove(event);"><i class="fas fa-times"></i></a>
+                                                </div>
+                                            @endforeach
+                                        </div>
+                                </div>
+                                @endif
+
+
 
 
 

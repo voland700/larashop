@@ -43,6 +43,7 @@ class BannerController extends Controller
     public function store(Request $request)
     {
         $banner = new Banner($request->all());
+        $banner->active = $request->has('active') ? 1 : 0;
         $messages = [
             'name.required' => 'Поле "Название, заголовок баннера" обязательно для заполнения',
             'img.required' => 'Изобразение для баннера - обязательно',
@@ -103,6 +104,7 @@ class BannerController extends Controller
     {
         $banner = Banner::find($id);
         $data = $request->all();
+        $data['active'] = $request->has('active') ? 1 : 0;
         if ($request->hasFile('img')) {
             if (Storage::disk('public')->exists(str_replace('storage', '', $banner->img))){
                 Storage::disk('public')->delete(str_replace('storage', '', $banner->img));

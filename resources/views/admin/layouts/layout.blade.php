@@ -329,8 +329,10 @@
         let elem = document.getElementById('active');
         if(elem.checked){
             elem.value = 1;
+            elem.checked = true;
         } else {
             elem.value = 0;
+            elem.checked = false;
         }
     }
     document.querySelectorAll('.toggle').forEach(function(item){
@@ -494,7 +496,7 @@
                 url: item.href,
                 type: 'POST',
                 data: {
-                    _token: document.getElementById('updateForm').querySelector('[name="_token"]').value,
+                    _token: document.querySelector('[name="_token"]').value,
                     'id': item.getAttribute('data-id'),
                     'type': type
                 },
@@ -974,8 +976,54 @@
         });
     }
 
+    // Deletion images blog's gallery
+    function galleryRemove(elem) {
+        elem.preventDefault();
+        let item = elem.currentTarget;
+        let parentImg = item.parentNode.querySelector('.product_photo');
+        $.ajax(
+            {
+                url: item.href,
+                type: 'POST',
+                data: {
+                    _token: document.getElementById('CreateForm').querySelector('[name="_token"]').value,
+                    'id': item.getAttribute('data-id'),
+                },
+                success: function (response) {
+                    //location.reload();
+                    parentImg.style.opacity = 0.4;
+                    //console.log(response);
+                },
+                error: function (response) {
+                    console.log(response);
+                }
+            });
+    }
+
+    function galleryAllRemove(elem) {
+        elem.preventDefault();
+        let item = elem.currentTarget;
+        let galleryImages = document.querySelectorAll('.product_photo_inner');
+        $.ajax(
+            {
+                url: item.href,
+                type: 'POST',
+                data: {
+                    _token: document.getElementById('CreateForm').querySelector('[name="_token"]').value,
+                    'id': item.getAttribute('data-id'),
+                },
+                success: function (response) {
+                    galleryImages.forEach(function (item) {
+                        item.remove();
+                    });
+                },
+                error: function (response) {
+                    console.log(response);
+                }
+            });
 
 
+    }
 
 
 

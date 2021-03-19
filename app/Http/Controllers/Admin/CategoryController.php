@@ -32,7 +32,7 @@ class CategoryController extends Controller
     public function store(Request $request)
     {
         $category=new Category($request->all());
-
+        $category->active=$request->has('active') ? 1 : 0;
         $messages = [
             'name.required' => 'Поле "Наименование категории" обязательно для заполнения',
             'slug.required' => 'Поле "ЧПУ категории" обязательно для заполнения',
@@ -109,6 +109,7 @@ class CategoryController extends Controller
     {
         $category = Category::find($id);
         $data = $request->all();
+        $data['active']=$request->has('active') ? 1 : 0;
         $messages = [
             'name.required' => 'Поле "Наименование категории" обязательно для заполнения',
             'slug.required' => 'Поле "ЧПУ категории" обязательно для заполнения',

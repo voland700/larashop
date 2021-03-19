@@ -43,6 +43,9 @@ class BrandController extends Controller
     public function store(BrandRequesValidate $request)
     {
         $brand = new Brand($request->all());
+        $brand->active=$request->has('active') ? 1 : 0;
+        $brand->slider=$request->has('slider') ? 1 : 0;
+
         if($request->hasFile('img')) {
             $image = $request->file('img');
             $fileName =  time().'_'.Str::lower(Str::random(5)).'.'.$image->getClientOriginalExtension();
@@ -91,6 +94,8 @@ class BrandController extends Controller
     {
         $brand = Brand::find($id);
         $data = $request->all();
+        $data['active']=$request->has('active') ? 1 : 0;
+        $data['slider']=$request->has('slider') ? 1 : 0;
         if ($request->hasFile('img')) {
             if (Storage::disk('public')->exists(str_replace('storage', '', $brand->img))){
                 Storage::disk('public')->delete(str_replace('storage', '', $brand->img));

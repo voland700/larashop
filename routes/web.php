@@ -44,8 +44,6 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin'], function () {
 
 
 
-
-
     Route::get('/discounts_paginate','DiscountController@paginate')->name('discounts_paginate');
     Route::post('/discounts_paginate_update','DiscountController@paginate_update')->name('discounts_paginate_update');
 
@@ -66,6 +64,10 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin'], function () {
     Route::post('blogs_img_upload','BlogController@upload')->name('blogs_img_upload');
     Route::post('blogs_img_remove','BlogController@remove')->name('blogs_img_remove');
 
+    Route::post('blogs_gallery_remove','BlogController@galleryRemove')->name('blogs_gallery_remove');
+    Route::post('blogs_gallery_all_remove','BlogController@galleryAllRemove')->name('blogs_gallery_all_remove');
+    Route::post('blogs_images_remove','BlogController@imagesRemove')->name('blogs_images_remove');
+
 
 
 
@@ -80,4 +82,8 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin'], function () {
     Route::resource('services', ServiceController::class);
     Route::resource('blogs', BlogController::class);
 
+
+    Route::resource('permissions', 'PermissionController');
+    Route::resource('roles', 'RolesController');
+    Route::resource('users', 'UserController');
 });

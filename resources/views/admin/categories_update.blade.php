@@ -41,7 +41,7 @@
 
                                 <div class="form-group">
                                     <div class="form-check">
-                                        <input class="form-check-input" name="active" id="active"value="{{$category->id}}" type="checkbox" {{($category->id=1) ? 'checked=""' : ''}} onchange="checkboxToggle()">
+                                        <input class="form-check-input" name="active" id="active" value="{{$category->active}}" type="checkbox" {{($category->active == 1) ? 'checked=""' : ''}} onchange="checkboxToggle()">
                                         <label class="form-check-label" for="active">Категория активна</label>
                                     </div>
                                 </div>

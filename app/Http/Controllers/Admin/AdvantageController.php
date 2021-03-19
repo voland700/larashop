@@ -39,6 +39,9 @@ class AdvantageController extends Controller
      */
     public function store(Request $request)
     {
+
+        $advantage = new Advantage($request->all());
+        $advantage->active = $request->has('active') ? 1 : 0;
         $messages = [
             'name.required' => 'Поле Наименование обязательно для заполнения',
             'sort.integer' => 'В поле Сортировка  должно указано числовое значение',
@@ -48,7 +51,7 @@ class AdvantageController extends Controller
             'sort' => 'nullable|integer'
         ],$messages);
 
-        Advantage::create($request->all());
+
         return redirect()->route('advantages.index')->with('success', 'Торговое преимущество добавлено добавлено');
 
     }
@@ -95,6 +98,7 @@ class AdvantageController extends Controller
             'sort' => 'nullable|integer'
         ],$messages);
         $advantage = Advantage::find($id);
+        $advantage->active = $request->has('active') ? 1 : 0;
         $advantage->update($request->all());
         return redirect()->route('advantages.index')->with('success', 'Данные преимущества обновлены');
 

@@ -43,6 +43,7 @@ class ServiceController extends Controller
     public function store(ServiceRequestValidate $request)
     {
         $service = new Service($request->all());
+        $service->active = $request->has('active') ? 1 : 0;
         if($request->hasFile('img')) {
             $image = $request->file('img');
             $fileName =  time().'_'.Str::lower(Str::random(5)).'.'.$image->getClientOriginalExtension();
@@ -96,6 +97,7 @@ class ServiceController extends Controller
     {
         $service = Service::find($id);
         $data = $request->all();
+        $data['active'] = $request->has('active') ? 1 : 0;
         if ($request->hasFile('img')) {
             if (Storage::disk('public')->exists(str_replace('storage', '', $service->img))){
                 Storage::disk('public')->delete(str_replace('storage', '', $service->img));

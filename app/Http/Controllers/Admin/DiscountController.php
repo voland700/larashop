@@ -56,7 +56,7 @@ class DiscountController extends Controller
         $discount->type = $request->type;
         $discount->kind = $request->kind;
         $discount->value = $request->value;
-        $discount->active = $request->active;
+        $discount->active = $request->has('active') ? 1 : 0;
         $discount->sort = $request->sort;
         $discount->categories = ($request->kind=='category') ? json_encode($request->productsID) : NULL;
         $discount->save();
@@ -134,6 +134,7 @@ class DiscountController extends Controller
             'value' => 'required|integer',
         ],$messages);
         $data = $request->all();
+        $data['active']=$request->has('active') ? 1 : 0;
         $data['categories'] = ($request->kind=='category') ? json_encode($request->productsID) : NULL;
         $discount = Discount::find($id);
         switch ($request->kind) {

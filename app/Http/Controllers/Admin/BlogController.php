@@ -50,6 +50,7 @@ class BlogController extends Controller
     {
         $blog = new Blog($request->all());
         $galleryFiles = Temp::get();
+        $blog->active = $request->has('active') ? 1 : 0;
         if($request->hasFile('img')) {
             $image = $request->file('img');
             $fileName =  time().'_'.Str::lower(Str::random(5)).'.'.$image->getClientOriginalExtension();
@@ -112,7 +113,41 @@ class BlogController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $blog = Blog::find($id);
+        $data = $request->all();
+        $data['active'] = $request->has('active') ? 1 : 0;
+        $galleryFiles = Temp::get();
+
+        if($request->hasFile('img')) {
+            $image = $request->file('img');
+            $fileName =  time().'_'.Str::lower(Str::random(5)).'.'.$image->getClientOriginalExtension();
+            $path_to = '/upload/images/'.getfolderName();
+            $image->storeAs('public'.$path_to, $fileName);
+            $data['img']= 'storage'.$path_to.'/'.$fileName;
+        }
+        if($request->hasFile('prev_img')) {
+            $image = $request->file('prev_img');
+            $fileName =  time().'_'.Str::lower(Str::random(5)).'.'.$image->getClientOriginalExtension();
+            $path_to = '/upload/images/'.getfolderName();
+            $image->storeAs('public'.$path_to, $fileName);
+            $data['prev_img'] = 'storage'.$path_to.'/'.$fileName;
+        }
+        $blog->update($data);
+        if(!$galleryFiles->isEmpty()){
+            foreach ($galleryFiles as $gallery){
+                Gallery::create([
+                    'blog_id' => $blog->id,
+                    'image' => $gallery->image,
+                    'thumbnail' => $gallery->thumbnail,
+                ]);
+            }
+            DB::delete('delete from temp_files');
+        }
+        return redirect()->route('blogs.index')->with('success', 'Статья обновлена');
+
+
+
+        //dd($data);
     }
 
     /**
@@ -123,7 +158,26 @@ class BlogController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $blog = Blog::with('gallery')->find($id);
+
+        if (Storage::disk('public')->exists(str_replace('storage', '', $blog->img))){
+            Storage::disk('public')->delete(str_replace('storage', '', $blog->img));
+        }
+        if (Storage::disk('public')->exists(str_replace('storage', '', $blog->prev_img))){
+            Storage::disk('public')->delete(str_replace('storage', '', $blog->prev_img));
+        }
+        if(!$blog->gallery->isEmpty()) {
+            foreach ($blog->gallery as $gallery) {
+                if (Storage::disk('public')->exists(str_replace('storage', '', $gallery->image))) {
+                    Storage::disk('public')->delete(str_replace('storage', '', $gallery->image));
+                }
+                if (Storage::disk('public')->exists(str_replace('storage', '', $gallery->thumbnail))) {
+                    Storage::disk('public')->delete(str_replace('storage', '', $gallery->thumbnail));
+                }
+            }
+        }
+        $blog->delete();
+        return redirect()->route('blogs.index')->with('success', 'Статья удалена');
     }
 
     public function upload(Request $request)
@@ -167,5 +221,48 @@ class BlogController extends Controller
         return response()->json(['success'=>'Файл удален']);
     }
 
+    public function imagesRemove(Request $request)
+    {
+        $blog = Blog::find($request->id);
+        $type = $request->type;
+        $imageFile = $blog->$type;
+        if (Storage::disk('public')->exists(str_replace('storage', '', $imageFile))){
+            Storage::disk('public')->delete(str_replace('storage', '', $imageFile));
+        }
+        $blog->$type = null;
+        $blog->save();
+        return response()->json(['success'=>'Файлы удалены']);
+    }
+
+    public function galleryRemove(Request $request)
+    {
+        $gallery = Gallery::find($request->id);
+        if (Storage::disk('public')->exists(str_replace('storage', '', $gallery->image))){
+            Storage::disk('public')->delete(str_replace('storage', '', $gallery->image));
+        }
+        if (Storage::disk('public')->exists(str_replace('storage', '', $gallery->thumbnail))){
+            Storage::disk('public')->delete(str_replace('storage', '', $gallery->thumbnail));
+        }
+        $gallery->delete();
+        return response()->json(['success'=>'Файл удален']);
+    }
+
+    public function galleryAllRemove(Request $request)
+    {
+        $galleries = Gallery::where('blog_id', $request->id)->get();
+        if(!$galleries->isEmpty()){
+            foreach ($galleries as $gallery){
+                if (Storage::disk('public')->exists(str_replace('storage', '', $gallery->image))){
+                    Storage::disk('public')->delete(str_replace('storage', '', $gallery->image));
+                }
+                if (Storage::disk('public')->exists(str_replace('storage', '', $gallery->thumbnail))){
+                    Storage::disk('public')->delete(str_replace('storage', '', $gallery->thumbnail));
+                }
+            }
+
+        }
+        DB::table('gallery')->where('blog_id', $request->id)->delete();
+        return response()->json(['success'=>'Файлы удалены']);
+    }
 
 }
