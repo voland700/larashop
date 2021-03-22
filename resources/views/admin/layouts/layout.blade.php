@@ -1025,6 +1025,11 @@
 
     }
 
+    $('.select2').select2({
+        placeholder: "Выберите разрешение",
+        language: "ru"
+    });
+
 
 
 

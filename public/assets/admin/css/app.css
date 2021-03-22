@@ -31,3 +31,8 @@
 .slider_img_wrup{display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-box-pack:center;-webkit-justify-content:center;-ms-flex-pack:center;justify-content:center;-webkit-box-align:center;-webkit-align-items:center;-ms-flex-align:center;align-items:center;margin-bottom:16px}.slider_img_inner{display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-box-align:start;-webkit-align-items:flex-start;-ms-flex-align:start;align-items:flex-start;height:125px}.slider_img{height:100%;margin-right:5px;max-width:90%;-o-object-fit:cover;object-fit:cover}
 .brand_img_inner{display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-box-align:center;-webkit-align-items:center;-ms-flex-align:center;align-items:center;-webkit-box-pack:center;-webkit-justify-content:center;-ms-flex-pack:center;justify-content:center;height:100px}.brand_img{max-height:100%;max-width:90%;margin-right:5px}
 .advantage_admin_icon{width:45px;height:45px;background-image:url(/img/icons/icons_goods.png);background-repeat:no-repeat;left:0}.advantage_admin_icon.new{background-position:-1px 0}.advantage_admin_icon.persent{background-position:-1px -46px}.advantage_admin_icon.hit{background-position:-1px -92px}.advantage_admin_icon.sale{background-position:-1px -138px}.advantage_admin_icon.thumb_up{background-position:-1px -184px}
+
+.select2-container--default .select2-selection--multiple .select2-selection__choice{
+    background-color: #007bff;
+    border-color: #006fe6;
+}

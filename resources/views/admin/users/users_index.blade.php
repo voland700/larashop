@@ -48,13 +48,8 @@
                                     <form action="{{ route('users.destroy', $user->id) }}" method="POST" onsubmit="return confirm('Вы уверены в необходимости удаления пользователя?');" style="display: inline-block;">
                                         <input type="hidden" name="_method" value="DELETE">
                                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
-
-                                        <input type="submit" class="btn btn-xs btn-danger" value="Удалить">
+                                        <button type="submit" class="btn btn-danger"><i class="fas fa-trash-alt"></i></button>
                                     </form>
-
-
-
-                                    <a href="{{ route('users.destroy', $user->id) }}" type="button" data-name="{{$user->name}}" class="btn btn-danger delete"><i class="fas fa-trash-alt"></i></a>
                                 </td>
                             </tr>
                             @endforeach
@@ -68,8 +63,6 @@
             </div>
         </div>
     </div>
-
-
 
     <div class="modal fade" id="modal_del">
         <div class="modal-dialog" role="document">

@@ -4,6 +4,13 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\User;
+use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
+use App\Http\Requests\UsersRequestValidate;
+
+
+
 
 class PermissionController extends Controller
 {
@@ -14,7 +21,10 @@ class PermissionController extends Controller
      */
     public function index()
     {
-        //
+        $h1 = "Разрешения для пользователей";
+        $permissions = Permission::paginate(40);
+        return view('admin.users.permissions_index', compact('h1', 'permissions'));
+
     }
 
     /**
@@ -24,7 +34,8 @@ class PermissionController extends Controller
      */
     public function create()
     {
-        //
+        $h1 = "Создать новое разрешение для пользователей";
+        return view('admin.users.permissions_create', compact('h1'));
     }
 
     /**
@@ -33,9 +44,11 @@ class PermissionController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(UsersRequestValidate $request)
     {
-        //
+        Permission::create($request->all());
+        return redirect()->route('permissions.index')->with('success', 'Зазрешение успешно создано');
+
     }
 
     /**
@@ -57,7 +70,9 @@ class PermissionController extends Controller
      */
     public function edit($id)
     {
-        //
+        $h1 = "Обновить данные разрешения";
+        $permission = Permission::find($id);
+        return view('admin.users.permissions_update', compact('h1', 'permission'));
     }
 
     /**
@@ -67,9 +82,12 @@ class PermissionController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UsersRequestValidate $request, $id)
     {
-        //
+        $permission = Permission::find($id);
+        $permission->name = $request->name;
+        $permission->update();
+        return redirect()->route('permissions.index')->with('success', 'Данные азрешения обнавлены');
     }
 
     /**
@@ -80,6 +98,7 @@ class PermissionController extends Controller
      */
     public function destroy($id)
     {
-        //
+        Permission::destroy($id);
+        return redirect()->route('permissions.index')->with('success', 'Данные разрешения удалены');
     }
 }
