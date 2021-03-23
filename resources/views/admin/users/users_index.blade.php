@@ -13,7 +13,18 @@
 
                 <div class="card">
                     <div class="card-header">
-                        <h3 class="card-title">Зарегистрированные пользователи</h3>
+                        <h3 class="card-title">Список пользователей</h3>
+                        <div class="card-tools">
+                            <form action="{{route('users_search')}}" method="post">
+                                <div class="input-group input-group-sm" style="width: auto">
+                                    @csrf
+                                    <input type="text" name="search" class="form-control float-right"  value="{{ old('search') }}" placeholder="Search">
+                                    <div class="input-group-append">
+                                        <button type="submit" class="btn btn-default"><i class="fas fa-search"></i></button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
                     </div>
                     <!-- /.card-header -->
                     <div class="card-body">

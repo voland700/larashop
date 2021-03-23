@@ -15,14 +15,20 @@ class UsersRequestValidate extends FormRequest
     public function messages()
     {
         return [
-            'name.required' => 'Поле "Наименование" обязательно для заполнения'
+            'name.required' => 'Поле "Наименование" обязательно для заполнения',
+            'email.required' => 'Поле "Email" обязательно для заполнения',
+            'email.email' =>  'Не корректный Email адрес',
+            'email.unique' =>  'Данный Email-адрес используется другим пользователем',
+            'password.confirmed' => 'Данные пароля и подтвержедения не совпадают'
         ];
     }
 
     public function rules()
     {
         return [
-            'name' => 'required'
+            'name' => 'required',
+            'email' => 'required|email|unique:users,email',
+            'password' => 'confirmed'
         ];
     }
 }

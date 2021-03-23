@@ -68,6 +68,8 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin'], function () {
     Route::post('blogs_gallery_all_remove','BlogController@galleryAllRemove')->name('blogs_gallery_all_remove');
     Route::post('blogs_images_remove','BlogController@imagesRemove')->name('blogs_images_remove');
 
+    Route::post('users_search','UserController@search')->name('users_search');
+
 
 
 
