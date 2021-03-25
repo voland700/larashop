@@ -32,6 +32,7 @@
 
                 <div class="card">
                     <div class="card-header">
+                        <a href="{{route('banners.index')}}" class="float-left mr-2"><i class="fas fa-arrow-alt-circle-left"></i></a>
                         <h3 class="card-title">Данные баннера</h3>
                     </div>
 
@@ -49,13 +50,13 @@
 
                                 <div class="form-group col-1">
                                     <label for="sort">Сортировка</label>
-                                    <input type="text" class="form-control" id="sort" name="sort" value="{{$banner->sort}}">
+                                    <input type="text" class="form-control @error('sort') is-invalid @enderro" id="sort" name="sort" value="{{$banner->sort}}">
                                 </div>
 
 
                                 <div class="form-group col-md-12">
                                     <label for="name">Название, заголовок баннера</label><code>*</code>
-                                    <input type="text" class="form-control" name="name" value="{{$banner->name}}">
+                                    <input type="text" class="form-control @error('name') is-invalid @enderro" name="name" value="{{$banner->name}}">
                                 </div>
 
                                 <div class="row">

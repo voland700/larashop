@@ -32,7 +32,7 @@
                     <div class="col-md-12">
 
                         <div class="card">
-                            <div class="card-header"><p></p></div>
+                            <div class="card-header"><a href="{{route('permissions.index')}}" class="float-left mr-2"><i class="fas fa-arrow-alt-circle-left"></i></a></div>
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col-md-6">

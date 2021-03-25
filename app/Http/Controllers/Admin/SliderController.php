@@ -30,7 +30,7 @@ class SliderController extends Controller
     public function create()
     {
         $h1='Создание нового слайда';
-        return view('admin.sliders_create', compact('h1', ));
+        return view('admin.sliders_create', compact('h1'));
     }
 
     /**

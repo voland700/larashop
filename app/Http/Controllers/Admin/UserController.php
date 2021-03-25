@@ -22,7 +22,6 @@ class UserController extends Controller
         $h1 = 'Зарегистрированные пользователи';
         $users = User::with('roles')->paginate(40);
         return view('admin.users.users_index', compact('h1', 'users'));
-
     }
 
     /**
@@ -35,7 +34,6 @@ class UserController extends Controller
         $h1 = "Создание нового пользователя";
         $roles = Role::get();
         return view('admin.users.users_create', compact('h1', 'roles'));
-
     }
 
     /**
@@ -83,7 +81,6 @@ class UserController extends Controller
         $roles = Role::get();
         $userRole = $user->roles->toArray()[0]['id'];
         return view('admin.users.users_update', compact('h1', 'user', 'roles', 'userRole'));
-
     }
 
     /**

@@ -32,6 +32,7 @@
 
                 <div class="card">
                     <div class="card-header">
+                        <a href="{{route('services.index')}}" class="float-left mr-2"><i class="fas fa-arrow-alt-circle-left"></i></a>
                         <h3 class="card-title">Данные предложения услуг</h3>
                     </div>
 

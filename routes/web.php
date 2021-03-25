@@ -57,6 +57,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin'], function () {
 
     Route::post('/slide_remove', 'ImgDeleteController@slideRemove')->name('slide_remove');
     Route::post('/banner_remove', 'ImgDeleteController@bannerRemove')->name('banner_remove');
+    Route::post('/slider_icons_remove','SlidericonsController@remove')->name('slider_icons_remove');
 
     Route::post('/brand_img_remove', 'BrandController@brandImgRemove')->name('brand_img_remove');
     Route::post('/service_img_remove', 'ServiceController@ServiceImgRemove')->name('service_img_remove');
@@ -73,6 +74,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin'], function () {
 
 
 
+
     Route::resource('attributes', AttributesController::class);
     Route::resource('categories', CategoryController::class);
     Route::resource('products', ProductsController::class);
@@ -83,6 +85,10 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin'], function () {
     Route::resource('advantages', AdvantageController::class);
     Route::resource('services', ServiceController::class);
     Route::resource('blogs', BlogController::class);
+    Route::resource('slider_icons', SlidericonsController::class);
+
+
+
 
 
     Route::resource('permissions', 'PermissionController');

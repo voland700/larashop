@@ -31,6 +31,7 @@
 
                 <div class="card">
                     <div class="card-header">
+                        <a href="{{route('sliders.index')}}" class="float-left mr-2"><i class="fas fa-arrow-alt-circle-left"></i></a>
                         <h3 class="card-title">Данные слайда</h3>
                     </div>
 

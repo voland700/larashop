@@ -110,30 +110,31 @@
 
             <li class="nav-item">
                 <a href="{{route('sliders.index')}}" class="nav-link">
-                    <i class="far fa-circle nav-icon"></i>
+                    <i class="fas fa-images nav-icon"></i>
                     <p>Слайды</p>
                 </a>
             </li>
-            <li class="nav-item">
-                <a href="{{route('sliders.create')}}" class="nav-link">
-                    <i class="far fa-circle nav-icon"></i>
-                    <p>Создать слайд</p>
-                </a>
-            </li>
+
 
 
             <li class="nav-item">
                 <a href="{{route('banners.index')}}" class="nav-link">
-                    <i class="far fa-circle nav-icon"></i>
+                    <i class="fas fa-clone nav-icon"></i>
                     <p>Банеры слайдера</p>
                 </a>
             </li>
+
             <li class="nav-item">
-                <a href="{{route('banners.create')}}" class="nav-link">
-                    <i class="far fa-circle nav-icon"></i>
-                    <p>Создать банер</p>
+                <a href="{{route('slider_icons.index')}}" class="nav-link">
+                    <i class="fas fa-record-vinyl nav-icon"></i>
+                    <p>Иконки преимуществ</p>
                 </a>
             </li>
+
+
+
+
+
         </ul>
     </li>
     <li class="nav-item">

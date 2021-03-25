@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Attribute;
+use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Currency;
 use App\Models\Product;
@@ -142,7 +143,9 @@ class ProductsController extends Controller
         $categories = Category::all()->toTree();
         $currency = Currency::select('currency', 'Name')->get();
         $attributes = Attribute::all()->sortBy('sort');
-        //$properties = $product->properties;
+        $brands = Brand::all()->sortBy('sort');
+
+
         $properties = json_decode($product->properties, true);
 
         if(!empty($properties) && is_array($properties)) {
@@ -155,7 +158,7 @@ class ProductsController extends Controller
                 }
             }
         }
-       return view('admin.products_update', compact('h1', 'product', 'categories', 'currency', 'attributes'));
+       return view('admin.products_update', compact('h1', 'product', 'categories', 'currency', 'attributes', 'brands'));
         //dd(json_decode($properties, true));
         //dd($product->properties);
     }
@@ -228,6 +231,8 @@ class ProductsController extends Controller
 
         $product->update($data);
         return redirect()->route('catalog_list', $data['category_id'] )->with('success', 'данные товара изменены');
+
+        //dd($data);
     }
 
     public function destroy($id)    {
@@ -259,10 +264,11 @@ class ProductsController extends Controller
         $categories = Category::all()->toTree();
         $currency = Currency::select('currency', 'Name')->get();
         $attributes = Attribute::all()->sortBy('sort');
+        $brands = Brand::all()->sortBy('sort');
 
         $h1='Создть новый товар';
         $category_id = $id;
-        return view('admin.products_create', compact('h1', 'categories', 'category_id', 'currency', 'attributes'));
+        return view('admin.products_create', compact('h1', 'categories', 'category_id', 'currency', 'attributes', 'brands'));
     }
 
     public  function delete($id, $category=NULL)

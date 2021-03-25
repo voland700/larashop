@@ -33,6 +33,7 @@
             <div class="col-md-6">
                 <div class="card">
                     <div class="card-header">
+                        <a href="/admin/catalog_list/" class="float-left mr-2"><i class="fas fa-arrow-alt-circle-left"></i></a>
                         <h3 class="card-title">Основные данные товара</h3>
                     </div>
                     <!-- /.card-header -->
@@ -78,9 +79,27 @@
                             </div>
                         </div>
 
-                        <div class="form-group col-3">
-                            <label for="sort">Сортировка</label>
-                            <input type="text" class="form-control" id="sort" name="sort" value="{{$product->sort}}">
+                        <div class="row">
+
+                            <div class="col-md-6">
+                                <div class="form-group col-3">
+                                    <label for="sort">Сортировка</label>
+                                    <input type="text" class="form-control @error('sort') is-invalid @enderror" id="sort" name="sort" value="{{$product->sort}}">
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group col-10">
+                                    <label for="brand_id">Производитель</label>
+                                    <select name="brand_id" id="brand_id" class="form-control">
+                                        <option value="">Без производителя</option>
+                                        @foreach($brands as $brand)
+                                            <option value="{{$brand->id}}" {{ $product->brand_id == $brand->id ? 'selected' : '' }}>{{ $brand->name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+
                         </div>
 
                         <div class="form-group">

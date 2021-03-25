@@ -31,6 +31,7 @@
 
                 <div class="card">
                     <div class="card-header">
+                        <a href="{{route('permissions.index')}}" class="float-left mr-2"><i class="fas fa-arrow-alt-circle-left"></i></a>
                         <h3 class="card-title">Намиенование нового разрешения</h3>
                     </div>
 

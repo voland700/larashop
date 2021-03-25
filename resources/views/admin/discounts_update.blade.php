@@ -33,6 +33,7 @@
 
                 <div class="card">
                     <div class="card-header">
+                        <a href="{{route('discounts.index')}}" class="float-left mr-2"><i class="fas fa-arrow-alt-circle-left"></i></a>
                         <h3 class="card-title">Данные скидки</h3>
                     </div>
 

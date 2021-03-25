@@ -7,7 +7,7 @@
 
                 <div class="card">
                     <div class="card-header">
-                        <a href="{{route('users.index')}}" class="mr-3" style="float: left"><i class="fas fa-arrow-alt-circle-left"></i></a>
+                        <a href="{{route('users.index')}}" class="float-left mr-2"><i class="fas fa-arrow-alt-circle-left"></i></a>
                         <h3 class="card-title">Данные пользователя: {{ $user->name }}</h3>
                     </div>
                     <!-- /.card-header -->

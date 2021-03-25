@@ -24,15 +24,15 @@
                 </div>
             @endif
 
-            <form role="form" action="{{ route('banners.store') }}" method="post" id="bannerForm" enctype="multipart/form-data">
+            <form role="form" action="{{ route('slider_icons.store') }}" method="post" id="bannerForm" enctype="multipart/form-data">
                 @csrf
                 <div class="row">
                  <div class="col-md-12">
 
                 <div class="card">
                     <div class="card-header">
-                        <a href="{{route('banners.index')}}" class="float-left mr-2"><i class="fas fa-arrow-alt-circle-left"></i></a>
-                        <h3 class="card-title">Данные баннера</h3>
+                        <a href="{{route('slider_icons.index')}}" class="float-left mr-2"><i class="fas fa-arrow-alt-circle-left"></i></a>
+                        <h3 class="card-title">Данные преимущества</h3>
                     </div>
 
                         <!-- /.card-header -->
@@ -43,7 +43,7 @@
                                 <div class="form-group">
                                     <div class="form-check">
                                         <input class="form-check-input" name="active" id="active" value="1" type="checkbox" checked="" onchange="checkboxToggle()">
-                                        <label class="form-check-label" for="active">Баннер активен</label>
+                                        <label class="form-check-label" for="active">Активно</label>
                                     </div>
                                 </div>
 
@@ -54,12 +54,12 @@
 
 
                                 <div class="form-group col-md-12">
-                                    <label for="name">Название, заголовок банера</label><code>*</code>
+                                    <label for="name">Название, заголовок</label><code>*</code>
                                     <input type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" placeholder="Заголовок баннера" required>
                                 </div>
 
                                 <div class="form-group col-md-6">
-                                    <label for="img">Изображение банера</label><code>*</code>
+                                    <label for="img">Иконка преимущества</label><code>*</code>
                                     <div class="input-group">
                                         <div class="custom-file">
                                             <input type="file" name="img" value="{{ old('img') }}" class="custom-file-input @error('img') is-invalid @enderror">
@@ -72,19 +72,7 @@
                                     <label for="link">Сылка для перехода</label>
                                     <input type="text" class="form-control"  name="link" value="{{ old('link') }}" placeholder="Добавте ссылку">
                                 </div>
-
-
-                                <div class="form-group">
-                                    <label for="text">Текст на слайде</label>
-                                    <textarea class="form-control" name="text" rows="3" placeholder="Короткий текст на слайде">{{ old('text') }}</textarea>
-                                </div>
-
-
                             </div>
-
-
-
-
 
                         </div><!-- ./Card row -->
                     </div><!-- ./CARD-BODY -->
@@ -97,54 +85,5 @@
              </div>
         </form>
     </div>
-    <div class="modal fade" id="modal-xl" style="display: none;" aria-hidden="true">
-        <div class="modal-dialog modal-xl">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title">Выбор товаров для скидок</h4>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">×</span>
-                    </button>
-                </div>
-                <div class="modal-body" id="modalBody">
-
-                </div>
-                <div class="modal-footer justify-content-end">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                 </div>
-            </div>
-            <!-- /.modal-content -->
-        </div>
-        <!-- /.modal-dialog -->
-    </div>
-
-        <div class="modal fade" id="modalCategory" style="display: none; padding-right: 17px;" aria-modal="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h4 class="modal-title">Выбор категорий каталога</h4>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">×</span>
-                        </button>
-                    </div>
-                    <div class="modal-body" id="modalBodyCategories">
-                    </div>
-                    <div class="modal-footer justify-content-between">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary" id="btnChoiceCategories">Выбрать</button>
-                    </div>
-                </div>
-                <!-- /.modal-content -->
-            </div>
-            <!-- /.modal-dialog -->
-        </div>
-
-
-
-
-
-
-
-
 @endsection
 

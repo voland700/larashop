@@ -46,6 +46,15 @@
                                     </div>
                                 </div>
 
+                                <div class="form-group">
+                                    <div class="form-check">
+                                        <input class="form-check-input" name="main" id="main" value="{{$category->main}}" type="checkbox" {{($category->main == 1) ? 'checked=""' : ''}}>
+                                        <label class="form-check-label" for="main">Категория на главной</label>
+                                    </div>
+                                </div>
+
+
+
                                 <div class="form-group col-3">
                                     <label for="sort">Сортировка</label>
                                     <input type="text" class="form-control" id="sort" name="sort" value="{{$category->sort}}">

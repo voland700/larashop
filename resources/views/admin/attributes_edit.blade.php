@@ -24,6 +24,7 @@
                 @endif
                 <div class="card">
                     <div class="card-header">
+                        <a href="{{route('attributes.index')}}" class="float-left mr-2"><i class="fas fa-arrow-alt-circle-left"></i></a>
                         <h3 class="card-title">Создать новую характеристику</h3>
                     </div>
                     <!-- /.card-header -->

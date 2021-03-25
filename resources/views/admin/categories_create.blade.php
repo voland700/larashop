@@ -44,6 +44,13 @@
                                     </div>
                                 </div>
 
+                                <div class="form-group">
+                                    <div class="form-check">
+                                        <input class="form-check-input" name="main" id="main" type="checkbox">
+                                        <label class="form-check-label" for="main">Категория на главной</label>
+                                    </div>
+                                </div>
+
                                 <div class="form-group col-3">
                                     <label for="sort">Сортировка</label>
                                     <input type="text" class="form-control" id="sort" name="sort" value="500" placeholder="500">

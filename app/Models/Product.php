@@ -29,7 +29,8 @@ class Product extends Model
         'base_price',
         'price',
         'currency',
-        'properties'
+        'properties',
+        'brand_id'
     ];
 
     protected $casts = [
@@ -86,9 +87,5 @@ class Product extends Model
     {
         return (!$this->prev_img==NULL) ? $this->prev_img : 'img/general/no-photo_thumbnail.jpg';
     }
-
-
-
-
 
 }

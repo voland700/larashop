@@ -26,7 +26,8 @@ class Category extends Model
         'meta_description',
         'description',
         'img',
-        'prev_img'
+        'prev_img',
+        'main'
     ];
 
     // get - рекурсия вложенных категроий

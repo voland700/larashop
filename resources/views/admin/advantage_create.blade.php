@@ -31,6 +31,7 @@
 
                 <div class="card">
                     <div class="card-header">
+                        <a href="{{route('advantages.index')}}" class="float-left mr-2"><i class="fas fa-arrow-alt-circle-left"></i></a>
                         <h3 class="card-title">Данные торгового преимущества</h3>
                     </div>
 
@@ -56,10 +57,6 @@
                                     <label for="name">Название, заголовок преимущества</label><code>*</code>
                                     <input type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" placeholder="Наименование преимущества" required>
                                 </div>
-
-
-
-
 
                                 <div class="row">
                                     <div class="form-group col-md-2">
