@@ -135,9 +135,14 @@
                                     <textarea class="form-control" name="meta_description" rows="3">{{ $service->meta_description }}</textarea>
                                 </div>
 
-                                <div class="form-group mt-5">
+                                <h5 class="mb-3 mt-5">Описание услуги</h5>
+                                <div class="form-group mt-2">
+                                    <label for="prev">Предварительное описание</label>
+                                    <textarea class="form-control" name="prev" id="prev" rows="3">{{ $service->prev }}</textarea>
+                                </div>
+                                <div class="form-group mt-2">
                                     <label for="description">Описание</label>
-                                    <textarea class="form-control" name="description" rows="7">{{ $service->description }}</textarea>
+                                    <textarea class="form-control" id="description" name="description" rows="7">{{ $service->description }}</textarea>
                                 </div>
 
                             </div>

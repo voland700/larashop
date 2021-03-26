@@ -201,11 +201,21 @@
 
                 <div class="card">
                     <div class="card-header">
-                        <h3 class="card-title">Стоимость товара товара</h3>
+                        <h3 class="card-title">Стоимость и наличие товара</h3>
                     </div>
                     <!-- /.card-header -->
                     <div class="card-body">
                         <div class="row">
+
+                            <div class="col-12">
+                                <div class="form-group mb-3 ">
+                                    <div class="form-check">
+                                        <input class="form-check-input" name="available" id="available"  type="checkbox" @if($product->available) checked @endif>
+                                        <label class="form-check-label" for="available">Товар в наличии</label>
+                                    </div>
+                                </div>
+                            </div>
+
                             <div class="col-6">
                                 <div class="form-group row">
                                     <label for="base_price" class="col-sm-2 col-form-label">Цена</label>
@@ -235,7 +245,49 @@
                     </div>
                 </div><!-- END цена и валюта -->
 
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Данные о преимуществах и предложении услуг</h3>
+                    </div>
+                    <!-- /.card-header -->
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <label for="advantages ">Преимущества товара</label>
+                                    <select multiple="multiple" name="advantages[]" id="advantages" class="custom-select">
+                                        @php  $advantagesID = $product->advantages->pluck('id')->toArray(); @endphp
+                                        @forelse ($advantages as $advantage)
 
+                                            <option value="{{$advantage->id}}" {{in_array($advantage->id, $advantagesID) ? 'selected' : ''}}>{{$advantage->name}}</option>
+                                        @empty
+                                            <option>Преимуществ нет</option>
+                                        @endforelse
+                                    </select>
+                                </div>
+
+                            </div>
+
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <label for="services">Предложение услуг</label>
+                                    <select multiple="multiple" name="services[]" id="services" class="custom-select">
+                                        @php  $servicesID = $product->services->pluck('id')->toArray(); @endphp
+                                        @forelse ($services as $service)
+                                            <option value="{{$service->id}}" {{in_array($service->id, $servicesID) ? 'selected' : ''}} >{{$service->name}}</option>
+                                        @empty
+                                            <option>Нет предложений услуг</option>
+                                        @endforelse
+                                    </select>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer clearfix">
+                        <p></p>
+                    </div>
+                </div><!-- Преимущества и предложение услуг -->
 
                 <div class="card">
                     <div class="card-header">

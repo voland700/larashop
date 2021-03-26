@@ -30,7 +30,8 @@ class Product extends Model
         'price',
         'currency',
         'properties',
-        'brand_id'
+        'brand_id',
+        'available'
     ];
 
     protected $casts = [
@@ -71,6 +72,13 @@ class Product extends Model
     {
         return $this->belongsToMany(Advantage::class);
     }
+    public function services()
+    {
+        return $this->belongsToMany(Service::class);
+    }
+
+
+
     public function categories()
     {
         return $this->belongsToMany(Category::class);

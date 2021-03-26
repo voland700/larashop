@@ -84,6 +84,11 @@
                                     <textarea class="form-control" name="text" rows="3" placeholder="Текст преимущества">{{ old('text') }}</textarea>
                                 </div>
 
+                                <div class="form-group col-md-12">
+                                    <label for="link">Ссылка (если необходимо)</label>
+                                    <input type="text" class="form-control @error('link') is-invalid @enderror" name="link" value="{{ old('link') }}" placeholder="Ссылка...">
+                                </div>
+
 
                             </div>
 

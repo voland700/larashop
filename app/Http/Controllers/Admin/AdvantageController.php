@@ -50,10 +50,8 @@ class AdvantageController extends Controller
             'name' => 'required',
             'sort' => 'nullable|integer'
         ],$messages);
-
-
+        $advantage->save();
         return redirect()->route('advantages.index')->with('success', 'Торговое преимущество добавлено добавлено');
-
     }
 
     /**

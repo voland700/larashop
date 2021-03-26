@@ -3,11 +3,13 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Advantage;
 use App\Models\Attribute;
 use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Currency;
 use App\Models\Product;
+use App\Models\Service;
 use Illuminate\Http\Request;
 use App\Http\Requests\ProductsRequesValidate;
 use Illuminate\Support\Facades\Storage;
@@ -52,7 +54,8 @@ class ProductsController extends Controller
         $data['new'] = $request->has('new') ? 1 : 0;
         $data['stock'] = $request->has('stock') ? 1 : 0;
         $data['advice'] = $request->has('advice') ? 1 : 0;
-
+        $data['available'] = $request->has('available') ? 1 : 0;
+        $data['category_id'] = $request->category_id != 0 ? $request->category_id : NULL;
 
         $properties = [];
 
@@ -111,6 +114,7 @@ class ProductsController extends Controller
         $data['properties'] = json_encode($properties,JSON_UNESCAPED_UNICODE);
 
         $product = Product::create($data);
+
         if ($request->isMethod('post') && $request->file('image')) {
             foreach ($request->file('image') as $image) {
                 $path_to = '/upload/images/'.getfolderName();
@@ -127,6 +131,16 @@ class ProductsController extends Controller
                 ]);
             }
         }
+
+        if($request->advantages){
+            $advantages = Advantage::find($request->advantages);
+            $product->advantages()->attach($advantages);
+        }
+
+        if($request->services){
+            $services = Service::find($request->services);
+            $product->services()->attach($services);
+        }
         return redirect()->route('catalog_list', $data['category_id'] )->with('success', 'Новый товар созздан');
     }
 
@@ -138,13 +152,14 @@ class ProductsController extends Controller
 
     public function edit($id)
     {
-        $product = Product::with('image')->find($id);
+        $product = Product::with('image', 'advantages', 'services')->find($id);
         $h1 = 'Редактирование: '.$product->name;
         $categories = Category::all()->toTree();
         $currency = Currency::select('currency', 'Name')->get();
         $attributes = Attribute::all()->sortBy('sort');
-        $brands = Brand::all()->sortBy('sort');
-
+        $brands = Brand::orderBy('sort')->select('id', 'name')->get();
+        $advantages = Advantage::orderBy('sort')->select('id', 'name')->get();
+        $services = Service::orderBy('sort')->select('id', 'name')->get();
 
         $properties = json_decode($product->properties, true);
 
@@ -158,9 +173,10 @@ class ProductsController extends Controller
                 }
             }
         }
-       return view('admin.products_update', compact('h1', 'product', 'categories', 'currency', 'attributes', 'brands'));
+
+       return view('admin.products_update', compact('h1', 'product', 'categories', 'currency', 'attributes', 'brands', 'advantages', 'services'));
         //dd(json_decode($properties, true));
-        //dd($product->properties);
+        //dd($properties['3']['value']);
     }
 
     public function update(ProductsRequesValidate $request, $id)
@@ -172,6 +188,9 @@ class ProductsController extends Controller
         $data['new'] = $request->has('new') ? 1 : 0;
         $data['stock'] = $request->has('stock') ? 1 : 0;
         $data['advice'] = $request->has('advice') ? 1 : 0;
+        $data['available'] = $request->has('available') ? 1 : 0;
+        $data['category_id'] = $request->category_id != 0 ? $request->category_id : NULL;
+
         $properties = [];
 
         if ($request->hasFile('img')) {
@@ -229,10 +248,15 @@ class ProductsController extends Controller
             }
         }
 
-        $product->update($data);
-        return redirect()->route('catalog_list', $data['category_id'] )->with('success', 'данные товара изменены');
 
-        //dd($data);
+            $advantages = Advantage::find($request->advantages);
+            $product->advantages()->sync($advantages);
+
+            $services = Service::find($request->services);
+            $product->services()->sync($services);
+
+        $product->update($data);
+        return redirect()->route('catalog_list', $data['category_id'] )->with('success', 'Данные товара изменены');
     }
 
     public function destroy($id)    {
@@ -264,11 +288,14 @@ class ProductsController extends Controller
         $categories = Category::all()->toTree();
         $currency = Currency::select('currency', 'Name')->get();
         $attributes = Attribute::all()->sortBy('sort');
-        $brands = Brand::all()->sortBy('sort');
-
+        $brands = Brand::orderBy('sort')->select('id', 'name')->get();
+        $advantages = Advantage::orderBy('sort')->select('id', 'name')->get();
+        $services = Service::orderBy('sort')->select('id', 'name')->get();
         $h1='Создть новый товар';
         $category_id = $id;
-        return view('admin.products_create', compact('h1', 'categories', 'category_id', 'currency', 'attributes', 'brands'));
+        return view('admin.products_create', compact('h1', 'categories', 'category_id', 'currency', 'attributes', 'brands', 'advantages', 'services'));
+
+
     }
 
     public  function delete($id, $category=NULL)

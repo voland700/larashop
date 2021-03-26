@@ -84,6 +84,11 @@
                                     <label for="text">Текст преимущества</label>
                                     <textarea class="form-control" name="text" rows="3">{{ $advantage->text }}</textarea>
                                 </div>
+
+                                <div class="form-group col-md-12">
+                                    <label for="link">Ссылка (если необходимо)</label>
+                                    <input type="text" class="form-control" name="link" value="{{ $advantage->link }}">
+                                </div>
                             </div>
 
                         </div><!-- ./Card row -->
